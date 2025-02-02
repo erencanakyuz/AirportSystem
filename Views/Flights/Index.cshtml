@@ -1,0 +1,114 @@
+@model List<AirportDemo.Models.Flight>
+
+@{
+    ViewData["Title"] = "Flights";
+}
+
+<div class="container mt-4">
+    <h2>Flight Schedule</h2>
+
+    <div class="d-flex justify-content-between mb-3">
+        <a href="/Flights/Create" class="btn btn-primary">Add New Flight</a>
+        <a href="/Flights/DeleteAll" class="btn btn-danger" onclick="return confirmDeleteAll();">Delete All Flights</a>
+    </div>
+
+    <!-- Filtreleme Formu -->
+    <div class="row g-3">
+        <div class="col-md-3">
+            <label class="form-label">Destination</label>
+            <input type="text" id="destinationFilter" class="form-control" placeholder="Enter destination">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Departure Location</label>
+            <input type="text" id="departureLocationFilter" class="form-control" placeholder="Enter departure location">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Flight Number</label>
+            <input type="text" id="flightNumberFilter" class="form-control" placeholder="Enter flight number">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Departure Date</label>
+            <input type="date" id="departureDateFilter" class="form-control">
+        </div>
+    </div>
+
+    <!-- Uçuş Listesi -->
+    <table class="table table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Flight Number</th>
+                <th>Departure Location</th>
+                <th>Destination</th>
+                <th>Departure Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="flightsTable">
+            @foreach (var flight in Model)
+            {
+                <tr>
+                    <td>@flight.Id</td>
+                    <td>@flight.FlightNumber</td>
+                    <td>@flight.DepartureLocation</td>
+                    <td>@flight.Destination</td>
+                    <td>@flight.DepartureTime.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        <a href="/Flights/Edit/@flight.Id" class="btn btn-warning">Edit</a>
+                        <a href="/Flights/Delete/@flight.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const filters = ["destinationFilter", "departureLocationFilter", "flightNumberFilter", "departureDateFilter"];
+
+        filters.forEach(filterId => {
+            document.getElementById(filterId).addEventListener("input", fetchFilteredData);
+        });
+
+        function fetchFilteredData() {
+            let destination = document.getElementById("destinationFilter").value;
+            let departureLocation = document.getElementById("departureLocationFilter").value;
+            let flightNumber = document.getElementById("flightNumberFilter").value;
+            let departureDate = document.getElementById("departureDateFilter").value;
+
+            let queryString = `?destination=${destination}&departureLocation=${departureLocation}&flightNumber=${flightNumber}&departureDate=${departureDate}`;
+
+            fetch(`/Flights/FilterFlights${queryString}`)
+                .then(response => response.json())
+                .then(data => updateTable(data));
+        }
+
+        function updateTable(data) {
+            let tableBody = document.getElementById("flightsTable");
+            tableBody.innerHTML = "";
+
+            data.forEach(flight => {
+                let row = `<tr>
+                    <td>${flight.id}</td>
+                    <td>${flight.flightNumber}</td>
+                    <td>${flight.departureLocation}</td>
+                    <td>${flight.destination}</td>
+                    <td>${new Date(flight.departureTime).toLocaleString()}</td>
+                    <td>
+                        <a href="/Flights/Edit/${flight.id}" class="btn btn-warning">Edit</a>
+                        <a href="/Flights/Delete/${flight.id}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+    });
+
+    function confirmDeleteAll() {
+        return confirm("Are you sure you want to delete all flights?");
+    }
+</script>

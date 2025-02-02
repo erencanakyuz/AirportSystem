@@ -1,0 +1,32 @@
+@model AirportDemo.Models.Flight
+
+@{
+    ViewData["Title"] = "Delete Flight";
+}
+
+<div class="container mt-4">
+    <h2>Are you sure you want to delete this flight?</h2>
+
+    <dl class="row">
+        <dt class="col-sm-3">Flight Number:</dt>
+        <dd class="col-sm-9">@Model.FlightNumber</dd>
+
+        <dt class="col-sm-3">Destination:</dt>
+        <dd class="col-sm-9">@Model.Destination</dd>
+
+        <dt class="col-sm-3">Departure Time:</dt>
+        <dd class="col-sm-9">@Model.DepartureTime.ToString("yyyy-MM-dd HH:mm")</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this flight?");
+    }
+</script>

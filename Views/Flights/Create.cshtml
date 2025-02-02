@@ -1,0 +1,36 @@
+@model AirportDemo.Models.Flight
+
+@{
+    ViewData["Title"] = "Add New Flight";
+}
+
+<div class="container mt-4">
+    <h2>Add New Flight</h2>
+
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label for="FlightNumber" class="form-label">Flight Number</label>
+            <input asp-for="FlightNumber" class="form-control" required />
+            <span asp-validation-for="FlightNumber" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="Destination" class="form-label">Destination</label>
+            <input asp-for="Destination" class="form-control" required />
+            <span asp-validation-for="Destination" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="DepartureTime" class="form-label">Departure Time</label>
+            <input asp-for="DepartureTime" type="datetime-local" class="form-control" required />
+            <span asp-validation-for="DepartureTime" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Departure Location</label>
+            <input asp-for="DepartureLocation" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Flight</button>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </form>
+</div>
