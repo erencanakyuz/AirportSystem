@@ -1,285 +1,316 @@
-@model List<AirportDemo.Models.Flight>
-@{
-    ViewData["Title"] = "Flights";
-    var sortColumn = Context.Request.Query["sortColumn"];
-    var sortDirection = Context.Request.Query["sortDirection"];
-    var currentUrl = Context.Request.Path + Context.Request.QueryString;
-}
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-    .flight-header {
-        background-color: #f8f9fa;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyControl - Flight Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/@@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
 
-    .filter-card {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
-    .flight-table {
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    }
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
 
-    .flight-table thead {
-        background: #000000;
-        color: white;
-    }
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
 
-    .flight-table th {
-        font-weight: 600;
-        padding: 1rem;
-        border-bottom: 2px solid #000000;
-    }
+        /* Header Styles */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
 
-    .flight-table td {
-        padding: 1rem;
-        vertical-align: middle;
-        border-top: 1px solid #f1f3f5;
-    }
+        .header-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .action-buttons .btn {
-        min-width: 90px;
-        margin: 0 4px;
-        transition: all 0.2s ease;
-    }
+        /* Control Panel */
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
 
-    .sort-link {
-        color: rgb(0, 0, 0);
-        text-decoration: none;
-        position: relative;
-        padding-right: 20px;
-    }
+        .stats-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
 
-    .sort-link:hover {
-        color: #af1a1a;
-    }
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
 
-    .sort-arrow {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-    }
+        /* Flight Table */
+        .flight-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
 
-    .badge-destination {
-        background-color: #e3f2fd;
-        color: #1976d2;
-        padding: 0.4em 0.8em;
-        border-radius: 20px;
-    }
-</style>
+        .flight-table thead {
+            background: var(--gradient);
+        }
 
-<div class="container-fluid py-4">
-    <div class="flight-header d-flex justify-content-between align-items-center">
-        <div>
-            <h1 class="h4 mb-0 fw-bold text-primary">Flight Schedule Management</h1>
-            <p class="text-muted mb-0">Manage and monitor all scheduled flights</p>
+        .flight-table th {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .flight-table td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .status-indicator::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        /* Action Buttons */
+        .action-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Search and Filters */
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        /* Animations */
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animated-entry {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .flight-table thead {
+                display: none;
+            }
+
+            .flight-table tr {
+                display: block;
+                margin-bottom: 1rem;
+            }
+
+            .flight-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem;
+            }
+
+            .flight-table td::before {
+                content: attr(data-label);
+                font-weight: 500;
+                color: var(--text-secondary);
+                margin-right: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="dashboard-header">
+            <h1 class="header-title">SkyControl Dashboard</h1>
+            <div class="action-group">
+                <button class="btn btn-primary">
+                    <i class="mdi mdi-plus"></i>
+                    New Flight
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="mdi mdi-filter"></i>
+                    Filters
+                </button>
+            </div>
+        </header>
+
+        <div class="control-panel">
+            <div class="stats-card animated-entry">
+                <h3>Scheduled Flights</h3>
+                <div class="stat-value">248</div>
+            </div>
+            <div class="stats-card animated-entry" style="animation-delay: 0.2s">
+                <h3>In Air</h3>
+                <div class="stat-value">42</div>
+            </div>
+            <div class="stats-card animated-entry" style="animation-delay: 0.4s">
+                <h3>Delayed</h3>
+                <div class="stat-value">15</div>
+            </div>
         </div>
-        <div class="d-flex gap-2">
-            <a href="/Flights/Create" class="btn btn-primary">
-                <i class="fas fa-plus-circle me-2"></i>New Flight
-            </a>
-            <a href="/Flights/DeleteAll" class="btn btn-danger" onclick="return confirmDeleteAll();">
-                <i class="fas fa-trash-alt me-2"></i>Clear All
-            </a>
-        </div>
-    </div>
 
-    <div class="filter-card">
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="form-label small text-uppercase text-muted mb-2">Destination</label>
-                    <input type="text" id="destinationFilter" class="form-control form-control-lg"
-                        placeholder="Search destination..." value="@Context.Request.Query["destination"]">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="form-label small text-uppercase text-muted mb-2">Departure Location</label>
-                    <input type="text" id="departureLocationFilter" class="form-control form-control-lg"
-                        placeholder="Search location..." value="@Context.Request.Query["departureLocation"]">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="form-label small text-uppercase text-muted mb-2">Flight Number</label>
-                    <input type="text" id="flightNumberFilter" class="form-control form-control-lg"
-                        placeholder="Search flight..." value="@Context.Request.Query["flightNumber"]">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="form-label small text-uppercase text-muted mb-2">Departure Date</label>
-                    <input type="date" id="departureDateFilter" class="form-control form-control-lg"
-                        value="@Context.Request.Query["departureDate"]">
-                </div>
-            </div>
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search flights...">
+            <button class="btn btn-primary">
+                <i class="mdi mdi-magnify"></i>
+                Search
+            </button>
         </div>
-    </div>
 
-    <div class="table-responsive">
-        <table class="table flight-table">
+        <table class="flight-table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>
-                        <a href="?sortColumn=FlightNumber&sortDirection=@(sortColumn == "FlightNumber" && sortDirection == "asc" ? "desc" : "asc")"
-                            class="sort-link">
-                            Flight Number
-                            <span class="sort-arrow">
-                                @if (sortColumn == "FlightNumber")
-                                {
-                                    @(sortDirection == "asc" ? "↑" : "↓")
-                                }
-                            </span>
-                        </a>
-                    </th>
-                    <th>
-                        <a href="?sortColumn=DepartureLocation&sortDirection=@(sortColumn == "DepartureLocation" && sortDirection == "asc" ? "desc" : "asc")"
-                            class="sort-link">
-                            Departure
-                            <span class="sort-arrow">
-                                @if (sortColumn == "DepartureLocation")
-                                {
-                                    @(sortDirection == "asc" ? "↑" : "↓")
-                                }
-                            </span>
-                        </a>
-                    </th>
-                    <th>
-                        <a href="?sortColumn=Destination&sortDirection=@(sortColumn == "Destination" && sortDirection == "asc" ? "desc" : "asc")"
-                            class="sort-link">
-                            Destination
-                            <span class="sort-arrow">
-                                @if (sortColumn == "Destination")
-                                {
-                                    @(sortDirection == "asc" ? "↑" : "↓")
-                                }
-                            </span>
-                        </a>
-                    </th>
-                    <th>
-                        <a href="?sortColumn=DepartureTime&sortDirection=@(sortColumn == "DepartureTime" && sortDirection == "asc" ? "desc" : "asc")"
-                            class="sort-link">
-                            Departure Time
-                            <span class="sort-arrow">
-                                @if (sortColumn == "DepartureTime")
-                                {
-                                    @(sortDirection == "asc" ? "↑" : "↓")
-                                }
-                            </span>
-                        </a>
-                    </th>
+                    <th>Flight</th>
+                    <th>Route</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="flightsTable">
-                @foreach (var flight in Model)
-                {
-                    <tr>
-                        <td>@flight.Id</td>
-                        <td class="fw-semibold">@flight.FlightNumber</td>
-                        <td>@flight.DepartureLocation</td>
-                        <td>
-                            <span class="badge-destination">@flight.Destination</span>
-                        </td>
-                        <td>@flight.DepartureTime.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td class="action-buttons">
-                            <a href="/Flights/Edit/@flight.Id" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-edit me-1"></i>Edit
-                            </a>
-                            <a href="/Flights/Delete/@flight.Id" class="btn btn-sm btn-outline-danger">
-                                <i class="fas fa-trash-alt me-1"></i>Delete
-                            </a>
-                        </td>
-                    </tr>
-                }
+            <tbody>
+                <tr>
+                    <td data-label="Flight">
+                        <div class="flight-info">
+                            <div class="flight-number">AA 237</div>
+                            <div class="airline">American Airlines</div>
+                        </div>
+                    </td>
+                    <td data-label="Route">JFK → LAX</td>
+                    <td data-label="Departure">15:30 EST</td>
+                    <td data-label="Arrival">18:45 PST</td>
+                    <td data-label="Status">
+                        <span class="status-indicator">
+                            On Time
+                        </span>
+                    </td>
+                    <td data-label="Actions">
+                        <div class="action-group">
+                            <button class="btn btn-secondary">
+                                <i class="mdi mdi-pencil"></i>
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="mdi mdi-information"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <!-- More table rows... -->
             </tbody>
         </table>
     </div>
-</div>
 
-<script>
-    function confirmDeleteAll() {
-        return confirm("Are you sure you want to delete all flights?");
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        // Preserve filters when sorting
-        document.querySelectorAll('.sort-link').forEach(link => {
-            const baseUrl = new URL(link.href);
-
-            // Add current filter values to sort URL
-            const filters = {
-                destination: document.getElementById('destinationFilter').value,
-                departureLocation: document.getElementById('departureLocationFilter').value,
-                flightNumber: document.getElementById('flightNumberFilter').value,
-                departureDate: document.getElementById('departureDateFilter').value
-            };
-
-            for (const [key, value] of Object.entries(filters)) {
-                if (value) baseUrl.searchParams.set(key, value);
-            }
-
-            link.href = baseUrl.toString();
+    <script>
+        // Add interactive features
+        document.querySelectorAll('.flight-table tr').forEach(row => {
+            row.addEventListener('click', (e) => {
+                if (!e.target.closest('button')) {
+                    row.classList.toggle('active-details');
+                }
+            });
         });
 
-        // Real-time filtering
-        const filters = ["destinationFilter", "departureLocationFilter", "flightNumberFilter", "departureDateFilter"];
-        filters.forEach(filterId => {
-            document.getElementById(filterId).addEventListener('input', fetchFilteredData);
+        // Search functionality
+        const searchInput = document.querySelector('.search-input');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.flight-table tbody tr').forEach(row => {
+                const textContent = row.textContent.toLowerCase();
+                row.style.display = textContent.includes(searchTerm) ? '' : 'none';
+            });
         });
+    </script>
+</body>
 
-        async function fetchFilteredData() {
-            const params = new URLSearchParams({
-                destination: document.getElementById('destinationFilter').value,
-                departureLocation: document.getElementById('departureLocationFilter').value,
-                flightNumber: document.getElementById('flightNumberFilter').value,
-                departureDate: document.getElementById('departureDateFilter').value
-            });
-
-            try {
-                const response = await fetch(`/Flights/FilterFlights?${params}`);
-                const data = await response.json();
-                updateTable(data);
-            } catch (error) {
-                console.error('Error fetching filtered data:', error);
-            }
-        }
-
-        function updateTable(data) {
-            const tbody = document.getElementById('flightsTable');
-            tbody.innerHTML = '';
-
-            data.forEach(flight => {
-                const row = `
-                    <tr>
-                        <td>${flight.id}</td>
-                        <td class="fw-semibold">${flight.flightNumber}</td>
-                        <td>${flight.departureLocation}</td>
-                        <td><span class="badge-destination">${flight.destination}</span></td>
-                        <td>${new Date(flight.departureTime).toLocaleString()}</td>
-                        <td class="action-buttons">
-                            <a href="/Flights/Edit/${flight.id}" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-edit me-1"></i>Edit
-                            </a>
-                            <a href="/Flights/Delete/${flight.id}" class="btn btn-sm btn-outline-danger">
-                                <i class="fas fa-trash-alt me-1"></i>Delete
-                            </a>
-                        </td>
-                    </tr>`;
-                tbody.innerHTML += row;
-            });
-        }
-    });
-</script>
+</html>
