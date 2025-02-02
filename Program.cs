@@ -41,8 +41,9 @@ app.Use(async (context, next) =>
 {
     var path = context.Request.Path.Value;
 
-    // Eğer kullanıcı giriş yapmamışsa ve Auth/Login, Auth/Register dışında bir sayfaya gitmeye çalışıyorsa yönlendir
+    // Eğer kullanıcı giriş yapmamışsa ve bu sayfalara erişmek istiyorsa yönlendir
     if (string.IsNullOrEmpty(context.Session.GetString("UserId")) &&
+        (path.StartsWith("/Flights") || path.StartsWith("/Fuel") || path.StartsWith("/Maintenance") || path.StartsWith("/Logistics")) &&
         !path.StartsWith("/Auth/Login") &&
         !path.StartsWith("/Auth/Register") &&
         !path.StartsWith("/css") &&
