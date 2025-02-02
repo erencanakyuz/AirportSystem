@@ -1,134 +1,285 @@
 @model List<AirportDemo.Models.Flight>
-
 @{
     ViewData["Title"] = "Flights";
+    var sortColumn = Context.Request.Query["sortColumn"];
+    var sortDirection = Context.Request.Query["sortDirection"];
+    var currentUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
-<div class="container mt-4">
-    <h2>Flight Schedule</h2>
+<style>
+    .flight-header {
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
 
-    <div class="d-flex justify-content-between mb-3">
-        <a href="/Flights/Create" class="btn btn-primary">Add New Flight</a>
-        <a href="/Flights/DeleteAll" class="btn btn-danger" onclick="return confirmDeleteAll();">Delete All Flights</a>
+    .filter-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .flight-table {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .flight-table thead {
+        background: #000000;
+        color: white;
+    }
+
+    .flight-table th {
+        font-weight: 600;
+        padding: 1rem;
+        border-bottom: 2px solid #000000;
+    }
+
+    .flight-table td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-top: 1px solid #f1f3f5;
+    }
+
+    .action-buttons .btn {
+        min-width: 90px;
+        margin: 0 4px;
+        transition: all 0.2s ease;
+    }
+
+    .sort-link {
+        color: rgb(0, 0, 0);
+        text-decoration: none;
+        position: relative;
+        padding-right: 20px;
+    }
+
+    .sort-link:hover {
+        color: #af1a1a;
+    }
+
+    .sort-arrow {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .badge-destination {
+        background-color: #e3f2fd;
+        color: #1976d2;
+        padding: 0.4em 0.8em;
+        border-radius: 20px;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="flight-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h4 mb-0 fw-bold text-primary">Flight Schedule Management</h1>
+            <p class="text-muted mb-0">Manage and monitor all scheduled flights</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="/Flights/Create" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-2"></i>New Flight
+            </a>
+            <a href="/Flights/DeleteAll" class="btn btn-danger" onclick="return confirmDeleteAll();">
+                <i class="fas fa-trash-alt me-2"></i>Clear All
+            </a>
+        </div>
     </div>
 
-    <!-- Filtreleme Formu -->
-    <div class="row g-3">
-        <div class="col-md-3">
-            <label class="form-label">Destination</label>
-            <input type="text" id="destinationFilter" class="form-control" placeholder="Enter destination">
-        </div>
-
-        <div class="col-md-3">
-            <label class="form-label">Departure Location</label>
-            <input type="text" id="departureLocationFilter" class="form-control" placeholder="Enter departure location">
-        </div>
-
-        <div class="col-md-3">
-            <label class="form-label">Flight Number</label>
-            <input type="text" id="flightNumberFilter" class="form-control" placeholder="Enter flight number">
-        </div>
-
-        <div class="col-md-3">
-            <label class="form-label">Departure Date</label>
-            <input type="date" id="departureDateFilter" class="form-control">
+    <div class="filter-card">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label small text-uppercase text-muted mb-2">Destination</label>
+                    <input type="text" id="destinationFilter" class="form-control form-control-lg"
+                        placeholder="Search destination..." value="@Context.Request.Query["destination"]">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label small text-uppercase text-muted mb-2">Departure Location</label>
+                    <input type="text" id="departureLocationFilter" class="form-control form-control-lg"
+                        placeholder="Search location..." value="@Context.Request.Query["departureLocation"]">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label small text-uppercase text-muted mb-2">Flight Number</label>
+                    <input type="text" id="flightNumberFilter" class="form-control form-control-lg"
+                        placeholder="Search flight..." value="@Context.Request.Query["flightNumber"]">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label small text-uppercase text-muted mb-2">Departure Date</label>
+                    <input type="date" id="departureDateFilter" class="form-control form-control-lg"
+                        value="@Context.Request.Query["departureDate"]">
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Uçuş Listesi -->
-    <table class="table table-striped mt-3">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>
-                    <a href="/Flights?sortColumn=FlightNumber&sortDirection=@ViewData["SortDirection"]"
-                        class="text-white">
-                        Flight Number
-                    </a>
-                </th>
-                <th>
-                    <a href="/Flights?sortColumn=DepartureLocation&sortDirection=@ViewData["SortDirection"]"
-                        class="text-white">
-                        Departure Location
-                    </a>
-                </th>
-                <th>
-                    <a href="/Flights?sortColumn=Destination&sortDirection=@ViewData["SortDirection"]"
-                        class="text-white">
-                        Destination
-                    </a>
-                </th>
-                <th>
-                    <a href="/Flights?sortColumn=DepartureTime&sortDirection=@ViewData["SortDirection"]"
-                        class="text-white">
-                        Departure Time
-                    </a>
-                </th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="flightsTable">
-            @foreach (var flight in Model)
-            {
+    <div class="table-responsive">
+        <table class="table flight-table">
+            <thead>
                 <tr>
-                    <td>@flight.Id</td>
-                    <td>@flight.FlightNumber</td>
-                    <td>@flight.DepartureLocation</td>
-                    <td>@flight.Destination</td>
-                    <td>@flight.DepartureTime.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>
-                        <a href="/Flights/Edit/@flight.Id" class="btn btn-warning">Edit</a>
-                        <a href="/Flights/Delete/@flight.Id" class="btn btn-danger">Delete</a>
-                    </td>
+                    <th>ID</th>
+                    <th>
+                        <a href="?sortColumn=FlightNumber&sortDirection=@(sortColumn == "FlightNumber" && sortDirection == "asc" ? "desc" : "asc")"
+                            class="sort-link">
+                            Flight Number
+                            <span class="sort-arrow">
+                                @if (sortColumn == "FlightNumber")
+                                {
+                                    @(sortDirection == "asc" ? "↑" : "↓")
+                                }
+                            </span>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="?sortColumn=DepartureLocation&sortDirection=@(sortColumn == "DepartureLocation" && sortDirection == "asc" ? "desc" : "asc")"
+                            class="sort-link">
+                            Departure
+                            <span class="sort-arrow">
+                                @if (sortColumn == "DepartureLocation")
+                                {
+                                    @(sortDirection == "asc" ? "↑" : "↓")
+                                }
+                            </span>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="?sortColumn=Destination&sortDirection=@(sortColumn == "Destination" && sortDirection == "asc" ? "desc" : "asc")"
+                            class="sort-link">
+                            Destination
+                            <span class="sort-arrow">
+                                @if (sortColumn == "Destination")
+                                {
+                                    @(sortDirection == "asc" ? "↑" : "↓")
+                                }
+                            </span>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="?sortColumn=DepartureTime&sortDirection=@(sortColumn == "DepartureTime" && sortDirection == "asc" ? "desc" : "asc")"
+                            class="sort-link">
+                            Departure Time
+                            <span class="sort-arrow">
+                                @if (sortColumn == "DepartureTime")
+                                {
+                                    @(sortDirection == "asc" ? "↑" : "↓")
+                                }
+                            </span>
+                        </a>
+                    </th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="flightsTable">
+                @foreach (var flight in Model)
+                {
+                    <tr>
+                        <td>@flight.Id</td>
+                        <td class="fw-semibold">@flight.FlightNumber</td>
+                        <td>@flight.DepartureLocation</td>
+                        <td>
+                            <span class="badge-destination">@flight.Destination</span>
+                        </td>
+                        <td>@flight.DepartureTime.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td class="action-buttons">
+                            <a href="/Flights/Edit/@flight.Id" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit me-1"></i>Edit
+                            </a>
+                            <a href="/Flights/Delete/@flight.Id" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash-alt me-1"></i>Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const filters = ["destinationFilter", "departureLocationFilter", "flightNumberFilter", "departureDateFilter"];
-
-        filters.forEach(filterId => {
-            document.getElementById(filterId).addEventListener("input", fetchFilteredData);
-        });
-
-        function fetchFilteredData() {
-            let destination = document.getElementById("destinationFilter").value;
-            let departureLocation = document.getElementById("departureLocationFilter").value;
-            let flightNumber = document.getElementById("flightNumberFilter").value;
-            let departureDate = document.getElementById("departureDateFilter").value;
-
-            let queryString = `?destination=${destination}&departureLocation=${departureLocation}&flightNumber=${flightNumber}&departureDate=${departureDate}`;
-
-            fetch(`/Flights/FilterFlights${queryString}`)
-                .then(response => response.json())
-                .then(data => updateTable(data));
-        }
-
-        function updateTable(data) {
-            let tableBody = document.getElementById("flightsTable");
-            tableBody.innerHTML = "";
-
-            data.forEach(flight => {
-                let row = `<tr>
-                    <td>${flight.id}</td>
-                    <td>${flight.flightNumber}</td>
-                    <td>${flight.departureLocation}</td>
-                    <td>${flight.destination}</td>
-                    <td>${new Date(flight.departureTime).toLocaleString()}</td>
-                    <td>
-                        <a href="/Flights/Edit/${flight.id}" class="btn btn-warning">Edit</a>
-                        <a href="/Flights/Delete/${flight.id}" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>`;
-                tableBody.innerHTML += row;
-            });
-        }
-    });
-
     function confirmDeleteAll() {
         return confirm("Are you sure you want to delete all flights?");
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Preserve filters when sorting
+        document.querySelectorAll('.sort-link').forEach(link => {
+            const baseUrl = new URL(link.href);
+
+            // Add current filter values to sort URL
+            const filters = {
+                destination: document.getElementById('destinationFilter').value,
+                departureLocation: document.getElementById('departureLocationFilter').value,
+                flightNumber: document.getElementById('flightNumberFilter').value,
+                departureDate: document.getElementById('departureDateFilter').value
+            };
+
+            for (const [key, value] of Object.entries(filters)) {
+                if (value) baseUrl.searchParams.set(key, value);
+            }
+
+            link.href = baseUrl.toString();
+        });
+
+        // Real-time filtering
+        const filters = ["destinationFilter", "departureLocationFilter", "flightNumberFilter", "departureDateFilter"];
+        filters.forEach(filterId => {
+            document.getElementById(filterId).addEventListener('input', fetchFilteredData);
+        });
+
+        async function fetchFilteredData() {
+            const params = new URLSearchParams({
+                destination: document.getElementById('destinationFilter').value,
+                departureLocation: document.getElementById('departureLocationFilter').value,
+                flightNumber: document.getElementById('flightNumberFilter').value,
+                departureDate: document.getElementById('departureDateFilter').value
+            });
+
+            try {
+                const response = await fetch(`/Flights/FilterFlights?${params}`);
+                const data = await response.json();
+                updateTable(data);
+            } catch (error) {
+                console.error('Error fetching filtered data:', error);
+            }
+        }
+
+        function updateTable(data) {
+            const tbody = document.getElementById('flightsTable');
+            tbody.innerHTML = '';
+
+            data.forEach(flight => {
+                const row = `
+                    <tr>
+                        <td>${flight.id}</td>
+                        <td class="fw-semibold">${flight.flightNumber}</td>
+                        <td>${flight.departureLocation}</td>
+                        <td><span class="badge-destination">${flight.destination}</span></td>
+                        <td>${new Date(flight.departureTime).toLocaleString()}</td>
+                        <td class="action-buttons">
+                            <a href="/Flights/Edit/${flight.id}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit me-1"></i>Edit
+                            </a>
+                            <a href="/Flights/Delete/${flight.id}" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash-alt me-1"></i>Delete
+                            </a>
+                        </td>
+                    </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+    });
 </script>
