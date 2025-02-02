@@ -15,11 +15,35 @@ namespace AirportDemo.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string sortColumn, string sortDirection)
         {
-            var flights = _context.Flights.ToList();
-            return View(flights);
+            var flights = _context.Flights.AsQueryable();
+
+            // Varsayılan sıralama yönleri
+            ViewData["SortDirection"] = "asc"; // Varsayılan olarak artan sıralama
+            ViewData["SortColumn"] = sortColumn; // Hangi sütunun sıralandığını takip et
+
+            // Eğer kullanıcı bir sütuna tıkladıysa, sıralama yönünü belirle
+            if (!string.IsNullOrEmpty(sortColumn))
+            {
+                // Mevcut sıralama yönü tersine çevriliyor (Asc -> Desc, Desc -> Asc)
+                sortDirection = (sortDirection == "asc") ? "desc" : "asc";
+                ViewData["SortDirection"] = sortDirection;
+            }
+
+            // Sıralama işlemi
+            flights = sortColumn switch
+            {
+                "DepartureTime" => sortDirection == "asc" ? flights.OrderByDescending(f => f.DepartureTime) : flights.OrderBy(f => f.DepartureTime),
+                "Destination" => sortDirection == "asc" ? flights.OrderBy(f => f.Destination) : flights.OrderByDescending(f => f.Destination),
+                "DepartureLocation" => sortDirection == "asc" ? flights.OrderBy(f => f.DepartureLocation) : flights.OrderByDescending(f => f.DepartureLocation),
+                "FlightNumber" => sortDirection == "asc" ? flights.OrderBy(f => f.FlightNumber) : flights.OrderByDescending(f => f.FlightNumber),
+                _ => flights.OrderBy(f => f.Id) // Varsayılan olarak ID’ye göre sıralar
+            };
+
+            return View(flights.ToList());
         }
+
 
         [HttpGet]
         public JsonResult FilterFlights(string destination, string departureLocation, string flightNumber, DateTime? departureDate)

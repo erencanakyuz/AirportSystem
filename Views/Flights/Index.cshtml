@@ -40,10 +40,30 @@
         <thead class="table-dark">
             <tr>
                 <th>ID</th>
-                <th>Flight Number</th>
-                <th>Departure Location</th>
-                <th>Destination</th>
-                <th>Departure Time</th>
+                <th>
+                    <a href="/Flights?sortColumn=FlightNumber&sortDirection=@ViewData["SortDirection"]"
+                        class="text-white">
+                        Flight Number
+                    </a>
+                </th>
+                <th>
+                    <a href="/Flights?sortColumn=DepartureLocation&sortDirection=@ViewData["SortDirection"]"
+                        class="text-white">
+                        Departure Location
+                    </a>
+                </th>
+                <th>
+                    <a href="/Flights?sortColumn=Destination&sortDirection=@ViewData["SortDirection"]"
+                        class="text-white">
+                        Destination
+                    </a>
+                </th>
+                <th>
+                    <a href="/Flights?sortColumn=DepartureTime&sortDirection=@ViewData["SortDirection"]"
+                        class="text-white">
+                        Departure Time
+                    </a>
+                </th>
                 <th>Actions</th>
             </tr>
         </thead>
