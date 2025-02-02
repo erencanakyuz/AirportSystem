@@ -2,26 +2,152 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg p-4">
-                <h2 class="text-center">Login</h2>
-                <form asp-action="Login" method="post">
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input name="email" type="email" class="form-control" required />
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input name="password" type="password" class="form-control" required />
-                    </div>
-                    <button type="submit" class="btn btn-success w-100">Login</button>
-                </form>
-                <div class="text-center mt-3">
-                    <a href="/Auth/Register">Don't have an account? Register here</a>
-                </div>
+<header>
+    <nav class="neon-navbar">
+        <a class="brand" href="/Home/Index">AirportDemo</a>
+        <ul>
+            <li><a href="/Flights">Flights</a></li>
+            <li><a href="/Home/Index">Home</a></li>
+            <li><a href="/Home/Privacy">Privacy</a></li>
+            <li><a href="/Auth/Login">Login</a></li>
+            <li><a href="/Auth/Register">Register</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="neon-container">
+    <div class="neon-box">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Log in to your account</p>
+        <form method="post">
+            <div class="input-group">
+                <input type="email" name="email" placeholder="Email" required />
             </div>
-        </div>
+            <div class="input-group">
+                <input type="password" name="password" placeholder="Password" required />
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p class="register-text">Don't have an account? <a href="/Auth/Register">Register</a></p>
     </div>
 </div>
+
+<style>
+    body {
+        background: url('/images/BackgorundLogin1.jpg') no-repeat center center/cover;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+    }
+
+    .neon-navbar {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background: rgba(0, 0, 0, 0.8);
+        box-shadow: 0 0 10px #00fff5;
+    }
+
+    .neon-navbar .brand {
+        color: #00fff5;
+        font-size: 20px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .neon-navbar ul {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+    }
+
+    .neon-navbar ul li a {
+        color: white;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .neon-navbar ul li a:hover {
+        color: #00fff5;
+    }
+
+    .neon-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        flex-grow: 1;
+    }
+
+    .neon-box {
+        background: rgba(0, 0, 0, 0.8);
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 0 20px #00fff5;
+        max-width: 350px;
+        width: 100%;
+    }
+
+    h2 {
+        color: #00fff5;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        color: #aaa;
+        margin-bottom: 20px;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #00fff5;
+        background: black;
+        color: #00fff5;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        background: #00fff5;
+        color: black;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #00e0d1;
+    }
+
+    .register-text {
+        margin-top: 15px;
+        color: #aaa;
+    }
+
+    .register-text a {
+        color: #00fff5;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .register-text a:hover {
+        text-decoration: underline;
+    }
+</style>
