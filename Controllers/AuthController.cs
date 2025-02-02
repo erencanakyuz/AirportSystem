@@ -43,6 +43,10 @@ namespace AirportDemo.Controllers
 
         public IActionResult Login()
         {
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+            {
+                return RedirectToAction("Index", "Home"); // Kullanıcı giriş yapmışsa anasayfaya yönlendir
+            }
             return View();
         }
 
@@ -57,7 +61,8 @@ namespace AirportDemo.Controllers
             }
 
             HttpContext.Session.SetString("UserId", user.Id.ToString());
-            return RedirectToAction("Index", "Flights");
+            HttpContext.Session.SetString("Username", user.Username);
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Logout()
@@ -71,12 +76,7 @@ namespace AirportDemo.Controllers
             using (SHA256 sha256 = SHA256.Create())
             {
                 byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                StringBuilder builder = new StringBuilder();
-                foreach (var t in bytes)
-                {
-                    builder.Append(t.ToString("x2"));
-                }
-                return builder.ToString();
+                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
             }
         }
     }

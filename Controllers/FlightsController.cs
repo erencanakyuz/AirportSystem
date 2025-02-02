@@ -14,9 +14,14 @@ namespace AirportDemo.Controllers
         {
             _context = context;
         }
-
         public IActionResult Index(string sortColumn, string sortDirection)
         {
+            // Kullanıcı giriş yapmamışsa, Login sayfasına yönlendir
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
             var flights = _context.Flights.AsQueryable();
 
             // Varsayılan sıralama yönleri
@@ -26,7 +31,6 @@ namespace AirportDemo.Controllers
             // Eğer kullanıcı bir sütuna tıkladıysa, sıralama yönünü belirle
             if (!string.IsNullOrEmpty(sortColumn))
             {
-                // Mevcut sıralama yönü tersine çevriliyor (Asc -> Desc, Desc -> Asc)
                 sortDirection = (sortDirection == "asc") ? "desc" : "asc";
                 ViewData["SortDirection"] = sortDirection;
             }
@@ -43,7 +47,6 @@ namespace AirportDemo.Controllers
 
             return View(flights.ToList());
         }
-
 
         [HttpGet]
         public JsonResult FilterFlights(string destination, string departureLocation, string flightNumber, DateTime? departureDate)
