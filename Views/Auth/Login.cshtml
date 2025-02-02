@@ -9,10 +9,23 @@
         }
     </style>
 }
+
 <div class="neon-container">
     <div class="neon-box">
         <h2>Welcome Back</h2>
         <p class="subtitle">Log in to your account</p>
+
+        @* Hata mesajlarını göster *@
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <p>@error.ErrorMessage</p>
+                }
+            </div>
+        }
+
         <form method="post">
             <div class="input-group">
                 <input type="email" name="email" placeholder="Email" required />
@@ -20,11 +33,16 @@
             <div class="input-group">
                 <input type="password" name="password" placeholder="Password" required />
             </div>
+            <!-- reCAPTCHA Widget -->
+            <div class="g-recaptcha" data-sitekey="6LcQzsoqAAAAAEFppXWElSm_y5gL7fkYUzk7-xfL"></div>
             <button type="submit">Login</button>
         </form>
         <p class="register-text">Don't have an account? <a href="/Auth/Register">Register</a></p>
     </div>
 </div>
+
+<!-- reCAPTCHA script -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <style>
     body {

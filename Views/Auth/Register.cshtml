@@ -1,7 +1,7 @@
 @model AirportDemo.Models.User
-
 @{
     ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container mt-5">
@@ -9,6 +9,18 @@
         <div class="col-md-6">
             <div class="card shadow-lg p-4">
                 <h2 class="text-center">Register</h2>
+
+                @* Hata mesajlarını göster *@
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <p>@error.ErrorMessage</p>
+                        }
+                    </div>
+                }
+
                 <form asp-action="Register" method="post">
                     <div class="mb-3">
                         <label class="form-label">Username</label>
@@ -22,7 +34,9 @@
                         <label class="form-label">Password</label>
                         <input asp-for="PasswordHash" type="password" class="form-control" required />
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                    <!-- reCAPTCHA Widget -->
+                    <div class="g-recaptcha" data-sitekey="6LcQzsoqAAAAAEFppXWElSm_y5gL7fkYUzk7-xfL"></div>
+                    <button type="submit" class="btn btn-primary w-100 mt-3">Register</button>
                 </form>
                 <div class="text-center mt-3">
                     <a href="/Auth/Login">Already have an account? Login here</a>
@@ -31,3 +45,6 @@
         </div>
     </div>
 </div>
+
+<!-- reCAPTCHA script -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>

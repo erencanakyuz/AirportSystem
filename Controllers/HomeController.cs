@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using AirportDemo.Models;
 
 namespace AirportDemo.Controllers;
-
+// captcha code : 6LcQzsoqAAAAAAsEOms0BJpn3W75dHg1ZS2sl4Dv
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
