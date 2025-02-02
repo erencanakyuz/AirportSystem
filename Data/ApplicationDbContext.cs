@@ -7,6 +7,7 @@ namespace AirportDemo.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Flight> Flights { get; set; }
+        public DbSet<User> Users { get; set; } // Kullanıcı tablosu tanımlandı
+        public DbSet<Flight> Flights { get; set; } // Mevcut flight tablosu
     }
 }
