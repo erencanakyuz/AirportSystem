@@ -13,6 +13,14 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\BackgorundLogin.jpg",
+      "PackagePath": "staticwebassets\\images\\BackgorundLogin.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\BackgorundLogin1.jpg",
+      "PackagePath": "staticwebassets\\images\\BackgorundLogin1.jpg"
+    },
+    {
       "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\background.jpg",
       "PackagePath": "staticwebassets\\images\\background.jpg"
     },

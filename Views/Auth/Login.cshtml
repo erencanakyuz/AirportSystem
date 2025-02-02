@@ -1,20 +1,14 @@
 @{
     ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<header>
-    <nav class="neon-navbar">
-        <a class="brand" href="/Home/Index">AirportDemo</a>
-        <ul>
-            <li><a href="/Flights">Flights</a></li>
-            <li><a href="/Home/Index">Home</a></li>
-            <li><a href="/Home/Privacy">Privacy</a></li>
-            <li><a href="/Auth/Login">Login</a></li>
-            <li><a href="/Auth/Register">Register</a></li>
-        </ul>
-    </nav>
-</header>
-
+@section HideNavbar {
+    <style>
+        .navbar {
+            display: none;
+        }
+    </style>
+}
 <div class="neon-container">
     <div class="neon-box">
         <h2>Welcome Back</h2>
@@ -43,39 +37,6 @@
         font-family: Arial, sans-serif;
     }
 
-    .neon-navbar {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 30px;
-        background: rgba(0, 0, 0, 0.8);
-        box-shadow: 0 0 10px #00fff5;
-    }
-
-    .neon-navbar .brand {
-        color: #00fff5;
-        font-size: 20px;
-        font-weight: bold;
-        text-decoration: none;
-    }
-
-    .neon-navbar ul {
-        list-style: none;
-        display: flex;
-        gap: 20px;
-    }
-
-    .neon-navbar ul li a {
-        color: white;
-        text-decoration: none;
-        transition: 0.3s;
-    }
-
-    .neon-navbar ul li a:hover {
-        color: #00fff5;
-    }
-
     .neon-container {
         display: flex;
         justify-content: center;
@@ -85,23 +46,24 @@
     }
 
     .neon-box {
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
         padding: 40px;
         border-radius: 15px;
         text-align: center;
-        box-shadow: 0 0 20px #00fff5;
+        box-shadow: 0 0 20px #004d99;
         max-width: 350px;
         width: 100%;
     }
 
     h2 {
-        color: #00fff5;
+        color: #00bfff;
         font-size: 24px;
         margin-bottom: 10px;
     }
 
     .subtitle {
-        color: #aaa;
+        color: #ccc;
         margin-bottom: 20px;
     }
 
@@ -112,9 +74,9 @@
     input {
         width: 100%;
         padding: 12px;
-        border: 1px solid #00fff5;
+        border: 1px solid #00bfff;
         background: black;
-        color: #00fff5;
+        color: #00bfff;
         border-radius: 5px;
         text-align: center;
         font-size: 16px;
@@ -124,8 +86,8 @@
         width: 100%;
         padding: 12px;
         border: none;
-        background: #00fff5;
-        color: black;
+        background: #00bfff;
+        color: white;
         font-size: 16px;
         border-radius: 5px;
         cursor: pointer;
@@ -133,16 +95,16 @@
     }
 
     button:hover {
-        background: #00e0d1;
+        background: #0088cc;
     }
 
     .register-text {
         margin-top: 15px;
-        color: #aaa;
+        color: #ccc;
     }
 
     .register-text a {
-        color: #00fff5;
+        color: #00bfff;
         text-decoration: none;
         font-weight: bold;
     }

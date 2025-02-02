@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "lLKs0shJ2aYnjKK5VSVS4Y4XFgMsbjtuPmcEy+FGIws=",
+  "Hash": "RGR1eAomsPzoGEtmTEE22Jl2LE6kHmzttWxqqzgAAiQ=",
   "Source": "AirportDemo",
   "BasePath": "_content/AirportDemo",
   "Mode": "Default",
@@ -1443,6 +1443,48 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\BackgorundLogin.jpg",
+      "SourceId": "AirportDemo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\",
+      "BasePath": "_content/AirportDemo",
+      "RelativePath": "images/BackgorundLogin#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "pkkrydyl56",
+      "Integrity": "6bbtVkJS/FwEf3UafcTwqqWE69Ci19eQWQgemRNqCxE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\BackgorundLogin.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\BackgorundLogin1.jpg",
+      "SourceId": "AirportDemo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\",
+      "BasePath": "_content/AirportDemo",
+      "RelativePath": "images/BackgorundLogin1#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "4xveurnspo",
+      "Integrity": "GDMd3TINfPQiAlSMwN4F45PkR9tFpHATw9vh1dVxXCM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\BackgorundLogin1.jpg"
     },
     {
       "Identity": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\background.jpg",
@@ -3937,6 +3979,170 @@
         {
           "Name": "integrity",
           "Value": "sha256-wfFuuYm+Lh6RbCeeiUqxw334b/hIOkp5j9eokGUM1Y0="
+        }
+      ]
+    },
+    {
+      "Route": "images/BackgorundLogin.jpg",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\BackgorundLogin.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "863798"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6bbtVkJS/FwEf3UafcTwqqWE69Ci19eQWQgemRNqCxE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Feb 2025 19:08:36 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-6bbtVkJS/FwEf3UafcTwqqWE69Ci19eQWQgemRNqCxE="
+        }
+      ]
+    },
+    {
+      "Route": "images/BackgorundLogin.pkkrydyl56.jpg",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\BackgorundLogin.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "863798"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6bbtVkJS/FwEf3UafcTwqqWE69Ci19eQWQgemRNqCxE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Feb 2025 19:08:36 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "pkkrydyl56"
+        },
+        {
+          "Name": "label",
+          "Value": "images/BackgorundLogin.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-6bbtVkJS/FwEf3UafcTwqqWE69Ci19eQWQgemRNqCxE="
+        }
+      ]
+    },
+    {
+      "Route": "images/BackgorundLogin1.4xveurnspo.jpg",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\BackgorundLogin1.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3824608"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GDMd3TINfPQiAlSMwN4F45PkR9tFpHATw9vh1dVxXCM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Feb 2025 19:11:19 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4xveurnspo"
+        },
+        {
+          "Name": "label",
+          "Value": "images/BackgorundLogin1.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-GDMd3TINfPQiAlSMwN4F45PkR9tFpHATw9vh1dVxXCM="
+        }
+      ]
+    },
+    {
+      "Route": "images/BackgorundLogin1.jpg",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\BackgorundLogin1.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3824608"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GDMd3TINfPQiAlSMwN4F45PkR9tFpHATw9vh1dVxXCM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Feb 2025 19:11:19 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-GDMd3TINfPQiAlSMwN4F45PkR9tFpHATw9vh1dVxXCM="
         }
       ]
     },

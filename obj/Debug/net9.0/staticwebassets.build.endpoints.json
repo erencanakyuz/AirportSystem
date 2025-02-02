@@ -897,6 +897,170 @@
       ]
     },
     {
+      "Route": "images/BackgorundLogin.jpg",
+      "AssetFile": "images/BackgorundLogin.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "863798"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6bbtVkJS/FwEf3UafcTwqqWE69Ci19eQWQgemRNqCxE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Feb 2025 19:08:36 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-6bbtVkJS/FwEf3UafcTwqqWE69Ci19eQWQgemRNqCxE="
+        }
+      ]
+    },
+    {
+      "Route": "images/BackgorundLogin.pkkrydyl56.jpg",
+      "AssetFile": "images/BackgorundLogin.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "863798"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6bbtVkJS/FwEf3UafcTwqqWE69Ci19eQWQgemRNqCxE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Feb 2025 19:08:36 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "pkkrydyl56"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-6bbtVkJS/FwEf3UafcTwqqWE69Ci19eQWQgemRNqCxE="
+        },
+        {
+          "Name": "label",
+          "Value": "images/BackgorundLogin.jpg"
+        }
+      ]
+    },
+    {
+      "Route": "images/BackgorundLogin1.4xveurnspo.jpg",
+      "AssetFile": "images/BackgorundLogin1.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3824608"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GDMd3TINfPQiAlSMwN4F45PkR9tFpHATw9vh1dVxXCM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Feb 2025 19:11:19 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4xveurnspo"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-GDMd3TINfPQiAlSMwN4F45PkR9tFpHATw9vh1dVxXCM="
+        },
+        {
+          "Name": "label",
+          "Value": "images/BackgorundLogin1.jpg"
+        }
+      ]
+    },
+    {
+      "Route": "images/BackgorundLogin1.jpg",
+      "AssetFile": "images/BackgorundLogin1.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3824608"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GDMd3TINfPQiAlSMwN4F45PkR9tFpHATw9vh1dVxXCM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Feb 2025 19:11:19 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-GDMd3TINfPQiAlSMwN4F45PkR9tFpHATw9vh1dVxXCM="
+        }
+      ]
+    },
+    {
       "Route": "images/background.8s1yhg2s6j.jpg",
       "AssetFile": "images/background.jpg",
       "Selectors": [],
