@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "51BK+Glk+ELpNLI0REFbA/JpjKSgGaMRu31skGfZXIs=",
+  "Hash": "lLKs0shJ2aYnjKK5VSVS4Y4XFgMsbjtuPmcEy+FGIws=",
   "Source": "AirportDemo",
   "BasePath": "_content/AirportDemo",
   "Mode": "Default",
@@ -1443,6 +1443,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\background.jpg",
+      "SourceId": "AirportDemo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\",
+      "BasePath": "_content/AirportDemo",
+      "RelativePath": "images/background#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "8s1yhg2s6j",
+      "Integrity": "eLFqtpn6Bi+JFGUBHUh1t5Q6brLPQrAPAAHua0Se6nY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\background.jpg"
     },
     {
       "Identity": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\js\\site.js",
@@ -3916,6 +3937,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-wfFuuYm+Lh6RbCeeiUqxw334b/hIOkp5j9eokGUM1Y0="
+        }
+      ]
+    },
+    {
+      "Route": "images/background.8s1yhg2s6j.jpg",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\background.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "133408"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eLFqtpn6Bi+JFGUBHUh1t5Q6brLPQrAPAAHua0Se6nY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Feb 2025 17:58:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "8s1yhg2s6j"
+        },
+        {
+          "Name": "label",
+          "Value": "images/background.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-eLFqtpn6Bi+JFGUBHUh1t5Q6brLPQrAPAAHua0Se6nY="
+        }
+      ]
+    },
+    {
+      "Route": "images/background.jpg",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\background.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "133408"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eLFqtpn6Bi+JFGUBHUh1t5Q6brLPQrAPAAHua0Se6nY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Feb 2025 17:58:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-eLFqtpn6Bi+JFGUBHUh1t5Q6brLPQrAPAAHua0Se6nY="
         }
       ]
     },

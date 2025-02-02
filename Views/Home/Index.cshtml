@@ -2,46 +2,112 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="container text-center">
-    <h2 class="mt-4">Airport Management System</h2>
-    <p class="text-muted">Demo version with randomized data</p>
+<div class="hero">
+    <div class="overlay">
+        <div class="container text-center">
+            <h1 class="display-4">Welcome to Airport Management</h1>
+            <p class="lead">Seamlessly manage flights, logistics, and maintenance.</p>
+        </div>
+    </div>
+</div>
 
-    <div class="row mt-4">
+<div class="container mt-5">
+    <div class="row">
         <div class="col-md-3">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Flights</h5>
+            <div class="card feature-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-plane fa-3x text-success"></i>
+                    <h5 class="card-title mt-3">Flights</h5>
                     <p class="card-text">Manage flight arrivals, departures, and scheduling.</p>
-                    <a href="/Flights" class="btn btn-light">View</a>
+                    <a href="/Flights" class="btn btn-outline-success">View</a>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-warning mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Fuel Management</h5>
+            <div class="card feature-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-gas-pump fa-3x text-warning"></i>
+                    <h5 class="card-title mt-3">Fuel Management</h5>
                     <p class="card-text">Monitor fuel stocks and costs.</p>
-                    <a href="/Fuel" class="btn btn-light">View</a>
+                    <a href="/Fuel" class="btn btn-outline-warning">View</a>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-danger mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Maintenance</h5>
+            <div class="card feature-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-tools fa-3x text-danger"></i>
+                    <h5 class="card-title mt-3">Maintenance</h5>
                     <p class="card-text">Track aircraft and ground equipment maintenance.</p>
-                    <a href="/Maintenance" class="btn btn-light">View</a>
+                    <a href="/Maintenance" class="btn btn-outline-danger">View</a>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-info mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Logistics</h5>
+            <div class="card feature-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-box fa-3x text-info"></i>
+                    <h5 class="card-title mt-3">Logistics</h5>
                     <p class="card-text">Manage baggage and ground services.</p>
-                    <a href="/Logistics" class="btn btn-light">View</a>
+                    <a href="/Logistics" class="btn btn-outline-info">View</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    /* Arka Plan Görseli */
+    .hero {
+        position: relative;
+        width: 100%;
+        height: 60vh;
+        background: url('/images/background.jpg') no-repeat center center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+    }
+
+    .overlay {
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        /* Karanlık filtre */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero h1 {
+        font-weight: bold;
+        font-size: 3.5rem;
+    }
+
+    .hero p {
+        font-size: 1.4rem;
+    }
+
+    /* Kart Tasarımı */
+    .feature-card {
+        transition: all 0.3s ease-in-out;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .feature-card .btn {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    /* Font Awesome Iconlar */
+    .fas {
+        margin-bottom: 10px;
+    }
+</style>
