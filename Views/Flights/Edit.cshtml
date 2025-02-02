@@ -1,37 +1,47 @@
 @model AirportDemo.Models.Flight
-
 @{
     ViewData["Title"] = "Edit Flight";
 }
 
-<div class="container mt-4">
-    <h2>Edit Flight</h2>
+<h2>Edit Flight</h2>
 
-    <form asp-action="Edit" method="post" onsubmit="return confirmEdit();">
-        <input type="hidden" asp-for="Id" />
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="FlightNumber"></label>
+        <input asp-for="FlightNumber" class="form-control" />
+        <span asp-validation-for="FlightNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DepartureLocation"></label>
+        <input asp-for="DepartureLocation" class="form-control" />
+        <span asp-validation-for="DepartureLocation" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Destination"></label>
+        <input asp-for="Destination" class="form-control" />
+        <span asp-validation-for="Destination" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DepartureTime"></label>
+        <!-- Mevcut değeri uygun formatta göstermek -->
+        <input asp-for="DepartureTime" class="form-control" type="datetime-local"
+            value="@Model.DepartureTime.ToString("yyyy-MM-ddTHH:mm")" />
+        <span asp-validation-for="DepartureTime" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <input asp-for="Status" class="form-control" />
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Airline"></label>
+        <input asp-for="Airline" class="form-control" />
+        <span asp-validation-for="Airline" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
 
-        <div class="mb-3">
-            <label class="form-label">Flight Number</label>
-            <input asp-for="FlightNumber" class="form-control" required />
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Destination</label>
-            <input asp-for="Destination" class="form-control" required />
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Departure Time</label>
-            <input asp-for="DepartureTime" type="datetime-local" class="form-control" required />
-        </div>
-
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-    </form>
-</div>
-
-<script>
-    function confirmEdit() {
-        return confirm("Do you want to apply these changes?");
-    }
-</script>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

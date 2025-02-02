@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+@model IEnumerable<AirportDemo.Models.Flight>
+@{
+    ViewData["Title"] = "SkyControl Dashboard";
+    // Sıralama yönü: Controller'dan gönderilen değer; yoksa varsayılan "asc"
+    var currentSortDirection = ViewData["SortDirection"]?.ToString() ?? "asc";
+}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyControl - Flight Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/@@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+@section Styles {
     <style>
         :root {
-            --primary: #6366f1;
+            --primary: #550d56;
             --secondary: #a855f7;
             --background: #0f172a;
             --surface: #1e293b;
@@ -134,6 +133,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            text-decoration: none;
         }
 
         .btn-primary {
@@ -207,110 +207,147 @@
             }
         }
     </style>
-</head>
+}
 
-<body>
-    <div class="container">
-        <header class="dashboard-header">
-            <h1 class="header-title">SkyControl Dashboard</h1>
-            <div class="action-group">
-                <button class="btn btn-primary">
-                    <i class="mdi mdi-plus"></i>
-                    New Flight
-                </button>
-                <button class="btn btn-secondary">
-                    <i class="mdi mdi-filter"></i>
-                    Filters
-                </button>
-            </div>
-        </header>
-
-        <div class="control-panel">
-            <div class="stats-card animated-entry">
-                <h3>Scheduled Flights</h3>
-                <div class="stat-value">248</div>
-            </div>
-            <div class="stats-card animated-entry" style="animation-delay: 0.2s">
-                <h3>In Air</h3>
-                <div class="stat-value">42</div>
-            </div>
-            <div class="stats-card animated-entry" style="animation-delay: 0.4s">
-                <h3>Delayed</h3>
-                <div class="stat-value">15</div>
-            </div>
-        </div>
-
-        <div class="search-bar">
-            <input type="text" class="search-input" placeholder="Search flights...">
-            <button class="btn btn-primary">
-                <i class="mdi mdi-magnify"></i>
-                Search
-            </button>
-        </div>
-
-        <table class="flight-table">
-            <thead>
-                <tr>
-                    <th>Flight</th>
-                    <th>Route</th>
-                    <th>Departure</th>
-                    <th>Arrival</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td data-label="Flight">
-                        <div class="flight-info">
-                            <div class="flight-number">AA 237</div>
-                            <div class="airline">American Airlines</div>
-                        </div>
-                    </td>
-                    <td data-label="Route">JFK → LAX</td>
-                    <td data-label="Departure">15:30 EST</td>
-                    <td data-label="Arrival">18:45 PST</td>
-                    <td data-label="Status">
-                        <span class="status-indicator">
-                            On Time
-                        </span>
-                    </td>
-                    <td data-label="Actions">
-                        <div class="action-group">
-                            <button class="btn btn-secondary">
-                                <i class="mdi mdi-pencil"></i>
-                            </button>
-                            <button class="btn btn-secondary">
-                                <i class="mdi mdi-information"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <!-- More table rows... -->
-            </tbody>
-        </table>
+<header class="dashboard-header">
+    <h1 class="header-title">SkyControl Dashboard</h1>
+    <div class="action-group">
+        <!-- Yeni Uçuş sayfasına yönlendirme -->
+        <a href="@Url.Action("Create", "Flights")" class="btn btn-primary">
+            <i class="mdi mdi-plus"></i>
+            New Flight
+        </a>
+        <!-- Filtreleme alanını aç/kapat -->
+        <button class="btn btn-secondary" id="toggleFilters">
+            <i class="mdi mdi-filter"></i>
+            Filters
+        </button>
     </div>
+</header>
 
+<!-- Dashboard İstatistik Paneli -->
+<div class="control-panel">
+    <div class="stats-card animated-entry">
+        <h3>Scheduled Flights</h3>
+        <div class="stat-value">248</div>
+    </div>
+    <div class="stats-card animated-entry" style="animation-delay: 0.2s">
+        <h3>In Air</h3>
+        <div class="stat-value">42</div>
+    </div>
+    <div class="stats-card animated-entry" style="animation-delay: 0.4s">
+        <h3>Delayed</h3>
+        <div class="stat-value">15</div>
+    </div>
+</div>
+
+<!-- Filtreleme Bölümü (Varsayılan gizli) -->
+<div id="filterSection" style="display:none; margin-bottom: 2rem;">
+    <div class="search-bar">
+        <input type="text" id="filterInput" class="search-input" placeholder="Search flights...">
+        <button class="btn btn-primary" id="applyFilter">
+            <i class="mdi mdi-magnify"></i>
+            Search
+        </button>
+    </div>
+</div>
+
+<!-- Uçuş Tablosu -->
+<table class="flight-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Flight", "Index", new
+                    {
+                        sortColumn = "FlightNumber",
+                        sortDirection =
+                         currentSortDirection
+                    })
+            </th>
+            <th>
+                @Html.ActionLink("Route", "Index", new
+                    {
+                        sortColumn = "DepartureLocation",
+                        sortDirection =
+                         currentSortDirection
+                    })
+            </th>
+            <th>
+                @Html.ActionLink("Departure", "Index", new
+                    {
+                        sortColumn = "DepartureTime",
+                        sortDirection =
+                         currentSortDirection
+                    })
+            </th>
+            <th>Arrival</th>
+            <th>
+                @Html.ActionLink("Status", "Index", new { sortColumn = "Status", sortDirection = currentSortDirection })
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var flight in Model)
+        {
+            <tr>
+                <td data-label="Flight">
+                    <div class="flight-info">
+                        <div class="flight-number">@flight.FlightNumber</div>
+                        <div class="airline">@flight.Airline</div>
+                    </div>
+                </td>
+                <td data-label="Route">
+                    @flight.DepartureLocation → @flight.Destination
+                </td>
+                <td data-label="Departure">
+                    @flight.DepartureTime.ToString("g")
+                </td>
+                <td data-label="Arrival">
+                    N/A
+                </td>
+                <td data-label="Status">
+                    <span class="status-indicator">@flight.Status</span>
+                </td>
+                <td data-label="Actions">
+                    <div class="action-group">
+                        <a asp-action="Edit" asp-route-id="@flight.Id" class="btn btn-secondary">
+                            <i class="mdi mdi-pencil"></i>
+                        </a>
+                        <a asp-action="Details" asp-route-id="@flight.Id" class="btn btn-secondary">
+                            <i class="mdi mdi-information"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
     <script>
-        // Add interactive features
-        document.querySelectorAll('.flight-table tr').forEach(row => {
+        // Filtre bölümünü aç/kapat
+        document.getElementById('toggleFilters').addEventListener('click', function () {
+            var filterSection = document.getElementById('filterSection');
+            filterSection.style.display = filterSection.style.display === "none" ? "block" : "none";
+        });
+
+        // Tablo filtreleme (client-side)
+        document.getElementById('applyFilter').addEventListener('click', function () {
+            var searchTerm = document.getElementById('filterInput').value.toLowerCase();
+            document.querySelectorAll('.flight-table tbody tr').forEach(function (row) {
+                var rowText = row.textContent.toLowerCase();
+                row.style.display = rowText.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Satır tıklayınca detay açma (örnek: satıra ek class ekleyerek stil değiştirme)
+        document.querySelectorAll('.flight-table tbody tr').forEach(row => {
             row.addEventListener('click', (e) => {
-                if (!e.target.closest('button')) {
+                if (!e.target.closest('a')) {
                     row.classList.toggle('active-details');
                 }
             });
         });
-
-        // Search functionality
-        const searchInput = document.querySelector('.search-input');
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            document.querySelectorAll('.flight-table tbody tr').forEach(row => {
-                const textContent = row.textContent.toLowerCase();
-                row.style.display = textContent.includes(searchTerm) ? '' : 'none';
-            });
-        });
     </script>
-</body>
-
-</html>
+}

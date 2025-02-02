@@ -1,0 +1,28 @@
+@model AirportDemo.Models.Flight
+@{
+    ViewData["Title"] = "Flight Details";
+}
+
+<h2>Flight Details</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Flight Number:</dt>
+    <dd class="col-sm-9">@Model.FlightNumber</dd>
+
+    <dt class="col-sm-3">Airline:</dt>
+    <dd class="col-sm-9">@Model.Airline</dd>
+
+    <dt class="col-sm-3">Route:</dt>
+    <dd class="col-sm-9">@Model.DepartureLocation → @Model.Destination</dd>
+
+    <dt class="col-sm-3">Departure Time:</dt>
+    <dd class="col-sm-9">@Model.DepartureTime.ToString("g")</dd>
+
+    <dt class="col-sm-3">Status:</dt>
+    <dd class="col-sm-9">@Model.Status</dd>
+</dl>
+
+<p>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</p>

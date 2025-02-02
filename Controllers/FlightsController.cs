@@ -3,6 +3,7 @@ using AirportDemo.Data;
 using AirportDemo.Models;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace AirportDemo.Controllers
 {
@@ -14,6 +15,8 @@ namespace AirportDemo.Controllers
         {
             _context = context;
         }
+
+        // GET: Flights
         public IActionResult Index(string sortColumn, string sortDirection)
         {
             // Kullanıcı giriş yapmamışsa, Login sayfasına yönlendir
@@ -24,11 +27,10 @@ namespace AirportDemo.Controllers
 
             var flights = _context.Flights.AsQueryable();
 
-            // Varsayılan sıralama yönleri
-            ViewData["SortDirection"] = "asc"; // Varsayılan olarak artan sıralama
-            ViewData["SortColumn"] = sortColumn; // Hangi sütunun sıralandığını takip et
+            // Varsayılan sıralama yönü
+            ViewData["SortDirection"] = "asc";
+            ViewData["SortColumn"] = sortColumn;
 
-            // Eğer kullanıcı bir sütuna tıkladıysa, sıralama yönünü belirle
             if (!string.IsNullOrEmpty(sortColumn))
             {
                 sortDirection = (sortDirection == "asc") ? "desc" : "asc";
@@ -42,7 +44,7 @@ namespace AirportDemo.Controllers
                 "Destination" => sortDirection == "asc" ? flights.OrderBy(f => f.Destination) : flights.OrderByDescending(f => f.Destination),
                 "DepartureLocation" => sortDirection == "asc" ? flights.OrderBy(f => f.DepartureLocation) : flights.OrderByDescending(f => f.DepartureLocation),
                 "FlightNumber" => sortDirection == "asc" ? flights.OrderBy(f => f.FlightNumber) : flights.OrderByDescending(f => f.FlightNumber),
-                _ => flights.OrderBy(f => f.Id) // Varsayılan olarak ID’ye göre sıralar
+                _ => flights.OrderBy(f => f.Id)
             };
 
             return View(flights.ToList());
@@ -53,22 +55,18 @@ namespace AirportDemo.Controllers
         {
             var flights = _context.Flights.AsQueryable();
 
-            // Büyük/Küçük harfe duyarsız filtreleme
             if (!string.IsNullOrEmpty(destination))
             {
                 flights = flights.Where(f => f.Destination.ToLower().Contains(destination.ToLower()));
             }
-
             if (!string.IsNullOrEmpty(departureLocation))
             {
                 flights = flights.Where(f => f.DepartureLocation.ToLower().Contains(departureLocation.ToLower()));
             }
-
             if (!string.IsNullOrEmpty(flightNumber))
             {
                 flights = flights.Where(f => f.FlightNumber.ToLower().Contains(flightNumber.ToLower()));
             }
-
             if (departureDate.HasValue)
             {
                 flights = flights.Where(f => f.DepartureTime.Date == departureDate.Value.Date);
@@ -77,11 +75,13 @@ namespace AirportDemo.Controllers
             return Json(flights.ToList());
         }
 
+        // GET: Flights/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        // POST: Flights/Create
         [HttpPost]
         public IActionResult Create(Flight flight)
         {
@@ -94,7 +94,8 @@ namespace AirportDemo.Controllers
             return View(flight);
         }
 
-        public IActionResult Delete(int id)
+        // GET: Flights/Details/5
+        public IActionResult Details(int id)
         {
             var flight = _context.Flights.Find(id);
             if (flight == null)
@@ -104,18 +105,7 @@ namespace AirportDemo.Controllers
             return View(flight);
         }
 
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var flight = _context.Flights.Find(id);
-            if (flight != null)
-            {
-                _context.Flights.Remove(flight);
-                _context.SaveChanges();
-            }
-            return RedirectToAction("Index");
-        }
-
+        // GET: Flights/Edit/5
         public IActionResult Edit(int id)
         {
             var flight = _context.Flights.Find(id);
@@ -126,6 +116,7 @@ namespace AirportDemo.Controllers
             return View(flight);
         }
 
+        // POST: Flights/Edit/5
         [HttpPost]
         public IActionResult Edit(Flight flight)
         {
@@ -136,6 +127,30 @@ namespace AirportDemo.Controllers
                 return RedirectToAction("Index");
             }
             return View(flight);
+        }
+
+        // GET: Flights/Delete/5
+        public IActionResult Delete(int id)
+        {
+            var flight = _context.Flights.Find(id);
+            if (flight == null)
+            {
+                return NotFound();
+            }
+            return View(flight);
+        }
+
+        // POST: Flights/Delete/5
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var flight = _context.Flights.Find(id);
+            if (flight != null)
+            {
+                _context.Flights.Remove(flight);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
 
         public IActionResult DeleteAll()

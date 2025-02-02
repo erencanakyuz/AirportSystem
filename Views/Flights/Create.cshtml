@@ -1,36 +1,46 @@
 @model AirportDemo.Models.Flight
-
 @{
-    ViewData["Title"] = "Add New Flight";
+    ViewData["Title"] = "Create Flight";
 }
 
-<div class="container mt-4">
-    <h2>Add New Flight</h2>
+<h2>Create Flight</h2>
 
-    <form asp-action="Create" method="post">
-        <div class="mb-3">
-            <label for="FlightNumber" class="form-label">Flight Number</label>
-            <input asp-for="FlightNumber" class="form-control" required />
-            <span asp-validation-for="FlightNumber" class="text-danger"></span>
-        </div>
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="FlightNumber"></label>
+        <input asp-for="FlightNumber" class="form-control" />
+        <span asp-validation-for="FlightNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DepartureLocation"></label>
+        <input asp-for="DepartureLocation" class="form-control" />
+        <span asp-validation-for="DepartureLocation" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Destination"></label>
+        <input asp-for="Destination" class="form-control" />
+        <span asp-validation-for="Destination" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DepartureTime"></label>
+        <!-- Uygun format: yyyy-MM-ddTHH:mm -->
+        <input asp-for="DepartureTime" class="form-control" type="datetime-local"
+            value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+        <span asp-validation-for="DepartureTime" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <input asp-for="Status" class="form-control" />
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Airline"></label>
+        <input asp-for="Airline" class="form-control" />
+        <span asp-validation-for="Airline" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
 
-        <div class="mb-3">
-            <label for="Destination" class="form-label">Destination</label>
-            <input asp-for="Destination" class="form-control" required />
-            <span asp-validation-for="Destination" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label for="DepartureTime" class="form-label">Departure Time</label>
-            <input asp-for="DepartureTime" type="datetime-local" class="form-control" required />
-            <span asp-validation-for="DepartureTime" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Departure Location</label>
-            <input asp-for="DepartureLocation" class="form-control" required />
-        </div>
-
-        <button type="submit" class="btn btn-primary">Add Flight</button>
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-    </form>
-</div>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
