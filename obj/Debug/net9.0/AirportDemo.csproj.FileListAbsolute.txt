@@ -211,3 +211,9 @@ C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\refint\AirportDemo.dll
 C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\AirportDemo.pdb
 C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\AirportDemo.genruntimeconfig.cache
 C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\ref\AirportDemo.dll
+C:\Users\Quicito\AirportDemo\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\Quicito\AirportDemo\bin\Debug\net9.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\Quicito\AirportDemo\bin\Debug\net9.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
+C:\Users\Quicito\AirportDemo\bin\Debug\net9.0\Microsoft.AspNetCore.Razor.Language.dll
+C:\Users\Quicito\AirportDemo\bin\Debug\net9.0\Microsoft.CodeAnalysis.Razor.dll
+C:\Users\Quicito\AirportDemo\bin\Debug\net9.0\Newtonsoft.Json.Bson.dll

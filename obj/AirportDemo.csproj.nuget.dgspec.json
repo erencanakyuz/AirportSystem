@@ -13,13 +13,19 @@
         "packagesPath": "C:\\Users\\Quicito\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Quicito\\AirportDemo\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Quicito\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Quicito\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -44,6 +50,22 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.Cookies": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Razor": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
+            "Microsoft.AspNetCore.Session": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",

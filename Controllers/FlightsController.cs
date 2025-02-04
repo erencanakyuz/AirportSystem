@@ -3,10 +3,11 @@ using AirportDemo.Data;
 using AirportDemo.Models;
 using System;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AirportDemo.Controllers
 {
+    [Authorize] // Kullanıcı girişi gerektiren tüm işlemler
     public class FlightsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,12 +20,6 @@ namespace AirportDemo.Controllers
         // GET: Flights
         public IActionResult Index(string sortColumn, string sortDirection)
         {
-            // Kullanıcı giriş yapmamışsa, Login sayfasına yönlendir
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-
             var flights = _context.Flights.AsQueryable();
 
             // Varsayılan sıralama yönü

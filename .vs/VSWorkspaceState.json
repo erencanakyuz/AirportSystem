@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Controllers",
+    "\\Data",
+    "\\Migrations",
+    "\\Properties",
+    "\\Views",
+    "\\Views\\Auth",
+    "\\Views\\Flights",
+    "\\Views\\Home",
+    "\\Views\\Shared"
+  ],
+  "SelectedNode": "\\airport.db",
+  "PreviewInSolutionExplorer": false
+}

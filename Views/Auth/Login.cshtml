@@ -1,7 +1,10 @@
+@model AirportDemo.Models.ViewModels.LoginViewModel
+
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @section HideNavbar {
     <style>
         .navbar {
@@ -15,26 +18,26 @@
         <h2>Welcome Back</h2>
         <p class="subtitle">Log in to your account</p>
 
-        @* Hata mesajlarını göster *@
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="alert alert-danger">
-                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    <p>@error.ErrorMessage</p>
-                }
-            </div>
-        }
+        <!-- Hata mesajlarını göster -->
+        <div asp-validation-summary="All" class="alert alert-danger"></div>
 
-        <form method="post">
+        <form asp-action="Login" method="post">
             <div class="input-group">
-                <input type="email" name="email" placeholder="Email" required />
+                <input asp-for="Email" placeholder="Email" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="input-group">
-                <input type="password" name="password" placeholder="Password" required />
+                <input asp-for="Password" type="password" placeholder="Password" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="input-group">
+                <label>
+                    <input asp-for="RememberMe" />
+                    Remember Me
+                </label>
             </div>
             <!-- reCAPTCHA Widget -->
-            <div class="g-recaptcha" data-sitekey="6LcQzsoqAAAAAEFppXWElSm_y5gL7fkYUzk7-xfL"></div>
+            <div class="g-recaptcha" data-sitekey="@ViewData["RecaptchaSiteKey"]"></div>
             <button type="submit">Login</button>
         </form>
         <p class="register-text">Don't have an account? <a href="/Auth/Register">Register</a></p>
@@ -112,22 +115,22 @@
         transition: 0.3s;
     }
 
-    button:hover {
-        background: #0088cc;
-    }
+        button:hover {
+            background: #0088cc;
+        }
 
     .register-text {
         margin-top: 15px;
         color: #ccc;
     }
 
-    .register-text a {
-        color: #00bfff;
-        text-decoration: none;
-        font-weight: bold;
-    }
+        .register-text a {
+            color: #00bfff;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-    .register-text a:hover {
-        text-decoration: underline;
-    }
+            .register-text a:hover {
+                text-decoration: underline;
+            }
 </style>

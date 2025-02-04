@@ -1,30 +1,26 @@
 using AirportDemo.Data;
+using AirportDemo.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// **Database bağlantısını ekleyelim**
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// **Session desteğini ekle**
-builder.Services.AddHttpClient();
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
+// **Identity Konfigürasyonu**
+builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // 30 dakika boyunca oturum açık kalır
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
-
-// Kullanıcı oturum verilerine erişim için gerekli
-builder.Services.AddHttpContextAccessor();
+    options.SignIn.RequireConfirmedAccount = false; // E-posta doğrulaması devre dışı
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
 
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
-
-// **Session middleware'i etkinleştir**
-app.UseSession();
 
 if (!app.Environment.IsDevelopment())
 {
@@ -35,28 +31,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
-
-// Kullanıcı oturum kontrolü (Login olmadan erişimi engellemek için)
-app.Use(async (context, next) =>
-{
-    var path = context.Request.Path.Value;
-
-    // Eğer kullanıcı giriş yapmamışsa ve bu sayfalara erişmek istiyorsa yönlendir
-    if (string.IsNullOrEmpty(context.Session.GetString("UserId")) &&
-        (path.StartsWith("/Flights") || path.StartsWith("/Fuel") || path.StartsWith("/Maintenance") || path.StartsWith("/Logistics")) &&
-        !path.StartsWith("/Auth/Login") &&
-        !path.StartsWith("/Auth/Register") &&
-        !path.StartsWith("/css") &&
-        !path.StartsWith("/js") &&
-        !path.StartsWith("/images"))
-    {
-        context.Response.Redirect("/Auth/Login");
-        return;
-    }
-
-    await next();
-});
 
 app.MapControllerRoute(
     name: "default",
