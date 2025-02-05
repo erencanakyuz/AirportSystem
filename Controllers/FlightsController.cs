@@ -7,8 +7,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using AirportDemo.Models;    // Flight ve FlightResponse modellerinin bulunduğu namespace
-using AirportDemo.Data;      // ApplicationDbContext
+using AirportDemo.Models;
+using AirportDemo.Data;
+using System.Security.Authentication;
 
 namespace AirportDemo.Controllers
 {
@@ -23,13 +24,12 @@ namespace AirportDemo.Controllers
         }
 
         // GET: Flights
-        // API’den uçuş verilerini çekip sıralama uyguladıktan sonra view’a gönderiyoruz.
         public async Task<IActionResult> Index(string sortColumn, string sortDirection)
         {
-            // API çağrısından gelen liste; null ise boş listeye çeviriyoruz.
+            // API’den uçuş verilerini çek
             List<Flight> flights = await GetFlightsFromApi() ?? new List<Flight>();
 
-            // Sıralama parametreleri yoksa varsayılan değer ataması
+            // Sıralama parametreleri
             if (string.IsNullOrEmpty(sortColumn))
             {
                 sortColumn = "FlightNumber";
@@ -37,62 +37,59 @@ namespace AirportDemo.Controllers
             }
             else
             {
-                // Her tıklamada sıralama yönünü tersine çeviriyoruz
                 sortDirection = sortDirection == "asc" ? "desc" : "asc";
             }
             ViewData["SortColumn"] = sortColumn;
             ViewData["SortDirection"] = sortDirection;
 
-            // Sıralama işlemi (modeldeki property isimleri API'den gelenle uyumlu olmalı)
+            // Sıralama işlemi
             flights = sortColumn switch
             {
-                "DepartureTime" => sortDirection == "asc"
-                                    ? flights.OrderBy(f => f.DepartureTime).ToList()
-                                    : flights.OrderByDescending(f => f.DepartureTime).ToList(),
-                "Destination" => sortDirection == "asc"
-                                    ? flights.OrderBy(f => f.Destination).ToList()
-                                    : flights.OrderByDescending(f => f.Destination).ToList(),
-                "DepartureLocation" => sortDirection == "asc"
-                                    ? flights.OrderBy(f => f.DepartureLocation).ToList()
-                                    : flights.OrderByDescending(f => f.DepartureLocation).ToList(),
-                "FlightNumber" => sortDirection == "asc"
-                                    ? flights.OrderBy(f => f.FlightNumber).ToList()
-                                    : flights.OrderByDescending(f => f.FlightNumber).ToList(),
-                "Status" => sortDirection == "asc"
-                                    ? flights.OrderBy(f => f.Status).ToList()
-                                    : flights.OrderByDescending(f => f.Status).ToList(),
+                "DepartureTime" => sortDirection == "asc" ? flights.OrderBy(f => f.DepartureTime).ToList() : flights.OrderByDescending(f => f.DepartureTime).ToList(),
+                "Destination" => sortDirection == "asc" ? flights.OrderBy(f => f.Destination).ToList() : flights.OrderByDescending(f => f.Destination).ToList(),
+                "DepartureLocation" => sortDirection == "asc" ? flights.OrderBy(f => f.DepartureLocation).ToList() : flights.OrderByDescending(f => f.DepartureLocation).ToList(),
+                "FlightNumber" => sortDirection == "asc" ? flights.OrderBy(f => f.FlightNumber).ToList() : flights.OrderByDescending(f => f.FlightNumber).ToList(),
+                "Status" => sortDirection == "asc" ? flights.OrderBy(f => f.Status).ToList() : flights.OrderByDescending(f => f.Status).ToList(),
                 _ => flights.OrderBy(f => f.FlightNumber).ToList()
             };
+
+            // Konsolda toplam uçuş sayısını yazdırın
+            Console.WriteLine("Total flights to be displayed: " + flights.Count);
 
             return View(flights);
         }
 
-        // API’ye POST isteği gönderip uçuş listesini döndüren metot.
+        // API’ye POST isteği gönderip uçuş listesini döndüren metot
         private async Task<List<Flight>> GetFlightsFromApi()
         {
             List<Flight> flights = new List<Flight>();
 
             try
             {
-                using (var httpClient = new HttpClient())
+                // Sertifika doğrulamasını devre dışı bırakmak (TEST amaçlı, ÜRETİMDE KULLANILMAMALI!)
+                var handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
+                // TLS 1.2 kullanımını zorla
+                handler.SslProtocols = SslProtocols.Tls12;
+
+                using (var httpClient = new HttpClient(new LoggingHandler() { InnerHandler = handler }))
                 {
-                    // Gerekli başlıkları ekliyoruz:
+                    httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36");
                     httpClient.DefaultRequestHeaders.Referrer = new Uri("https://www.istairport.com/ucuslar/ucus-bilgileri/gelen-ucuslar/");
                     httpClient.DefaultRequestHeaders.Add("Accept", "application/json, text/javascript, */*; q=0.01");
                     httpClient.DefaultRequestHeaders.Add("x-requested-with", "XMLHttpRequest");
 
-                    // API’nin beklediği form verileri:
                     var formData = new Dictionary<string, string>
-                    {
-                        { "nature", "0" },
-                        { "searchTerm", "changeflight" },
-                        { "pageSize", "20" },
-                        { "isInternational", "0" },
-                        { "date", "" },
-                        { "endDate", "" },
-                        { "culture", "tr" },
-                        { "clickedButton", "" }
-                    };
+            {
+                { "nature", "0" },
+                { "searchTerm", "changeflight" },
+                { "pageSize", "20" },
+                { "isInternational", "0" },
+                { "date", "" },
+                { "endDate", "" },
+                { "culture", "tr" },
+                { "clickedButton", "" }
+            };
 
                     var content = new FormUrlEncodedContent(formData);
                     content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded")
@@ -100,44 +97,54 @@ namespace AirportDemo.Controllers
                         CharSet = "UTF-8"
                     };
 
-                    // API isteğini yapıyoruz
-                    var response = await httpClient.PostAsync("https://www.istairport.com/umbraco/api/FlightInfo/GetFlightStatusBoard", content);
+                    var apiUrl = "https://www.istairport.com/umbraco/api/FlightInfo/GetFlightStatusBoard";
+                    var response = await httpClient.PostAsync(apiUrl, content);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        var jsonString = await response.Content.ReadAsStringAsync();
-                        System.Diagnostics.Debug.WriteLine("API Yanıtı: " + jsonString);
+                        string jsonString = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine("API JSON Response: " + jsonString);
 
-                        // Önce direkt liste olarak deserialize etmeyi deniyoruz.
-                        try
+                        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                        var apiResponse = JsonSerializer.Deserialize<FlightApiResponse>(jsonString, options);
+
+                        if (apiResponse?.Result?.Data?.Flights != null)
                         {
-                            flights = JsonSerializer.Deserialize<List<Flight>>(jsonString, new JsonSerializerOptions
+                            Console.WriteLine("Number of flights in API response: " + apiResponse.Result.Data.Flights.Count);
+                            flights = apiResponse.Result.Data.Flights.Select(f => new Flight
                             {
-                                PropertyNameCaseInsensitive = true
-                            }) ?? new List<Flight>();
+                                Id = f.Id,
+                                FlightNumber = f.FlightNumber,
+                                Airline = f.AirlineName,
+                                DepartureLocation = f.FromCityName,
+                                Destination = f.ToCityName,
+                                DepartureTime = f.ScheduledDatetime,
+                                Status = f.Remark
+                            }).ToList();
+                            Console.WriteLine("Number of flights after mapping: " + flights.Count);
                         }
-                        catch (JsonException)
+                        else
                         {
-                            // Eğer API yanıtı bir wrapper nesne içeriyorsa:
-                            var flightResponse = JsonSerializer.Deserialize<FlightResponse>(jsonString, new JsonSerializerOptions
-                            {
-                                PropertyNameCaseInsensitive = true
-                            });
-                            flights = flightResponse?.Flights ?? new List<Flight>();
+                            Console.WriteLine("apiResponse.Result.Data.Flights is null or empty.");
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine("API request failed with status code: " + response.StatusCode);
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Hata durumunda loglama yapabilirsiniz.
-                System.Diagnostics.Debug.WriteLine("API çağrısı hatası: " + ex.Message);
+                // Hata detaylarını tamamen yazdırın
+                Console.WriteLine("API call error: " + ex.ToString());
             }
 
             return flights;
         }
 
-        // Aşağıdaki CRUD işlemleri (Create, Edit, Delete, Details vb.) yerel veritabanı (_context) ile çalışıyor.
+
+        // CRUD işlemleri (Create, Edit, Delete, Details vb.) burada devam ediyor...
         public IActionResult Create()
         {
             return View();

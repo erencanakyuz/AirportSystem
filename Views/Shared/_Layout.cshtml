@@ -7,7 +7,9 @@
     <title>@ViewData["Title"] - AirportDemo</title>
 
     <!-- MDI ve diğer stil dosyaları -->
-    <link href="https://cdn.jsdelivr.net/npm/@@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/&#64;mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+
+
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -44,7 +46,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                         <li class="nav-item">
-                            <span class="nav-link">Welcome, @User.Identity.Name</span>
+                            <span class="nav-link">Welcome, @(User.Identity?.Name ?? "Guest")</span>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link btn btn-outline-danger ms-2" asp-controller="Auth" asp-action="Logout">Logout</a>

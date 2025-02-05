@@ -20,9 +20,9 @@ namespace AirportDemo.Models
         public DateTime DepartureTime { get; set; }
 
         [Required]
-        public string Status { get; set; } = "On Time"; // Varsayılan olarak "On Time"
+        public string Status { get; set; } = "On Time";
 
         [Required]
-        public string Airline { get; set; } = null!;// Yeni eklenen alan
+        public string Airline { get; set; } = null!;
     }
 }

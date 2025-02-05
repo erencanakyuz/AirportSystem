@@ -2,15 +2,13 @@
   "ExpandedNodes": [
     "",
     "\\Controllers",
-    "\\Data",
-    "\\Models",
     "\\Properties",
     "\\Views",
-    "\\Views\\Auth",
     "\\Views\\Flights",
-    "\\Views\\Home",
-    "\\Views\\Shared"
+    "\\Views\\Shared",
+    "\\wwwroot",
+    "\\wwwroot\\css"
   ],
-  "SelectedNode": "\\Models\\Flight.cs",
+  "SelectedNode": "\\Controllers\\FlightsController.cs",
   "PreviewInSolutionExplorer": false
 }

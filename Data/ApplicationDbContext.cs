@@ -5,7 +5,7 @@ using AirportDemo.Models;
 
 namespace AirportDemo.Data
 {
-    // **Identity için User ve Role'u int olarak belirttik**
+    // Identity için User ve Role'u int olarak belirttik
     public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
@@ -19,7 +19,7 @@ namespace AirportDemo.Data
         {
             base.OnModelCreating(builder); // Identity için gerekli yapılandırmaları uygula
 
-            // **Identity tablolarını güncelliyoruz**
+            // Identity tablolarını güncelliyoruz
             builder.Entity<User>().ToTable("Users");
             builder.Entity<IdentityRole<int>>().ToTable("Roles");
             builder.Entity<IdentityUserRole<int>>().ToTable("UserRoles");

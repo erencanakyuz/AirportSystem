@@ -1,5 +1,6 @@
 @model IEnumerable<AirportDemo.Models.Flight>
     @{
+    Layout = null;  // Standalone (düzen kullanılmayacak) sayfa için.
     ViewData["Title"] = "SkyControl Dashboard";
     var currentSortDirection = ViewData["SortDirection"]?.ToString() ?? "asc";
     }
@@ -85,13 +86,11 @@
                 <button id="toggleFilters" class="btn btn-secondary">Filters</button>
             </div>
         </header>
-
         <!-- Filtreleme Bölümü (Başlangıçta gizli) -->
         <div id="filterSection" style="display:none; padding: 1rem;">
             <input type="text" id="filterInput" placeholder="Search flights..." style="padding: 0.5rem; width: 80%;" />
             <button id="applyFilter" class="btn btn-primary">Search</button>
         </div>
-
         <!-- Uçuş Tablosu -->
         <table class="flight-table">
             <thead>
@@ -121,7 +120,7 @@
             }
             else
             {
-                @foreach (var flight in Model)
+                foreach (var flight in Model)
                 {
                 <tr>
                     <td>
@@ -147,14 +146,12 @@
             }
             </tbody>
         </table>
-
         <script>
             // Filtre bölümünü aç/kapat
             document.getElementById('toggleFilters').addEventListener('click', function () {
                 var filterSection = document.getElementById('filterSection');
                 filterSection.style.display = filterSection.style.display === 'none' ? 'block' : 'none';
             });
-
             // Basit client-side filtreleme
             document.getElementById('applyFilter').addEventListener('click', function () {
                 var searchTerm = document.getElementById('filterInput').value.toLowerCase();
