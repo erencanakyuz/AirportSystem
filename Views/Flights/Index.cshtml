@@ -1,6 +1,6 @@
 @model IEnumerable<AirportDemo.Models.Flight>
     @{
-    Layout = null;  // Standalone (düzen kullanılmayacak) sayfa için.
+    Layout = null;  // Standalone page for demonstration
     ViewData["Title"] = "SkyControl Dashboard";
     var currentSortDirection = ViewData["SortDirection"]?.ToString() ?? "asc";
     }
@@ -10,104 +10,99 @@
         <meta charset="utf-8" />
         <title>@ViewData["Title"]</title>
         <style>
-            :root {
-                --primary: #550d56;
-                --secondary: #a855f7;
-                --background: #0f172a;
-                --surface: #1e293b;
-                --text-primary: #f8fafc;
-                --text-secondary: #94a3b8;
-                --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
-            }
-
-            body {
-                background: var(--background);
-                color: var(--text-primary);
-                font-family: 'Inter', sans-serif;
-                margin: 0;
-                padding: 0;
-            }
-
-            .dashboard-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 1rem;
-            }
-
-            .header-title {
-                font-size: 2rem;
-                font-weight: bold;
-                background: var(--gradient);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-
-            .action-group .btn {
-                margin-right: 0.5rem;
-                padding: 0.5rem 1rem;
-                border: none;
-                border-radius: 0.5rem;
-                text-decoration: none;
-            }
-
-            .btn-primary {
-                background: var(--primary);
-                color: white;
-            }
-
-            .btn-secondary {
-                background: var(--surface);
-                color: var(--text-primary);
-                border: 1px solid rgba(255,255,255,0.1);
-            }
-
-            .flight-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 1rem;
-            }
-
-                .flight-table th, .flight-table td {
-                    padding: 1rem;
-                    border: 1px solid #333;
-                }
-
-                .flight-table thead {
-                    background: var(--gradient);
-                }
+        :root {
+            --primary: #550d56;
+            --secondary: #a855f7;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+        }
+        .header-title {
+            font-size: 2rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .action-group .btn {
+            margin-right: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .flight-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .flight-table th, .flight-table td {
+            padding: 1rem;
+            border: 1px solid #333;
+        }
+        .flight-table thead {
+            background: var(--gradient);
+        }
+        /* New flight row animation */
+        .new-flight {
+            animation: flash 2s ease-out;
+        }
+        @@keyframes flash {
+            0%   { background-color: #d4edda; }
+            100% { background-color: transparent; }
+        }
         </style>
+        <!-- Include jQuery -->
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
     </head>
     <body>
         <header class="dashboard-header">
             <h1 class="header-title">SkyControl Dashboard</h1>
             <div class="action-group">
                 <a href="@Url.Action("Create", "Flights")" class="btn btn-primary">New Flight</a>
+                <!-- Test button to add a fake flight -->
+                <button id="addFakeFlight" class="btn btn-secondary">Add Fake Flight</button>
                 <button id="toggleFilters" class="btn btn-secondary">Filters</button>
             </div>
         </header>
-        <!-- Filtreleme Bölümü (Başlangıçta gizli) -->
+        <!-- Optional Filter Section -->
         <div id="filterSection" style="display:none; padding: 1rem;">
             <input type="text" id="filterInput" placeholder="Search flights..." style="padding: 0.5rem; width: 80%;" />
             <button id="applyFilter" class="btn btn-primary">Search</button>
         </div>
-        <!-- Uçuş Tablosu -->
+        <!-- Flight Table -->
         <table class="flight-table">
             <thead>
                 <tr>
-                    <th>
-                        @Html.ActionLink("Flight", "Index", new { sortColumn = "FlightNumber", sortDirection = currentSortDirection })
-                    </th>
-                    <th>
-                        @Html.ActionLink("Route", "Index", new { sortColumn = "DepartureLocation", sortDirection = currentSortDirection })
-                    </th>
-                    <th>
-                        @Html.ActionLink("Departure", "Index", new { sortColumn = "DepartureTime", sortDirection = currentSortDirection })
-                    </th>
+                    <th>@Html.ActionLink("Flight", "Index", new { sortColumn = "FlightNumber", sortDirection = currentSortDirection })</th>
+                    <th>@Html.ActionLink("Route", "Index", new { sortColumn = "DepartureLocation", sortDirection = currentSortDirection })</th>
+                    <th>@Html.ActionLink("Departure", "Index", new { sortColumn = "DepartureTime", sortDirection = currentSortDirection })</th>
                     <th>Arrival</th>
-                    <th>
-                        @Html.ActionLink("Status", "Index", new { sortColumn = "Status", sortDirection = currentSortDirection })
-                    </th>
+                    <th>@Html.ActionLink("Status", "Index", new { sortColumn = "Status", sortDirection = currentSortDirection })</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -122,7 +117,7 @@
             {
                 foreach (var flight in Model)
                 {
-                <tr>
+                <tr id="flight-@flight.Id">
                     <td>
                         <strong>@flight.FlightNumber</strong><br />
                         @flight.Airline
@@ -146,19 +141,96 @@
             }
             </tbody>
         </table>
+
         <script>
-            // Filtre bölümünü aç/kapat
-            document.getElementById('toggleFilters').addEventListener('click', function () {
-                var filterSection = document.getElementById('filterSection');
-                filterSection.style.display = filterSection.style.display === 'none' ? 'block' : 'none';
+        // Toggle filter section
+        $("#toggleFilters").click(function () {
+            $("#filterSection").toggle();
+        });
+        // Simple client-side filtering
+        $("#applyFilter").click(function () {
+            var searchTerm = $("#filterInput").val().toLowerCase();
+            $(".flight-table tbody tr").each(function () {
+                $(this).toggle($(this).text().toLowerCase().includes(searchTerm));
             });
-            // Basit client-side filtreleme
-            document.getElementById('applyFilter').addEventListener('click', function () {
-                var searchTerm = document.getElementById('filterInput').value.toLowerCase();
-                document.querySelectorAll('.flight-table tbody tr').forEach(function (row) {
-                    row.style.display = row.textContent.toLowerCase().includes(searchTerm) ? '' : 'none';
-                });
+        });
+
+        // AJAX polling for new flights every 15 seconds
+        setInterval(function () {
+            $.ajax({
+                url: '@Url.Action("LatestFlights", "Flights")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    data.forEach(function (flight) {
+                        if ($("#flight-" + flight.id).length === 0) {
+                            var newRow = `<tr id="flight-${flight.id}" class="new-flight">
+                                <td>
+                                    <strong>${flight.flightNumber}</strong><br />
+                                    ${flight.airline}
+                                </td>
+                                <td>
+                                    ${flight.departureLocation} → ${flight.destination}
+                                </td>
+                                <td>
+                                    ${new Date(flight.departureTime).toLocaleString()}
+                                </td>
+                                <td>N/A</td>
+                                <td>
+                                    <span>${flight.status}</span>
+                                </td>
+                                <td>
+                                    <a href="/Flights/Edit/${flight.id}" class="btn btn-secondary">Edit</a>
+                                    <a href="/Flights/Details/${flight.id}" class="btn btn-secondary">Details</a>
+                                </td>
+                            </tr>`;
+                            $(".flight-table tbody").prepend(newRow);
+                        }
+                    });
+                },
+                error: function (err) {
+                    console.log("Error fetching latest flights", err);
+                }
             });
+        }, 15000); // every 15 seconds
+
+        // Test button to add a fake flight
+        $("#addFakeFlight").click(function () {
+            $.ajax({
+                url: '@Url.Action("AddFakeFlight", "Flights")',
+                type: 'POST',
+                dataType: 'json',
+                success: function (flight) {
+                    // Check if the flight row already exists
+                    if ($("#flight-" + flight.id).length === 0) {
+                        var newRow = `<tr id="flight-${flight.id}" class="new-flight">
+                            <td>
+                                <strong>${flight.flightNumber}</strong><br />
+                                ${flight.airline}
+                            </td>
+                            <td>
+                                ${flight.departureLocation} → ${flight.destination}
+                            </td>
+                            <td>
+                                ${new Date(flight.departureTime).toLocaleString()}
+                            </td>
+                            <td>N/A</td>
+                            <td>
+                                <span>${flight.status}</span>
+                            </td>
+                            <td>
+                                <a href="/Flights/Edit/${flight.id}" class="btn btn-secondary">Edit</a>
+                                <a href="/Flights/Details/${flight.id}" class="btn btn-secondary">Details</a>
+                            </td>
+                        </tr>`;
+                        $(".flight-table tbody").prepend(newRow);
+                    }
+                },
+                error: function (err) {
+                    console.log("Error adding fake flight", err);
+                }
+            });
+        });
         </script>
     </body>
 </html>

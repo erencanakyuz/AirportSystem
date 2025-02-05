@@ -9,7 +9,6 @@ namespace AirportDemo.Controllers
     {
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            // Ýstek bilgilerini konsola yazdýrýn
             Console.WriteLine("=== HTTP Request ===");
             Console.WriteLine($"{request.Method} {request.RequestUri}");
             foreach (var header in request.Headers)
@@ -27,10 +26,8 @@ namespace AirportDemo.Controllers
             }
             Console.WriteLine("====================");
 
-            // Ýsteði gönder
             var response = await base.SendAsync(request, cancellationToken);
 
-            // Yanýt bilgilerini konsola yazdýrýn
             Console.WriteLine("=== HTTP Response ===");
             Console.WriteLine($"Status Code: {response.StatusCode}");
             foreach (var header in response.Headers)

@@ -26,10 +26,9 @@ namespace AirportDemo.Controllers
         // GET: Flights
         public async Task<IActionResult> Index(string sortColumn, string sortDirection)
         {
-            // API’den uçuş verilerini çek
             List<Flight> flights = await GetFlightsFromApi() ?? new List<Flight>();
 
-            // Sıralama parametreleri
+            // Default sorting parameters
             if (string.IsNullOrEmpty(sortColumn))
             {
                 sortColumn = "FlightNumber";
@@ -42,7 +41,6 @@ namespace AirportDemo.Controllers
             ViewData["SortColumn"] = sortColumn;
             ViewData["SortDirection"] = sortDirection;
 
-            // Sıralama işlemi
             flights = sortColumn switch
             {
                 "DepartureTime" => sortDirection == "asc" ? flights.OrderBy(f => f.DepartureTime).ToList() : flights.OrderByDescending(f => f.DepartureTime).ToList(),
@@ -53,24 +51,53 @@ namespace AirportDemo.Controllers
                 _ => flights.OrderBy(f => f.FlightNumber).ToList()
             };
 
-            // Konsolda toplam uçuş sayısını yazdırın
             Console.WriteLine("Total flights to be displayed: " + flights.Count);
-
             return View(flights);
         }
 
-        // API’ye POST isteği gönderip uçuş listesini döndüren metot
+        // New Action: Returns latest flights as JSON
+        [HttpGet]
+        public async Task<IActionResult> LatestFlights()
+        {
+            List<Flight> flights = await GetFlightsFromApi() ?? new List<Flight>();
+            return Json(flights);
+        }
+
+        // New Action: Adds a fake flight for testing and returns it as JSON.
+        [HttpPost]
+        public IActionResult AddFakeFlight()
+        {
+            // Create a fake flight object with random values.
+            var rnd = new Random();
+            var flight = new Flight
+            {
+                FlightNumber = "FAKE" + rnd.Next(100, 999),
+                Airline = "Fake Airline",
+                DepartureLocation = "Test City",
+                Destination = "Demo City",
+                DepartureTime = DateTime.Now,
+                Status = "New"
+            };
+
+            _context.Flights.Add(flight);
+            _context.SaveChanges();
+
+            // Return the new flight as JSON.
+            return Json(flight);
+        }
+
+        // API call to get flights from external API (or local simulation)
         private async Task<List<Flight>> GetFlightsFromApi()
         {
             List<Flight> flights = new List<Flight>();
 
             try
             {
-                // Sertifika doğrulamasını devre dışı bırakmak (TEST amaçlı, ÜRETİMDE KULLANILMAMALI!)
                 var handler = new HttpClientHandler();
+                // For testing only—disable certificate validation.
                 handler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
-                // TLS 1.2 kullanımını zorla
-                handler.SslProtocols = SslProtocols.Tls12;
+                // Uncomment the next line if you need to force TLS 1.2:
+                // handler.SslProtocols = SslProtocols.Tls12;
 
                 using (var httpClient = new HttpClient(new LoggingHandler() { InnerHandler = handler }))
                 {
@@ -80,16 +107,16 @@ namespace AirportDemo.Controllers
                     httpClient.DefaultRequestHeaders.Add("x-requested-with", "XMLHttpRequest");
 
                     var formData = new Dictionary<string, string>
-            {
-                { "nature", "0" },
-                { "searchTerm", "changeflight" },
-                { "pageSize", "20" },
-                { "isInternational", "0" },
-                { "date", "" },
-                { "endDate", "" },
-                { "culture", "tr" },
-                { "clickedButton", "" }
-            };
+                    {
+                        { "nature", "0" },
+                        { "searchTerm", "changeflight" },
+                        { "pageSize", "20" },
+                        { "isInternational", "0" },
+                        { "date", "" },
+                        { "endDate", "" },
+                        { "culture", "tr" },
+                        { "clickedButton", "" }
+                    };
 
                     var content = new FormUrlEncodedContent(formData);
                     content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded")
@@ -136,13 +163,11 @@ namespace AirportDemo.Controllers
             }
             catch (Exception ex)
             {
-                // Hata detaylarını tamamen yazdırın
                 Console.WriteLine("API call error: " + ex.ToString());
             }
 
             return flights;
         }
-
 
         // CRUD işlemleri (Create, Edit, Delete, Details vb.) burada devam ediyor...
         public IActionResult Create()
@@ -223,21 +248,6 @@ namespace AirportDemo.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult GenerateRandomData()
-        {
-            var randomFlights = new[]
-            {
-                new Flight { FlightNumber = "TK100", Airline = "Turkish Airlines", DepartureLocation = "Istanbul", Destination = "London", DepartureTime = DateTime.Now.AddHours(3), Status = "Scheduled" },
-                new Flight { FlightNumber = "BA200", Airline = "British Airways", DepartureLocation = "Paris", Destination = "New York", DepartureTime = DateTime.Now.AddHours(5), Status = "In Air" },
-                new Flight { FlightNumber = "LH300", Airline = "Lufthansa", DepartureLocation = "Frankfurt", Destination = "Berlin", DepartureTime = DateTime.Now.AddHours(2), Status = "Delayed" },
-                new Flight { FlightNumber = "QR400", Airline = "Qatar Airways", DepartureLocation = "Doha", Destination = "Doha", DepartureTime = DateTime.Now.AddHours(6), Status = "Scheduled" },
-                new Flight { FlightNumber = "EK500", Airline = "Emirates", DepartureLocation = "Dubai", Destination = "Dubai", DepartureTime = DateTime.Now.AddHours(4), Status = "In Air" }
-            };
-
-            _context.Flights.AddRange(randomFlights);
-            _context.SaveChanges();
-
-            return RedirectToAction("Index");
-        }
+        
     }
 }

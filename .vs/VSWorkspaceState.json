@@ -9,6 +9,6 @@
     "\\wwwroot",
     "\\wwwroot\\css"
   ],
-  "SelectedNode": "\\Controllers\\FlightsController.cs",
+  "SelectedNode": "\\Views\\Flights\\Index.cshtml",
   "PreviewInSolutionExplorer": false
 }
