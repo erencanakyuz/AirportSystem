@@ -1,9 +1,11 @@
 @model IEnumerable<AirportDemo.Models.Flight>
+
     @{
-    Layout = null;  // Standalone page for demonstration
+    Layout = null;
     ViewData["Title"] = "SkyControl Dashboard";
     var currentSortDirection = ViewData["SortDirection"]?.ToString() ?? "asc";
     }
+
     <!DOCTYPE html>
     <html lang="tr">
     <head>
@@ -11,116 +13,250 @@
         <title>@ViewData["Title"]</title>
         <style>
         :root {
-            --primary: #550d56;
-            --secondary: #a855f7;
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
             --background: #0f172a;
-            --surface: #1e293b;
+            --surface: rgba(30, 41, 59, 0.7);
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --glass: rgba(255, 255, 255, 0.05);
         }
+
         body {
             background: var(--background);
             color: var(--text-primary);
             font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 2rem;
+            min-height: 100vh;
         }
+
         .dashboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
+            padding: 1rem 2rem;
+            background: var(--surface);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
+
         .header-title {
             font-size: 2rem;
-            font-weight: bold;
+            font-weight: 700;
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: -0.025em;
         }
+
         .action-group .btn {
-            margin-right: 0.5rem;
-            padding: 0.5rem 1rem;
+            margin-left: 1rem;
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 0.5rem;
-            text-decoration: none;
+            border-radius: 0.75rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
         }
+
         .btn-primary {
-            background: var(--primary);
+            background: var(--gradient);
             color: white;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
         }
-        .btn-secondary {
-            background: var(--surface);
-            color: var(--text-primary);
-            border: 1px solid rgba(255,255,255,0.1);
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.4);
         }
+
         .flight-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem;
+            background: var(--surface);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
+
         .flight-table th, .flight-table td {
-            padding: 1rem;
-            border: 1px solid #333;
+            padding: 1.25rem 2rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .flight-table thead {
-            background: var(--gradient);
+            background: var(--glass);
         }
-        /* New flight row animation */
-        .new-flight {
-            animation: flash 2s ease-out;
+
+        .flight-table tbody tr {
+            transition: all 0.3s ease;
+            opacity: 1;
+            transform: translateY(0);
         }
-        @@keyframes flash {
-            0%   { background-color: #d4edda; }
+
+        .flight-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .new-flight-entry {
+            animation:
+                slideIn 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                highlightPulse 2s ease-out;
+        }
+
+        /* Use @@keyframes to escape Razor's */
+        @@keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes highlightPulse {
+            0%   { background-color: rgba(72, 187, 120, 0.15); }
+            50%  { background-color: rgba(72, 187, 120, 0.3); }
             100% { background-color: transparent; }
         }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        /* If your flight statuses are "On-Time", "Delayed", "Cancelled": */
+        .status-ontime    { background: #48bb78; }
+        .status-delayed   { background: #f59e0b; }
+        .status-cancelled { background: #f56565; }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+        }
+
+        @@keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-action {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+        }
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
         </style>
-        <!-- Include jQuery -->
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- Make sure your SignalR script reference matches your project's version -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
     </head>
     <body>
+        <div class="loading-overlay">
+            <div class="spinner"></div>
+        </div>
+
         <header class="dashboard-header">
-            <h1 class="header-title">SkyControl Dashboard</h1>
+            <h1 class="header-title">✈️ SkyControl Dashboard</h1>
             <div class="action-group">
-                <a href="@Url.Action("Create", "Flights")" class="btn btn-primary">New Flight</a>
-                <!-- Test button to add a fake flight -->
-                <button id="addFakeFlight" class="btn btn-secondary">Add Fake Flight</button>
-                <button id="toggleFilters" class="btn btn-secondary">Filters</button>
+                <button id="addFakeFlight" class="btn btn-primary">
+                    <span>➕ New Flight</span>
+                </button>
+                <button id="toggleFilters" class="btn btn-primary">
+                    <span>🔍 Filters</span>
+                </button>
             </div>
         </header>
-        <!-- Optional Filter Section -->
-        <div id="filterSection" style="display:none; padding: 1rem;">
-            <input type="text" id="filterInput" placeholder="Search flights..." style="padding: 0.5rem; width: 80%;" />
-            <button id="applyFilter" class="btn btn-primary">Search</button>
+
+        <!-- Filter Section (Hidden by default) -->
+        <div id="filterSection" style="display:none; margin-bottom: 2rem;">
+            <div class="search-container" style="position: relative;">
+                <input type="text" id="filterInput" placeholder="Search flights..."
+                       style="width: 100%; padding: 1rem; border-radius: 0.75rem;
+                          background: var(--surface); border: none; color: white;
+                          padding-left: 3rem;" />
+                <svg style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+                        width: 20px; height: 20px; color: var(--text-secondary);"
+                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </div>
         </div>
-        <!-- Flight Table -->
+
         <table class="flight-table">
             <thead>
                 <tr>
-                    <th>@Html.ActionLink("Flight", "Index", new { sortColumn = "FlightNumber", sortDirection = currentSortDirection })</th>
-                    <th>@Html.ActionLink("Route", "Index", new { sortColumn = "DepartureLocation", sortDirection = currentSortDirection })</th>
-                    <th>@Html.ActionLink("Departure", "Index", new { sortColumn = "DepartureTime", sortDirection = currentSortDirection })</th>
-                    <th>Arrival</th>
-                    <th>@Html.ActionLink("Status", "Index", new { sortColumn = "Status", sortDirection = currentSortDirection })</th>
+                    <th>Flight</th>
+                    <th>Route</th>
+                    <th>Departure</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @if (!Model.Any())
             {
-                <tr>
-                    <td colspan="6">No flights found.</td>
+                <tr class="no-flights">
+                    <td colspan="5" style="text-align: center; padding: 2rem;">
+                        ✈️ No flights found
+                    </td>
                 </tr>
             }
             else
             {
                 foreach (var flight in Model)
                 {
-                <tr id="flight-@flight.Id">
+                    var statusClass = flight.Status.Replace("-", "").Replace(" ", "").ToLower();
+                <tr id="flight-@flight.Id" class="flight-row">
                     <td>
                         <strong>@flight.FlightNumber</strong><br />
-                        @flight.Airline
+                        <span style="color: var(--text-secondary);">@flight.Airline</span>
                     </td>
                     <td>
                         @flight.DepartureLocation → @flight.Destination
@@ -128,13 +264,25 @@
                     <td>
                         @flight.DepartureTime.ToString("g")
                     </td>
-                    <td>N/A</td>
                     <td>
+                        <div class="status-indicator status-@statusClass"></div>
                         <span>@flight.Status</span>
                     </td>
                     <td>
-                        <a href="@Url.Action("Edit", "Flights", new { id = flight.Id })" class="btn btn-secondary">Edit</a>
-                        <a href="@Url.Action("Details", "Flights", new { id = flight.Id })" class="btn btn-secondary">Details</a>
+                        <button class="btn-action" onclick="handleEdit('@flight.Id')">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M15 3l3 3L8 16H5v-3L15 3z" />
+                            </svg>
+                        </button>
+                        <button class="btn-action" onclick="handleDetails('@flight.Id')">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 4a8 8 0 100 16 8 8 0 000-16z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 16l0-8M12 8l0 0" />
+                            </svg>
+                        </button>
                     </td>
                 </tr>
                 }
@@ -144,92 +292,127 @@
 
         <script>
         // Toggle filter section
-        $("#toggleFilters").click(function () {
-            $("#filterSection").toggle();
-        });
-        // Simple client-side filtering
-        $("#applyFilter").click(function () {
-            var searchTerm = $("#filterInput").val().toLowerCase();
-            $(".flight-table tbody tr").each(function () {
-                $(this).toggle($(this).text().toLowerCase().includes(searchTerm));
-            });
+        $("#toggleFilters").click(function() {
+            $("#filterSection").slideToggle();
         });
 
-        // AJAX polling for new flights every 15 seconds
-        setInterval(function () {
-            $.ajax({
-                url: '@Url.Action("LatestFlights", "Flights")',
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    data.forEach(function (flight) {
-                        if ($("#flight-" + flight.id).length === 0) {
-                            var newRow = `<tr id="flight-${flight.id}" class="new-flight">
-                                <td>
-                                    <strong>${flight.flightNumber}</strong><br />
-                                    ${flight.airline}
-                                </td>
-                                <td>
-                                    ${flight.departureLocation} → ${flight.destination}
-                                </td>
-                                <td>
-                                    ${new Date(flight.departureTime).toLocaleString()}
-                                </td>
-                                <td>N/A</td>
-                                <td>
-                                    <span>${flight.status}</span>
-                                </td>
-                                <td>
-                                    <a href="/Flights/Edit/${flight.id}" class="btn btn-secondary">Edit</a>
-                                    <a href="/Flights/Details/${flight.id}" class="btn btn-secondary">Details</a>
-                                </td>
-                            </tr>`;
-                            $(".flight-table tbody").prepend(newRow);
-                        }
-                    });
-                },
-                error: function (err) {
-                    console.log("Error fetching latest flights", err);
-                }
-            });
-        }, 15000); // every 15 seconds
+        // Debounced live search
+        let filterTimeout;
+        $('#filterInput').on('input', function() {
+            clearTimeout(filterTimeout);
+            showLoading();
 
-        // Test button to add a fake flight
-        $("#addFakeFlight").click(function () {
+            filterTimeout = setTimeout(() => {
+                const searchTerm = $(this).val().toLowerCase();
+                $('.flight-table tbody tr').each(function() {
+                    const $row = $(this);
+                    const text = $row.text().toLowerCase();
+
+                    // Skip the 'no-flights' row if it exists
+                    if ($row.hasClass('no-flights')) return;
+
+                    if (text.includes(searchTerm)) {
+                        $row.css({ opacity: 1, transform: 'translateY(0)' }).show();
+                    } else {
+                        $row.css({ opacity: 0, transform: 'translateY(-10px)' }).hide();
+                    }
+                });
+                hideLoading();
+            }, 300);
+        });
+
+        // Show/hide loading overlay
+        function showLoading() {
+            $('.loading-overlay').addClass('active');
+        }
+        function hideLoading() {
+            $('.loading-overlay').removeClass('active');
+        }
+
+        // Handle "Edit" and "Details" button clicks
+        function handleEdit(flightId) {
+            // Replace with your actual edit URL as needed
+            window.location.href = '/Flights/Edit/' + flightId;
+        }
+        function handleDetails(flightId) {
+            // Replace with your actual details URL as needed
+            window.location.href = '/Flights/Details/' + flightId;
+        }
+
+        // Optional: If using SignalR
+        // const connection = new signalR.HubConnectionBuilder()
+        //     .withUrl("/flightHub")
+        //     .configureLogging(signalR.LogLevel.Information)
+        //     .build();
+
+        // connection.start()
+        //     .then(() => console.log("Connected to SignalR"))
+        //     .catch(err => console.error('SignalR Connection Error:', err));
+
+        // connection.on("ReceiveFlight", flight => {
+        //     addFlightRow(flight);
+        //     hideLoading();
+        // });
+
+        // Example: remove references to ArrivalTime if your model doesn't have it
+
+        // Prepend a new row
+        function addFlightRow(flight) {
+            const statusClass = flight.status.replace("-", "").replace(" ", "").toLowerCase();
+            const row = $(`
+                <tr id="flight-${flight.id}" class="new-flight-entry">
+                    <td>
+                        <strong>${flight.flightNumber}</strong><br />
+                        <span style="color: var(--text-secondary);">${flight.airline}</span>
+                    </td>
+                    <td>
+                        ${flight.departureLocation} → ${flight.destination}
+                    </td>
+                    <td>
+                        ${new Date(flight.departureTime).toLocaleString()}
+                    </td>
+                    <td>
+                        <div class="status-indicator status-${statusClass}"></div>
+                        <span>${flight.status}</span>
+                    </td>
+                    <td>
+                        <button class="btn-action" onclick="handleEdit('${flight.id}')">
+                            <!-- Edit Icon -->
+                        </button>
+                        <button class="btn-action" onclick="handleDetails('${flight.id}')">
+                            <!-- Details Icon -->
+                        </button>
+                    </td>
+                </tr>
+            `);
+            $('.no-flights').remove(); // remove "No flights" row if present
+            $('.flight-table tbody').prepend(row);
+        }
+
+        // Example for adding a new flight (if you have a route "AddFakeFlight")
+        $('#addFakeFlight').click(function() {
+            showLoading();
             $.ajax({
                 url: '@Url.Action("AddFakeFlight", "Flights")',
                 type: 'POST',
                 dataType: 'json',
-                success: function (flight) {
-                    // Check if the flight row already exists
-                    if ($("#flight-" + flight.id).length === 0) {
-                        var newRow = `<tr id="flight-${flight.id}" class="new-flight">
-                            <td>
-                                <strong>${flight.flightNumber}</strong><br />
-                                ${flight.airline}
-                            </td>
-                            <td>
-                                ${flight.departureLocation} → ${flight.destination}
-                            </td>
-                            <td>
-                                ${new Date(flight.departureTime).toLocaleString()}
-                            </td>
-                            <td>N/A</td>
-                            <td>
-                                <span>${flight.status}</span>
-                            </td>
-                            <td>
-                                <a href="/Flights/Edit/${flight.id}" class="btn btn-secondary">Edit</a>
-                                <a href="/Flights/Details/${flight.id}" class="btn btn-secondary">Details</a>
-                            </td>
-                        </tr>`;
-                        $(".flight-table tbody").prepend(newRow);
-                    }
+                success: function(flight) {
+                    // If you're using SignalR, you'd call:
+                    // connection.invoke("SendFlightUpdate", flight);
+                    // Otherwise just do:
+                    addFlightRow(flight);
+                    hideLoading();
                 },
-                error: function (err) {
-                    console.log("Error adding fake flight", err);
+                error: function(err) {
+                    console.error('Error adding flight:', err);
+                    hideLoading();
                 }
             });
+        });
+
+        // Staggered fade-in on initial load
+        $('.flight-table tbody tr').each(function(index) {
+            $(this).css('transition-delay', `${index * 0.05}s`);
         });
         </script>
     </body>
