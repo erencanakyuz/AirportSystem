@@ -3,7 +3,7 @@
     "",
     "\\Controllers",
     "\\Data",
-    "\\Migrations",
+    "\\Models",
     "\\Properties",
     "\\Views",
     "\\Views\\Auth",
@@ -11,6 +11,6 @@
     "\\Views\\Home",
     "\\Views\\Shared"
   ],
-  "SelectedNode": "\\airport.db",
+  "SelectedNode": "\\Models\\Flight.cs",
   "PreviewInSolutionExplorer": false
 }
