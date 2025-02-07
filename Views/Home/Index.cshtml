@@ -5,15 +5,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <div class="hero">
+    <div class="hero-background-image"></div>
     <div class="dynamic-overlay">
-        <div class="container text-center hero-glass-container">
-            <h1 class="hero-title">SkyPort Nexus</h1>
-            <p class="hero-subheading">Next-Gen Aviation Ecosystem Management</p>
-            <div class="search-container">
-                <input type="text" class="neo-input" placeholder="Search flight or aircraft...">
-                <button class="holographic-button">
-                    <i class="fas fa-search"></i>
-                </button>
+        <div class="hero-bg-icons">
+            <i class="fad fa-radar fa-7x hero-bg-icon"></i>
+            <i class="fad fa-satellite-dish fa-5x hero-bg-icon"></i>
+            <i class="fad fa-broadcast-tower fa-8x hero-bg-icon"></i>
+        </div>
+        <div class="hero-content-wrapper">
+            <div class="container text-center hero-glass-container">
+                <h1 class="hero-title">AirPort Detective Nexus</h1>
+                <p class="hero-subheading">Next-Gen Aviation Ecosystem Management</p>
+                <div class="search-container">
+                    <input type="text" class="neo-input" placeholder="Search flight or aircraft...">
+                    <button class="holographic-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -21,7 +29,6 @@
 
 <div class="container mt-5">
     <div class="row gy-4 justify-content-center">
-        <!-- Flight Control -->
         <div class="col-md-6 col-lg-4">
             <div class="neu-card card-tilt" data-tilt>
                 <div class="holographic-strip"></div>
@@ -37,7 +44,6 @@
             </div>
         </div>
 
-        <!-- Fuel Management -->
         <div class="col-md-6 col-lg-4">
             <div class="neu-card card-tilt" data-tilt>
                 <div class="holographic-strip" style="background: linear-gradient(90deg, transparent, #fde047, transparent);"></div>
@@ -53,14 +59,13 @@
             </div>
         </div>
 
-        <!-- Maintenance -->
         <div class="col-md-6 col-lg-4">
             <div class="neu-card card-tilt" data-tilt>
                 <div class="holographic-strip" style="background: linear-gradient(90deg, transparent, #dc2626, transparent);"></div>
                 <div class="card-content">
                     <i class="fas fa-screwdriver-wrench fa-3x gradient-icon" style="color: #dc2626;"></i>
                     <h4 class="card-title">Maintenance</h4>
-                    <p class="card-desc">Track aircraft and equipment maintenance</p>
+                    <p class="card-desc">Track equipment maintenance</p>
                     <a href="/Maintenance" class="cyber-button" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
                         <span class="glow-text">Maintenance Log</span>
                         <i class="fas fa-arrow-right"></i>
@@ -69,7 +74,6 @@
             </div>
         </div>
 
-        <!-- Logistics -->
         <div class="col-md-6 col-lg-4">
             <div class="neu-card card-tilt" data-tilt>
                 <div class="holographic-strip" style="background: linear-gradient(90deg, transparent, #22d3ef, transparent);"></div>
@@ -85,14 +89,13 @@
             </div>
         </div>
 
-        <!-- Radar -->
         <div class="col-md-6 col-lg-4">
             <div class="neu-card card-tilt" data-tilt>
                 <div class="holographic-strip" style="background: linear-gradient(90deg, transparent, #6b7280, transparent);"></div>
                 <div class="card-content">
                     <i class="fas fa-broadcast-tower fa-3x gradient-icon" style="color: #6b7280;"></i>
                     <h4 class="card-title">Radar</h4>
-                    <p class="card-desc">Real-time aircraft tracking and monitoring</p>
+                    <p class="card-desc">Real-time tracking and monitoring</p>
                     <a href="/Radar" class="cyber-button" style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);">
                         <span class="glow-text">Radar View</span>
                         <i class="fas fa-arrow-right"></i>
@@ -114,17 +117,18 @@
     }
 
     body {
-        font-family: 'Inter', sans-serif;
-        background: #0f172a;
-        color: #f8fafc;
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
-    }
+    font-family: 'Inter', sans-serif;
+    background-color: #252e40; /* Gece mavisi arka plan */
+    color: #e2e8f0; /* Açık gri metin */
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
 
+
+    /* Hero Section Styles */
     .hero {
-        height: 75vh;
-        background: url('/images/ai-radar-bg-2.jpg') no-repeat center/cover;
+        height: 100vh; /* Adjust as needed */
         position: relative;
         overflow: hidden;
         display: flex;
@@ -132,92 +136,147 @@
         justify-content: center;
         padding-top: 0;
         padding-bottom: 0;
+        border-radius: 150px;
     }
 
-    .dynamic-overlay {
-        background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
-        opacity: 0.85;
-        height: 100%;
-        width: 100%;
+    .hero-background-image { /* Container for background image */
         position: absolute;
         top: 0;
         left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('/images/ai-radar-bg-2.jpg') no-repeat center/cover; /* Your background image */
+        opacity: 0.9; /* Adjust image opacity if needed */
+    }
+
+    .dynamic-overlay {
+    background: linear-gradient(to top, rgba(161, 140, 209, 0.7) 0%, rgba(251, 194, 235, 0.7) 100%);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+
+
+    .hero-bg-icons { /* Styles for the icon container */
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; /* Allow clicks to pass through to content */
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        opacity: 0.04; /* Very subtle opacity */
+    }
+
+    .hero-bg-icon { /* Styles for individual background icons */
+        color: #fff; /* White icons */
+        opacity: 0.08; /* Even more subtle icon opacity */
+        position: absolute; /* Position icons within the container */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center icons in container */
+    }
+
+    .hero-bg-icons i:nth-child(1) { /* Radar icon */
+        left: 20%;
+        top: 30%;
+    }
+
+    .hero-bg-icons i:nth-child(2) { /* Satellite dish icon */
+        left: 70%;
+        top: 70%;
+    }
+
+    .hero-bg-icons i:nth-child(3) { /* Broadcast tower icon */
+        left: 45%;
+        top: 60%;
+    }
+
+    .hero-content-wrapper { /* Wrapper to control content positioning */
+        position: relative; /* To position content above overlay and image */
+        z-index: 1; /* Ensure content is above background and overlay */
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .hero-glass-container {
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(25px);
+        background: rgba(255, 255, 255, 0.12); /* Slightly brighter and less transparent glass background */
+        backdrop-filter: blur(30px); /* Increased blur effect for glass */
         border-radius: 24px;
-        padding: 3rem 2.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        box-shadow: var(--neo-shadow), 0 0 20px rgba(0, 0, 0, 0.3);
-        position: relative;
-        z-index: 1;
-        margin-top: 0;
+        padding: 3.5rem 3rem; /* Further Adjusted padding for glass container */
+        border: 1px solid rgba(255, 255, 255, 0.2); /* Slightly thicker and brighter border */
+        box-shadow: var(--neo-shadow), 0 0 30px rgba(0, 0, 0, 0.4); /* Stronger box shadow for glass */
+        position: relative; /* For internal positioning if needed */
         width: 90%;
-        max-width: 1000px;
+        max-width: 1100px; /* Slightly wider max width */
     }
 
     .hero-title {
         color: white;
         font-weight: 800;
-        font-size: 5rem;
-        letter-spacing: -0.05em;
-        margin-bottom: 0.25rem;
-        text-shadow: 3px 3px 12px rgba(0, 0, 0, 0.5);
+        font-size: 5.5rem; /* Increased title size even more */
+        letter-spacing: -0.06em; /* Even tighter letter spacing */
+        margin-bottom: 0.3rem; /* Slightly more margin below title */
+        text-shadow: 4px 4px 15px rgba(0, 0, 0, 0.6); /* Even stronger, darker text shadow */
     }
 
     .hero-subheading {
-        font-size: 1.4rem;
-        opacity: 0.9;
-        margin-bottom: 2.5rem;
-        color: #f0f4f8;
+        font-size: 1.5rem; /* Slightly larger subheading */
+        opacity: 0.95; /* Slightly less opaque subheading */
+        margin-bottom: 3rem; /* Even more space before search */
+        color: #f8f9fa; /* Even warmer white for subheading */
     }
 
     .search-container {
         display: flex;
-        border-radius: 16px;
+        border-radius: 18px; /* More rounded search container */
         overflow: hidden;
-        box-shadow: var(--neo-shadow);
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: var(--neo-shadow), 0 0 15px rgba(0, 0, 0, 0.2); /* Added a subtle outer shadow */
+        background: rgba(255, 255, 255, 0.15); /* Brighter search background */
+        border: 1px solid rgba(255, 255, 255, 0.25); /* Slightly thicker and brighter border */
     }
 
     .neo-input {
         background: transparent;
         border: none;
-        padding: 1.2rem 1.8rem;
+        padding: 1.4rem 2rem; /* Further Increased input padding */
         color: #fff;
-        font-size: 1.1rem;
+        font-size: 1.2rem; /* Slightly larger input font */
         flex-grow: 1;
     }
 
-        .neo-input:focus, .neo-input:active {
-            outline: none;
-        }
-
         .neo-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.8); /* Brighter placeholder text */
         }
 
     .holographic-button {
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.2); /* Even brighter button background */
         border: none;
-        padding: 1.2rem 1.5rem;
+        padding: 1.4rem 1.8rem; /* Further Adjusted button padding */
         color: white;
-        border-left: 1px solid rgba(255, 255, 255, 0.2);
+        border-left: 1px solid rgba(255, 255, 255, 0.3); /* Thicker and brighter separator */
         cursor: pointer;
         transition: background-color 0.3s ease;
     }
 
         .holographic-button:hover {
-            background-color: rgba(255, 255, 255, 0.25);
+            background-color: rgba(255, 255, 255, 0.3); /* Darker hover background for button */
         }
 
         .holographic-button i {
-            font-size: 1.3rem;
+            font-size: 1.4rem; /* Slightly larger search icon */
         }
 
+    /* Cards Section Styles */
     .container.mt-5 {
         margin-top: 5rem !important;
     }
@@ -262,14 +321,14 @@
         -webkit-text-fill-color: transparent;
         display: block;
         margin: 0 auto 1rem;
-        transition: color 0.3s ease;
+        transition: color 0.3s ease; /* Smooth icon color transition */
     }
 
     .card-title {
         font-size: 1.7rem;
         font-weight: 600;
         margin-bottom: 0.75rem;
-        transition: color 0.3s ease;
+        transition: color 0.3s ease; /* Smooth title color transition */
     }
 
     .card-desc {
@@ -321,6 +380,7 @@
             opacity: 1;
         }
 
+    /* Hologram Animation */
     @@keyframes hologram {
         0% {
             transform: translateX(-50%);

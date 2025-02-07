@@ -1,7 +1,6 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Controllers",
     "\\Properties",
     "\\Views",
     "\\Views\\Auth",
@@ -9,8 +8,9 @@
     "\\Views\\Home",
     "\\Views\\Shared",
     "\\wwwroot",
-    "\\wwwroot\\css"
+    "\\wwwroot\\css",
+    "\\wwwroot\\images"
   ],
-  "SelectedNode": "\\Views\\Home\\Index.cshtml",
+  "SelectedNode": "\\wwwroot\\images\\BackgorundLogin.jpg",
   "PreviewInSolutionExplorer": false
 }
