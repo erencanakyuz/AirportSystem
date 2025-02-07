@@ -39,3 +39,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+
+//TO DO Which airlines u should avoid (airline cancaletions)
+// AİR CONDİTtions to do https://www.flightstats.com/v2/airport-conditions/IST

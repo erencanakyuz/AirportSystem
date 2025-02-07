@@ -2,112 +2,415 @@
     ViewData["Title"] = "Dashboard";
 }
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <div class="hero">
-    <div class="overlay">
-        <div class="container text-center">
-            <h1 class="display-4">Welcome to Airport Management</h1>
-            <p class="lead">Seamlessly manage flights, logistics, and maintenance.</p>
+    <div class="dynamic-overlay">
+        <div class="container text-center hero-glass-container">
+            <h1 class="hero-title">SkyPort Nexus</h1>
+            <p class="hero-subheading">Next-Gen Aviation Ecosystem Management</p>
+            <div class="search-container">
+                <input type="text" class="neo-input" placeholder="Search flight or aircraft...">
+                <button class="holographic-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="container mt-5">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card feature-card">
-                <div class="card-body text-center">
-                    <i class="fas fa-plane fa-3x text-success"></i>
-                    <h5 class="card-title mt-3">Flights</h5>
-                    <p class="card-text">Manage flight arrivals, departures, and scheduling.</p>
-                    <a href="/Flights" class="btn btn-outline-success">View</a>
+    <div class="row gy-4 justify-content-center">
+        <!-- Flight Control -->
+        <div class="col-md-6 col-lg-4">
+            <div class="neu-card card-tilt" data-tilt>
+                <div class="holographic-strip"></div>
+                <div class="card-content">
+                    <i class="fas fa-plane-departure fa-3x gradient-icon"></i>
+                    <h4 class="card-title">Flight Control</h4>
+                    <p class="card-desc">Real-time flight operations management</p>
+                    <a href="/Flights" class="cyber-button">
+                        <span class="glow-text">Access Portal</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card feature-card">
-                <div class="card-body text-center">
-                    <i class="fas fa-gas-pump fa-3x text-warning"></i>
-                    <h5 class="card-title mt-3">Fuel Management</h5>
-                    <p class="card-text">Monitor fuel stocks and costs.</p>
-                    <a href="/Fuel" class="btn btn-outline-warning">View</a>
+
+        <!-- Fuel Management -->
+        <div class="col-md-6 col-lg-4">
+            <div class="neu-card card-tilt" data-tilt>
+                <div class="holographic-strip" style="background: linear-gradient(90deg, transparent, #fde047, transparent);"></div>
+                <div class="card-content">
+                    <i class="fas fa-gas-pump fa-3x gradient-icon" style="color: #fde047;"></i>
+                    <h4 class="card-title">Fuel Management</h4>
+                    <p class="card-desc">Monitor fuel stocks and costs efficiently</p>
+                    <a href="/Fuel" class="cyber-button" style="background: linear-gradient(135deg, #fde047 0%, #facc15 100%);">
+                        <span class="glow-text">Explore Fuel Data</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card feature-card">
-                <div class="card-body text-center">
-                    <i class="fas fa-tools fa-3x text-danger"></i>
-                    <h5 class="card-title mt-3">Maintenance</h5>
-                    <p class="card-text">Track aircraft and ground equipment maintenance.</p>
-                    <a href="/Maintenance" class="btn btn-outline-danger">View</a>
+
+        <!-- Maintenance -->
+        <div class="col-md-6 col-lg-4">
+            <div class="neu-card card-tilt" data-tilt>
+                <div class="holographic-strip" style="background: linear-gradient(90deg, transparent, #dc2626, transparent);"></div>
+                <div class="card-content">
+                    <i class="fas fa-screwdriver-wrench fa-3x gradient-icon" style="color: #dc2626;"></i>
+                    <h4 class="card-title">Maintenance</h4>
+                    <p class="card-desc">Track aircraft and equipment maintenance</p>
+                    <a href="/Maintenance" class="cyber-button" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
+                        <span class="glow-text">Maintenance Log</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card feature-card">
-                <div class="card-body text-center">
-                    <i class="fas fa-box fa-3x text-info"></i>
-                    <h5 class="card-title mt-3">Logistics</h5>
-                    <p class="card-text">Manage baggage and ground services.</p>
-                    <a href="/Logistics" class="btn btn-outline-info">View</a>
+
+        <!-- Logistics -->
+        <div class="col-md-6 col-lg-4">
+            <div class="neu-card card-tilt" data-tilt>
+                <div class="holographic-strip" style="background: linear-gradient(90deg, transparent, #22d3ef, transparent);"></div>
+                <div class="card-content">
+                    <i class="fas fa-shipping-fast fa-3x gradient-icon" style="color: #22d3ef;"></i>
+                    <h4 class="card-title">Logistics</h4>
+                    <p class="card-desc">Optimize baggage and ground services</p>
+                    <a href="/Logistics" class="cyber-button" style="background: linear-gradient(135deg, #22d3ef 0%, #06b6d4 100%);">
+                        <span class="glow-text">Manage Logistics</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
         </div>
+
+        <!-- Radar -->
+        <div class="col-md-6 col-lg-4">
+            <div class="neu-card card-tilt" data-tilt>
+                <div class="holographic-strip" style="background: linear-gradient(90deg, transparent, #6b7280, transparent);"></div>
+                <div class="card-content">
+                    <i class="fas fa-broadcast-tower fa-3x gradient-icon" style="color: #6b7280;"></i>
+                    <h4 class="card-title">Radar</h4>
+                    <p class="card-desc">Real-time aircraft tracking and monitoring</p>
+                    <a href="/Radar" class="cyber-button" style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);">
+                        <span class="glow-text">Radar View</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <style>
-    /* Arka Plan Görseli */
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+        --hero-gradient-start: #1e3a8a;
+        --hero-gradient-end: #0c4a6e;
+        --glass-bg: rgba(255, 255, 255, 0.05);
+        --neo-shadow: 8px 8px 16px #0a0a0a, -8px -8px 16px #1a1a1a;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #0f172a;
+        color: #f8fafc;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
     .hero {
+        height: 75vh;
+        background: url('/images/ai-radar-bg-2.jpg') no-repeat center/cover;
         position: relative;
-        width: 100%;
-        height: 60vh;
-        background: url('/images/background.jpg') no-repeat center center/cover;
+        overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .dynamic-overlay {
+        background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+        opacity: 0.85;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .hero-glass-container {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(25px);
+        border-radius: 24px;
+        padding: 3rem 2.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: var(--neo-shadow), 0 0 20px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+        margin-top: 0;
+        width: 90%;
+        max-width: 1000px;
+    }
+
+    .hero-title {
         color: white;
+        font-weight: 800;
+        font-size: 5rem;
+        letter-spacing: -0.05em;
+        margin-bottom: 0.25rem;
+        text-shadow: 3px 3px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-subheading {
+        font-size: 1.4rem;
+        opacity: 0.9;
+        margin-bottom: 2.5rem;
+        color: #f0f4f8;
+    }
+
+    .search-container {
+        display: flex;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: var(--neo-shadow);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .neo-input {
+        background: transparent;
+        border: none;
+        padding: 1.2rem 1.8rem;
+        color: #fff;
+        font-size: 1.1rem;
+        flex-grow: 1;
+    }
+
+        .neo-input:focus, .neo-input:active {
+            outline: none;
+        }
+
+        .neo-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+    .holographic-button {
+        background: rgba(255, 255, 255, 0.15);
+        border: none;
+        padding: 1.2rem 1.5rem;
+        color: white;
+        border-left: 1px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .holographic-button:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .holographic-button i {
+            font-size: 1.3rem;
+        }
+
+    .container.mt-5 {
+        margin-top: 5rem !important;
+    }
+
+    .neu-card {
+        background: var(--glass-bg);
+        border-radius: 24px;
+        padding: 2rem;
+        position: relative;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: var(--neo-shadow);
+    }
+
+        .neu-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 12px 12px 24px #0a0a0a, -12px -12px 24px #1a1a1a;
+        }
+
+    .holographic-strip {
+        position: absolute;
+        top: 0;
+        left: -50%;
+        width: 200%;
+        height: 6px;
+        background: linear-gradient(90deg, transparent, #60a5fa, transparent);
+        animation: hologram 3s infinite;
+    }
+
+    .card-content {
+        position: relative;
+        z-index: 1;
         text-align: center;
     }
 
-    .overlay {
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        /* Karanlık filtre */
-        display: flex;
+    .gradient-icon {
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: block;
+        margin: 0 auto 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .card-title {
+        font-size: 1.7rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        transition: color 0.3s ease;
+    }
+
+    .card-desc {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .cyber-button {
+        background: var(--primary-gradient);
+        border: none;
+        padding: 14px 30px;
+        border-radius: 14px;
+        color: white;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        box-shadow: 4px 4px 8px #0a0a0a, -4px -4px 8px #1a1a1a;
     }
 
-    .hero h1 {
-        font-weight: bold;
-        font-size: 3.5rem;
+        .cyber-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px #0a0a0a, -6px -6px 12px #1a1a1a;
+        }
+
+        .cyber-button .glow-text {
+            position: relative;
+        }
+
+            .cyber-button .glow-text::before {
+                content: '';
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: inherit;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                z-index: -1;
+            }
+
+        .cyber-button:hover .glow-text::before {
+            opacity: 1;
+        }
+
+    @@keyframes hologram {
+        0% {
+            transform: translateX(-50%);
+        }
+
+        100% {
+            transform: translateX(50%);
+        }
     }
 
-    .hero p {
-        font-size: 1.4rem;
+    /* Responsive adjustments */
+    @@media (max-width: 992px) {
+        .hero-glass-container {
+            padding: 2.5rem;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+        }
+
+        .hero-subheading {
+            font-size: 1.2rem;
+        }
+
+        .col-lg-4 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
     }
 
-    /* Kart Tasarımı */
-    .feature-card {
-        transition: all 0.3s ease-in-out;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
+    @@media (max-width: 768px) {
+        .hero {
+            height: auto;
+            padding: 4rem 0;
+        }
 
-    .feature-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    }
+        .hero-glass-container {
+            margin-top: 0;
+            width: 95%;
+            padding: 1.5rem;
+        }
 
-    .feature-card .btn {
-        margin-top: 10px;
-        width: 100%;
-    }
+        .hero-title {
+            font-size: 2.8rem;
+        }
 
-    /* Font Awesome Iconlar */
-    .fas {
-        margin-bottom: 10px;
+        .hero-subheading {
+            font-size: 1.1rem;
+        }
+
+        .col-md-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .col-lg-4 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .search-container {
+            flex-direction: column;
+        }
+
+        .holographic-button {
+            border-left: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
     }
 </style>
+
+<script>
+    document.querySelectorAll('.card-tilt').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            let rect = card.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+            let w = rect.width;
+            let h = rect.height;
+
+            card.style.transform = `
+                perspective(1000px)
+                rotateX(${-(y - h / 2) / 20}deg)
+                rotateY(${(x - w / 2) / 20}deg)
+                scale3d(1.03, 1.03, 1.03)
+            `;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
+        });
+    });
+</script>

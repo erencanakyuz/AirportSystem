@@ -4,11 +4,13 @@
     "\\Controllers",
     "\\Properties",
     "\\Views",
+    "\\Views\\Auth",
     "\\Views\\Flights",
+    "\\Views\\Home",
     "\\Views\\Shared",
     "\\wwwroot",
     "\\wwwroot\\css"
   ],
-  "SelectedNode": "\\Views\\Flights\\Index.cshtml",
+  "SelectedNode": "\\Views\\Home\\Index.cshtml",
   "PreviewInSolutionExplorer": false
 }
