@@ -1,419 +1,173 @@
-@model IEnumerable<AirportDemo.Models.Flight>
-
-    @{
+@{
     Layout = null;
-    ViewData["Title"] = "SkyControl Dashboard";
-    var currentSortDirection = ViewData["SortDirection"]?.ToString() ?? "asc";
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>İstanbul Havalimanı Radarı</title>
+    <style>
+        /* A full-screen dark background with a centered canvas */
+        body, html {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            overflow: hidden;
+        }
+
+        #radarCanvas {
+            display: block;
+            margin: 0 auto;
+            background: radial-gradient(ellipse at center, #010, #000);
+        }
+    </style>
+</head>
+<body>
+    <!-- The radar canvas -->
+    <canvas id="radarCanvas" width="600" height="600"></canvas>
+
+    <!-- GSAP is included in case you want to enhance animations further -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+    // --- Canvas Setup ---
+    const canvas = document.getElementById('radarCanvas');
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    const centerX = width / 2;
+    const centerY = height / 2;
+    // Leave some padding so the radar circles don’t touch the edge.
+    const radarRadius = Math.min(width, height) / 2 - 20;
+
+    let sweepAngle = 0;
+    let flightData = []; // This will hold our flight data array
+
+    // --- Draw Radar Background ---
+    function drawRadarBackground() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Outer circle
+      ctx.strokeStyle = '#0f0';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radarRadius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Concentric circles
+      ctx.lineWidth = 1;
+      for (let i = 1; i <= 4; i++) {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, (radarRadius / 4) * i, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Radial lines every 30°
+      for (let i = 0; i < 360; i += 30) {
+        let rad = i * Math.PI / 180;
+        let x = centerX + radarRadius * Math.cos(rad);
+        let y = centerY + radarRadius * Math.sin(rad);
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+      }
     }
 
-    <!DOCTYPE html>
-    <html lang="tr">
-    <head>
-        <meta charset="utf-8" />
-        <title>@ViewData["Title"]</title>
-        <style>
-        :root {
-            --primary: #6366f1;
-            --secondary: #8b5cf6;
-            --accent: #ec4899;
-            --background: #0f172a;
-            --surface: rgba(30, 41, 59, 0.7);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
-            --glass: rgba(255, 255, 255, 0.05);
+    // --- Draw the Sweeping Radar Beam ---
+    function drawSweep() {
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.rotate(sweepAngle);
+
+      // Create a radial gradient for a glowing effect
+      let grad = ctx.createRadialGradient(0, 0, 0, 0, 0, radarRadius);
+      grad.addColorStop(0, "rgba(0,255,0,0.4)");
+      grad.addColorStop(1, "rgba(0,255,0,0)");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      // A narrow wedge for the sweep (adjust the angle as needed)
+      ctx.arc(0, 0, radarRadius, -0.03, 0.03);
+      ctx.lineTo(0, 0);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // --- Convert Geographic Coordinates to Canvas Coordinates ---
+    // For the demo we assume:
+    // Istanbul Airport region approx: lat [40.8, 41.1] and lon [28.7, 28.9].
+    const latMin = 40.8, latMax = 41.1, lonMin = 28.7, lonMax = 28.9;
+    function geoToCanvas(lat, lon) {
+      // Normalize to a 0–1 range
+      let normX = (lon - lonMin) / (lonMax - lonMin);
+      let normY = 1 - (lat - latMin) / (latMax - latMin); // Invert Y because canvas y grows downward
+
+      // Map normalized coordinates to canvas points relative to the center.
+      // Here we assume the radar circle covers the entire defined region.
+      let x = centerX + (normX - 0.5) * radarRadius * 2;
+      let y = centerY + (normY - 0.5) * radarRadius * 2;
+      return { x, y };
+    }
+
+    // --- Draw Flight Markers as Blinking Dots ---
+    function drawFlights(time) {
+      flightData.forEach(flight => {
+        // OpenSky API: flight[5] = longitude, flight[6] = latitude.
+        let lon = flight[5], lat = flight[6];
+        if (lon == null || lat == null) return;
+        let pos = geoToCanvas(lat, lon);
+
+        // Only draw if within the radar circle
+        let dx = pos.x - centerX, dy = pos.y - centerY;
+        if (Math.sqrt(dx * dx + dy * dy) > radarRadius) return;
+
+        // Create a blinking effect using a sine wave based on time.
+        // (flight[0] is used to add variation among different planes)
+        let blink = (Math.sin(time / 200 + flight[0]) + 1) / 2;
+        let dotRadius = 4 + blink * 2;
+
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, dotRadius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0,255,0,0.8)';
+        ctx.fill();
+
+       
+         ctx.fillStyle = "#0f0";
+         ctx.font = "10px Arial";
+         let callsign = flight[1] ? flight[1].trim() : "N/A";
+        ctx.fillText(callsign, pos.x + 6, pos.y);
+      });
+    }
+
+    // --- Animation Loop ---
+    function animate(time) {
+      drawRadarBackground();
+      drawSweep();
+      drawFlights(time);
+      // Increase the sweep angle so that a full rotation occurs in about 3 seconds.
+      sweepAngle = (time / 3000 * 2 * Math.PI) % (2 * Math.PI);
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+
+    // --- Flight Data Fetching ---
+    // Poll the server every 15 seconds. (Replace with SignalR for real-time updates if desired.)
+    async function fetchFlightData() {
+      try {
+        const response = await fetch('@Url.Action("GetFlights", "Radar")');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.states) {
+            flightData = data.states;
+          }
         }
-
-        body {
-            background: var(--background);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 2rem;
-            min-height: 100vh;
-        }
-
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background: var(--surface);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-title {
-            font-size: 2rem;
-            font-weight: 700;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.025em;
-        }
-
-        .action-group .btn {
-            margin-left: 1rem;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 0.75rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: var(--gradient);
-            color: white;
-            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.4);
-        }
-
-        .flight-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--surface);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .flight-table th, .flight-table td {
-            padding: 1.25rem 2rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .flight-table thead {
-            background: var(--glass);
-        }
-
-        .flight-table tbody tr {
-            transition: all 0.3s ease;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .flight-table tbody tr:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .new-flight-entry {
-            animation:
-                slideIn 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-                highlightPulse 2s ease-out;
-        }
-
-        /* Use @@keyframes to escape Razor's */
-        @@keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @@keyframes highlightPulse {
-            0%   { background-color: rgba(72, 187, 120, 0.15); }
-            50%  { background-color: rgba(72, 187, 120, 0.3); }
-            100% { background-color: transparent; }
-        }
-
-        .status-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
-        }
-
-        /* If your flight statuses are "On-Time", "Delayed", "Cancelled": */
-        .status-ontime    { background: #48bb78; }
-        .status-delayed   { background: #f59e0b; }
-        .status-cancelled { background: #f56565; }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 23, 42, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .loading-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .spinner {
-            animation: spin 1s linear infinite;
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-        }
-
-        @@keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .btn-action {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            color: var(--text-primary);
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            transition: background 0.2s;
-        }
-        .btn-action:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        </style>
-
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <!-- Make sure your SignalR script reference matches your project's version -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
-    </head>
-    <body>
-        <div class="loading-overlay">
-            <div class="spinner"></div>
-        </div>
-
-        <header class="dashboard-header">
-            <h1 class="header-title">✈️ SkyControl Dashboard</h1>
-            <div class="action-group">
-                <button id="addFakeFlight" class="btn btn-primary">
-                    <span>➕ New Flight</span>
-                </button>
-                <button id="toggleFilters" class="btn btn-primary">
-                    <span>🔍 Filters</span>
-                </button>
-            </div>
-        </header>
-
-        <!-- Filter Section (Hidden by default) -->
-        <div id="filterSection" style="display:none; margin-bottom: 2rem;">
-            <div class="search-container" style="position: relative;">
-                <input type="text" id="filterInput" placeholder="Search flights..."
-                       style="width: 100%; padding: 1rem; border-radius: 0.75rem;
-                          background: var(--surface); border: none; color: white;
-                          padding-left: 3rem;" />
-                <svg style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
-                        width: 20px; height: 20px; color: var(--text-secondary);"
-                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </div>
-        </div>
-
-        <table class="flight-table">
-            <thead>
-                <tr>
-                    <th>Flight</th>
-                    <th>Route</th>
-                    <th>Departure</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (!Model.Any())
-            {
-                <tr class="no-flights">
-                    <td colspan="5" style="text-align: center; padding: 2rem;">
-                        ✈️ No flights found
-                    </td>
-                </tr>
-            }
-            else
-            {
-                foreach (var flight in Model)
-                {
-                    var statusClass = flight.Status.Replace("-", "").Replace(" ", "").ToLower();
-                <tr id="flight-@flight.Id" class="flight-row">
-                    <td>
-                        <strong>@flight.FlightNumber</strong><br />
-                        <span style="color: var(--text-secondary);">@flight.Airline</span>
-                    </td>
-                    <td>
-                        @flight.DepartureLocation → @flight.Destination
-                    </td>
-                    <td>
-                        @flight.DepartureTime.ToString("g")
-                    </td>
-                    <td>
-                        <div class="status-indicator status-@statusClass"></div>
-                        <span>@flight.Status</span>
-                    </td>
-                    <td>
-                        <button class="btn-action" onclick="handleEdit('@flight.Id')">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M15 3l3 3L8 16H5v-3L15 3z" />
-                            </svg>
-                        </button>
-                        <button class="btn-action" onclick="handleDetails('@flight.Id')">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M12 4a8 8 0 100 16 8 8 0 000-16z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M12 16l0-8M12 8l0 0" />
-                            </svg>
-                        </button>
-                    </td>
-                </tr>
-                }
-            }
-            </tbody>
-        </table>
-
-        <script>
-        // Toggle filter section
-        $("#toggleFilters").click(function() {
-            $("#filterSection").slideToggle();
-        });
-
-        // Debounced live search
-        let filterTimeout;
-        $('#filterInput').on('input', function() {
-            clearTimeout(filterTimeout);
-            showLoading();
-
-            filterTimeout = setTimeout(() => {
-                const searchTerm = $(this).val().toLowerCase();
-                $('.flight-table tbody tr').each(function() {
-                    const $row = $(this);
-                    const text = $row.text().toLowerCase();
-
-                    // Skip the 'no-flights' row if it exists
-                    if ($row.hasClass('no-flights')) return;
-
-                    if (text.includes(searchTerm)) {
-                        $row.css({ opacity: 1, transform: 'translateY(0)' }).show();
-                    } else {
-                        $row.css({ opacity: 0, transform: 'translateY(-10px)' }).hide();
-                    }
-                });
-                hideLoading();
-            }, 300);
-        });
-
-        // Show/hide loading overlay
-        function showLoading() {
-            $('.loading-overlay').addClass('active');
-        }
-        function hideLoading() {
-            $('.loading-overlay').removeClass('active');
-        }
-
-        // Handle "Edit" and "Details" button clicks
-        function handleEdit(flightId) {
-            // Replace with your actual edit URL as needed
-            window.location.href = '/Flights/Edit/' + flightId;
-        }
-        function handleDetails(flightId) {
-            // Replace with your actual details URL as needed
-            window.location.href = '/Flights/Details/' + flightId;
-        }
-
-        // Optional: If using SignalR
-        // const connection = new signalR.HubConnectionBuilder()
-        //     .withUrl("/flightHub")
-        //     .configureLogging(signalR.LogLevel.Information)
-        //     .build();
-
-        // connection.start()
-        //     .then(() => console.log("Connected to SignalR"))
-        //     .catch(err => console.error('SignalR Connection Error:', err));
-
-        // connection.on("ReceiveFlight", flight => {
-        //     addFlightRow(flight);
-        //     hideLoading();
-        // });
-
-        // Example: remove references to ArrivalTime if your model doesn't have it
-
-        // Prepend a new row
-        function addFlightRow(flight) {
-            const statusClass = flight.status.replace("-", "").replace(" ", "").toLowerCase();
-            const row = $(`
-                <tr id="flight-${flight.id}" class="new-flight-entry">
-                    <td>
-                        <strong>${flight.flightNumber}</strong><br />
-                        <span style="color: var(--text-secondary);">${flight.airline}</span>
-                    </td>
-                    <td>
-                        ${flight.departureLocation} → ${flight.destination}
-                    </td>
-                    <td>
-                        ${new Date(flight.departureTime).toLocaleString()}
-                    </td>
-                    <td>
-                        <div class="status-indicator status-${statusClass}"></div>
-                        <span>${flight.status}</span>
-                    </td>
-                    <td>
-                        <button class="btn-action" onclick="handleEdit('${flight.id}')">
-                            <!-- Edit Icon -->
-                        </button>
-                        <button class="btn-action" onclick="handleDetails('${flight.id}')">
-                            <!-- Details Icon -->
-                        </button>
-                    </td>
-                </tr>
-            `);
-            $('.no-flights').remove(); // remove "No flights" row if present
-            $('.flight-table tbody').prepend(row);
-        }
-
-        // Example for adding a new flight (if you have a route "AddFakeFlight")
-        $('#addFakeFlight').click(function() {
-            showLoading();
-            $.ajax({
-                url: '@Url.Action("AddFakeFlight", "Flights")',
-                type: 'POST',
-                dataType: 'json',
-                success: function(flight) {
-                    // If you're using SignalR, you'd call:
-                    // connection.invoke("SendFlightUpdate", flight);
-                    // Otherwise just do:
-                    addFlightRow(flight);
-                    hideLoading();
-                },
-                error: function(err) {
-                    console.error('Error adding flight:', err);
-                    hideLoading();
-                }
-            });
-        });
-
-        // Staggered fade-in on initial load
-        $('.flight-table tbody tr').each(function(index) {
-            $(this).css('transition-delay', `${index * 0.05}s`);
-        });
-        </script>
-    </body>
+      } catch (err) {
+        console.error('Error fetching flight data', err);
+      }
+    }
+    // Initial fetch and then poll every 15 sec.
+    fetchFlightData();
+    setInterval(fetchFlightData, 15000);
+    </script>
+</body>
 </html>

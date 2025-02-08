@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CDVSP1WNKPMcSse84WzmfUCkUKmjuBUuOX775JvkB9Y=",
+  "Hash": "Nr6J2ZKj/kZoY+VQvGpXvX4V//djrLjajXsA8lM8IQE=",
   "Source": "AirportDemo",
   "BasePath": "_content/AirportDemo",
   "Mode": "Default",
@@ -1445,6 +1445,69 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
+      "Identity": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\3.jpg",
+      "SourceId": "AirportDemo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\",
+      "BasePath": "_content/AirportDemo",
+      "RelativePath": "images/3#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "2n8g532tv5",
+      "Integrity": "vgAKhXhJqIBWpKPyD/nynAnxe8LoQ34eG3VUz1ahwvw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\3.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\ai-radar-bg-2.jpg",
+      "SourceId": "AirportDemo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\",
+      "BasePath": "_content/AirportDemo",
+      "RelativePath": "images/ai-radar-bg-2#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "06dsgp5msb",
+      "Integrity": "WOpK9+TJBn+2pu5ipb6i/VV2V+bGcZp6N84rj0MT1Sc=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\ai-radar-bg-2.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\ai-radar-bg-233.jpg",
+      "SourceId": "AirportDemo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\",
+      "BasePath": "_content/AirportDemo",
+      "RelativePath": "images/ai-radar-bg-233#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "m1wwrbdcto",
+      "Integrity": "OkFsQK9jBpofCgb8DcrUzfO2hNDxMU0fLNAFF2t19sE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\ai-radar-bg-233.jpg"
+    },
+    {
       "Identity": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\BackgorundLogin.jpg",
       "SourceId": "AirportDemo",
       "SourceType": "Discovered",
@@ -1487,12 +1550,12 @@
       "OriginalItemSpec": "wwwroot\\images\\BackgorundLogin1.jpg"
     },
     {
-      "Identity": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\background.jpg",
+      "Identity": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\plane-icon.png",
       "SourceId": "AirportDemo",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\",
       "BasePath": "_content/AirportDemo",
-      "RelativePath": "images/background#[.{fingerprint}]?.jpg",
+      "RelativePath": "images/plane-icon#[.{fingerprint}]?.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1501,11 +1564,11 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "8s1yhg2s6j",
-      "Integrity": "eLFqtpn6Bi+JFGUBHUh1t5Q6brLPQrAPAAHua0Se6nY=",
+      "Fingerprint": "4b44fe43v4",
+      "Integrity": "0FXe/ia3ObFGqvdLimjsostLvPqhTgceDvRxdsJbuXw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\background.jpg"
+      "OriginalItemSpec": "wwwroot\\images\\plane-icon.png"
     },
     {
       "Identity": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\js\\site.js",
@@ -2815,7 +2878,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Feb 2025 12:21:31 GMT"
+          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2876,7 +2939,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Feb 2025 12:21:31 GMT"
+          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2921,7 +2984,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Feb 2025 12:21:31 GMT"
+          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2976,7 +3039,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Feb 2025 12:21:31 GMT"
+          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3037,7 +3100,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Feb 2025 12:21:31 GMT"
+          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3082,7 +3145,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Feb 2025 12:21:31 GMT"
+          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3137,7 +3200,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Feb 2025 12:21:31 GMT"
+          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3190,7 +3253,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Feb 2025 12:21:31 GMT"
+          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3227,7 +3290,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Feb 2025 12:21:31 GMT"
+          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3274,7 +3337,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Feb 2025 12:21:31 GMT"
+          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3327,7 +3390,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Feb 2025 12:21:31 GMT"
+          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3364,7 +3427,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Feb 2025 12:21:31 GMT"
+          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3983,6 +4046,252 @@
       ]
     },
     {
+      "Route": "images/3.2n8g532tv5.jpg",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\3.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "24582"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"vgAKhXhJqIBWpKPyD/nynAnxe8LoQ34eG3VUz1ahwvw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 07 Feb 2025 12:11:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "2n8g532tv5"
+        },
+        {
+          "Name": "label",
+          "Value": "images/3.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-vgAKhXhJqIBWpKPyD/nynAnxe8LoQ34eG3VUz1ahwvw="
+        }
+      ]
+    },
+    {
+      "Route": "images/3.jpg",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\3.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "24582"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"vgAKhXhJqIBWpKPyD/nynAnxe8LoQ34eG3VUz1ahwvw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 07 Feb 2025 12:11:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-vgAKhXhJqIBWpKPyD/nynAnxe8LoQ34eG3VUz1ahwvw="
+        }
+      ]
+    },
+    {
+      "Route": "images/ai-radar-bg-2.06dsgp5msb.jpg",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\ai-radar-bg-2.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "199094"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WOpK9+TJBn+2pu5ipb6i/VV2V+bGcZp6N84rj0MT1Sc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 07 Feb 2025 12:11:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "06dsgp5msb"
+        },
+        {
+          "Name": "label",
+          "Value": "images/ai-radar-bg-2.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-WOpK9+TJBn+2pu5ipb6i/VV2V+bGcZp6N84rj0MT1Sc="
+        }
+      ]
+    },
+    {
+      "Route": "images/ai-radar-bg-2.jpg",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\ai-radar-bg-2.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "199094"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WOpK9+TJBn+2pu5ipb6i/VV2V+bGcZp6N84rj0MT1Sc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 07 Feb 2025 12:11:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-WOpK9+TJBn+2pu5ipb6i/VV2V+bGcZp6N84rj0MT1Sc="
+        }
+      ]
+    },
+    {
+      "Route": "images/ai-radar-bg-233.jpg",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\ai-radar-bg-233.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "66505"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OkFsQK9jBpofCgb8DcrUzfO2hNDxMU0fLNAFF2t19sE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 07 Feb 2025 12:11:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-OkFsQK9jBpofCgb8DcrUzfO2hNDxMU0fLNAFF2t19sE="
+        }
+      ]
+    },
+    {
+      "Route": "images/ai-radar-bg-233.m1wwrbdcto.jpg",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\ai-radar-bg-233.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "66505"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OkFsQK9jBpofCgb8DcrUzfO2hNDxMU0fLNAFF2t19sE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 07 Feb 2025 12:11:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "m1wwrbdcto"
+        },
+        {
+          "Name": "label",
+          "Value": "images/ai-radar-bg-233.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-OkFsQK9jBpofCgb8DcrUzfO2hNDxMU0fLNAFF2t19sE="
+        }
+      ]
+    },
+    {
       "Route": "images/BackgorundLogin.jpg",
       "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\BackgorundLogin.jpg",
       "Selectors": [],
@@ -4147,8 +4456,8 @@
       ]
     },
     {
-      "Route": "images/background.8s1yhg2s6j.jpg",
-      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\background.jpg",
+      "Route": "images/plane-icon.4b44fe43v4.png",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\plane-icon.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4157,19 +4466,19 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "133408"
+          "Value": "6329"
         },
         {
           "Name": "Content-Type",
-          "Value": "image/jpeg"
+          "Value": "image/png"
         },
         {
           "Name": "ETag",
-          "Value": "\"eLFqtpn6Bi+JFGUBHUh1t5Q6brLPQrAPAAHua0Se6nY=\""
+          "Value": "\"0FXe/ia3ObFGqvdLimjsostLvPqhTgceDvRxdsJbuXw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 02 Feb 2025 17:58:11 GMT"
+          "Value": "Sat, 08 Feb 2025 09:24:38 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4179,21 +4488,21 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "8s1yhg2s6j"
+          "Value": "4b44fe43v4"
         },
         {
           "Name": "label",
-          "Value": "images/background.jpg"
+          "Value": "images/plane-icon.png"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-eLFqtpn6Bi+JFGUBHUh1t5Q6brLPQrAPAAHua0Se6nY="
+          "Value": "sha256-0FXe/ia3ObFGqvdLimjsostLvPqhTgceDvRxdsJbuXw="
         }
       ]
     },
     {
-      "Route": "images/background.jpg",
-      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\background.jpg",
+      "Route": "images/plane-icon.png",
+      "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\plane-icon.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4202,19 +4511,19 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "133408"
+          "Value": "6329"
         },
         {
           "Name": "Content-Type",
-          "Value": "image/jpeg"
+          "Value": "image/png"
         },
         {
           "Name": "ETag",
-          "Value": "\"eLFqtpn6Bi+JFGUBHUh1t5Q6brLPQrAPAAHua0Se6nY=\""
+          "Value": "\"0FXe/ia3ObFGqvdLimjsostLvPqhTgceDvRxdsJbuXw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 02 Feb 2025 17:58:11 GMT"
+          "Value": "Sat, 08 Feb 2025 09:24:38 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4224,7 +4533,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-eLFqtpn6Bi+JFGUBHUh1t5Q6brLPQrAPAAHua0Se6nY="
+          "Value": "sha256-0FXe/ia3ObFGqvdLimjsostLvPqhTgceDvRxdsJbuXw="
         }
       ]
     },

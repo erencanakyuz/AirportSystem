@@ -1,0 +1,259 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>İstanbul Havalimanı Uçuş Radarı</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        #mapContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #radarCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none; /* Etkileşimleri alttaki haritaya geçir */
+        }
+    </style>
+</head>
+<body>
+    <div id="mapContainer"></div>
+    <canvas id="radarCanvas"></canvas>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        const canvas = document.getElementById('radarCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radarRadius = Math.min(centerX, centerY) * 0.8;
+        let sweepAngle = 0;
+        let flightData = null;
+        let planeBlinkState = true;
+        let lastFetchTime = 0;
+        const fetchInterval = 15000;
+
+        const istanbulLat = 41.275;
+        const istanbulLon = 28.75;
+
+        let map = L.map('mapContainer', {
+            center: [istanbulLat, istanbulLon],
+            zoom: 9,
+            zoomControl: false,
+            attributionControl: false,
+            dragging: false,
+            doubleClickZoom: false,
+            scrollWheelZoom: false,
+            touchZoom: false,
+            boxZoom: false,
+            keyboard: false,
+        });
+
+        // Özel bir pane oluştur (markerlar için) ve z-index'ini yüksek ayarla
+        map.createPane('planeIconsPane');
+        map.getPane('planeIconsPane').style.zIndex = 650; // Yüksek bir z-index değeri (varsayılan marker pane z-index'i 650)
+
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+
+        const lamin = 40.7;
+        const lamax = 41.4;
+        const lomin = 28.5;
+        const lomax = 29.2;
+
+        /* // Dummy uçak verisi - TEST İÇİN EKLENDİ - ŞİMDİLİK YORUM SATIRI YAPILDI
+        let dummyFlightData = [
+            [
+                "dummy1",
+                "DummyFlight1",
+                "",
+                0,
+                0,
+                28.800,
+                41.280,
+                1000,
+                false,
+                200,
+                90,
+                0,
+                0,
+                0,
+                0,
+                0,
+            ],
+            [
+                "dummy2",
+                "DummyFlight2",
+                "",
+                0,
+                0,
+                28.790,
+                41.270,
+                2000,
+                false,
+                250,
+                180,
+                0,
+                0,
+                0,
+                0,
+                0,
+            ],
+        ];
+        */
+
+
+        function getFlightData() {
+            const currentTime = Date.now();
+            if (currentTime - lastFetchTime < fetchInterval) {
+                console.log("Veri çekme aralığı henüz dolmadı, veri çekme atlandı.");
+                return;
+            }
+            lastFetchTime = currentTime;
+
+            console.log("Gerçek uçuş verileri çekiliyor..."); // Konsola bilgi mesajı
+
+            // flightData = dummyFlightData; // Dummy veriyi kullanma - YORUM SATIRI YAPILDI
+            // updateFlights(); // Dummy veriyle updateFlights'ı çağırma - YORUM SATIRI YAPILDI
+
+
+            $.ajax({ // Gerçek API'den veri çekme kısmı - AKTİF HALE GETİRİLDİ (YORUM SATIRI KALDIRILDI)
+                url: '@Url.Action("GetFlights", "Radar")',
+                method: 'GET',
+                success: function(data) {
+                    console.log("Uçuş verileri başarıyla alındı:", data);
+                    flightData = data.states;
+                    updateFlights(); // Veri alındıktan sonra updateFlights'ı çağır
+                },
+                error: function(error) {
+                    console.error("Uçuş verileri alınırken HATA:", error);
+                }
+            });
+
+        }
+
+
+        let planeMarkers = {}; // Global scope'ta tanımlandı
+
+        function updateFlights() {
+            if (!flightData) return;
+
+            // Mevcut markerları temizle
+            for (let key in planeMarkers) {
+                if (planeMarkers.hasOwnProperty(key)) {
+                    map.removeLayer(planeMarkers[key]);
+                }
+            }
+            planeMarkers = {}; // Obje temizlendikten sonra yeniden başlat
+
+            flightData.forEach(function(flight) {
+                let icao24 = flight[0];
+                let callsign = flight[1] ? flight[1].trim() : "N/A";
+                let longitude = flight[5];
+                let latitude = flight[6];
+                let altitude = flight[7];
+
+                if (longitude == null || latitude == null) return;
+
+                let planeIcon = L.icon({
+                    iconUrl: '/images/plane-icon.png', // Yerel dosya yolunu kullanıyoruz!
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16],
+                    popupAnchor: [0, -10]
+                });
+
+                let marker = L.marker([latitude, longitude], { icon: planeIcon }); // Koordinatları doğrudan kullan
+                marker.bindTooltip(
+                    `<b>Uçuş: ${callsign}</b><br>Rakım: ${altitude}m`,
+                    { permanent: false, direction: 'top', offset: [0, -10] }
+                );
+                marker.addTo(map, 'planeIconsPane'); // Marker'ı özel pane'e ekle **GÜNCELLENDİ**
+                planeMarkers[icao24] = marker; // Markerı sakla
+            });
+        }
+
+
+        function drawRadar() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.7)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radarRadius, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.strokeStyle = 'rgba(0, 255, 255, 0.5)';
+            let numCircles = 3;
+            for (let i = 1; i <= numCircles; i++) {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radarRadius * (i / numCircles), 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.9)';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(centerX + radarRadius * Math.cos(sweepAngle), centerY + radarRadius * Math.sin(sweepAngle));
+            ctx.stroke();
+
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
+            for (let i = 0; i < 15; i++) {
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(centerX + radarRadius * Math.cos(sweepAngle + i * (2 * Math.PI) / 45), centerY + radarRadius * Math.sin(sweepAngle + i * (2 * Math.PI) / 45));
+                ctx.stroke();
+            }
+
+
+            sweepAngle += 0.02;
+            if (sweepAngle > 2 * Math.PI) {
+                sweepAngle = 0;
+            }
+
+
+            frameCount++;
+
+            requestAnimationFrame(drawRadar);
+        }
+
+        let frameCount = 0;
+        getFlightData(); // Gerçek veriyi çekecek şekilde değiştirildi
+        setInterval(getFlightData, fetchInterval);
+        updateFlights(); // updateFlights'ı da başlat, ilk yüklemede uçaklar gelsin
+        drawRadar(); // Radar çizimini başlat
+    </script>
+</body>
+</html>

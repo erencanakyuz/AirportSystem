@@ -5,16 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AirportDemo.Controllers
 {
-    public class RadarController : Controller
+    public class RadarApiController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public RadarController(IHttpClientFactory httpClientFactory)
+        public RadarApiController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
 
-        // Returns the radar view (see below)
         public IActionResult Index()
         {
             return View();
@@ -23,10 +22,12 @@ namespace AirportDemo.Controllers
         [HttpGet]
         public async Task<IActionResult> GetFlights()
         {
-            double lamin = 40.8;
-            double lamax = 41.1;
-            double lomin = 28.7;
-            double lomax = 28.9;
+            // Bounding box for Istanbul Airport (IST) area - Adjusted to cover a bit wider area
+            // You might need to fine-tune these values based on the area you want to cover.
+            double lamin = 40.7;  // Minimum latitude
+            double lamax = 41.4;  // Maximum latitude
+            double lomin = 28.5;  // Minimum longitude
+            double lomax = 29.2;  // Maximum longitude
 
             string url = $"https://opensky-network.org/api/states/all?lamin={lamin}&lomin={lomin}&lamax={lamax}&lomax={lomax}";
 

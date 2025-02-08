@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\3.jpg",
+      "PackagePath": "staticwebassets\\images\\3.jpg"
+    },
+    {
       "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\BackgorundLogin.jpg",
       "PackagePath": "staticwebassets\\images\\BackgorundLogin.jpg"
     },
@@ -21,8 +25,16 @@
       "PackagePath": "staticwebassets\\images\\BackgorundLogin1.jpg"
     },
     {
-      "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\background.jpg",
-      "PackagePath": "staticwebassets\\images\\background.jpg"
+      "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\ai-radar-bg-2.jpg",
+      "PackagePath": "staticwebassets\\images\\ai-radar-bg-2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\ai-radar-bg-233.jpg",
+      "PackagePath": "staticwebassets\\images\\ai-radar-bg-233.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\plane-icon.png",
+      "PackagePath": "staticwebassets\\images\\plane-icon.png"
     },
     {
       "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\js\\site.js",

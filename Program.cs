@@ -18,6 +18,8 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
+
+builder.Services.AddHttpClient(); // Register HttpClientFactory
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -33,7 +35,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapControllers();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

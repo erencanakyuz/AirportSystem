@@ -1,16 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Properties",
+    "\\Controllers",
     "\\Views",
-    "\\Views\\Auth",
     "\\Views\\Flights",
     "\\Views\\Home",
+    "\\Views\\Radar",
     "\\Views\\Shared",
     "\\wwwroot",
     "\\wwwroot\\css",
     "\\wwwroot\\images"
   ],
-  "SelectedNode": "\\wwwroot\\images\\BackgorundLogin.jpg",
+  "SelectedNode": "\\wwwroot\\images\\plane-icon.png",
   "PreviewInSolutionExplorer": false
 }
