@@ -22,14 +22,16 @@ namespace AirportDemo.Controllers
         [HttpGet]
         public async Task<IActionResult> GetFlights()
         {
-            // Bounding box for Istanbul Airport (IST) area - Adjusted to cover a bit wider area
-            // You might need to fine-tune these values based on the area you want to cover.
-            double lamin = 40.7;  // Minimum latitude
-            double lamax = 41.4;  // Maximum latitude
-            double lomin = 28.5;  // Minimum longitude
-            double lomax = 29.2;  // Maximum longitude
+            // **START HERE: Modify these bounding box values**
+            double lamin = 38.0;   // Minimum latitude (further South)
+            double lamax = 45.0;   // Maximum latitude (further North)
+            double lomin = 25.0;   // Minimum longitude (further West)
+            double lomax = 35.0;   // Maximum longitude (further East)
 
-            string url = $"https://opensky-network.org/api/states/all?lamin={lamin}&lomin={lomin}&lamax={lamax}&lomax={lomax}";
+            // **Original comment (still relevant):**
+            // Burada lamin, lamax, lomin, lomax deðerlerini çok geniþ tuttuk.
+            // Böylece IST yakýnýndaki tüm uçaklar (ve daha fazlasý) gelsin.
+            string url = $"https://opensky-network.org/api/states/all?lamin=38.0&lomin=25.0&lamax=45.0&lomax=35.0";
 
             using var client = _httpClientFactory.CreateClient();
             try
