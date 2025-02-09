@@ -35,6 +35,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddHttpClient(); // Register HttpClientFactory
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddControllers();
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -48,6 +49,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 app.MapControllerRoute(
   name: "default",

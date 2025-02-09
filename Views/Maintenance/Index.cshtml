@@ -1,0 +1,301 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creative Airport Status Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        /* Enhanced Styles (same as before) */
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif; /* More modern font */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: flex-start; /* Align content to the top */
+        }
+
+        .dashboard-container {
+            padding: 2rem 1rem;
+            padding-top: 4rem; /* Add some top padding to move content down */
+            max-width: 1200px;
+            margin: auto;
+            width: 100%;
+        }
+
+        /* Header Section */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            display: flex; /* Use flexbox to align title and button */
+            justify-content: center; /* Center items horizontally */
+            align-items: center; /* Center items vertically */
+            flex-direction: column; /* Stack title and subtitle */
+        }
+
+        .airport-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .airport-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+            margin-bottom: 1rem; /* Add margin below subtitle for spacing */
+        }
+
+        .refresh-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 0.5rem;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem; /* Add margin above button to space from subtitle */
+        }
+
+            .refresh-button:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+            color: #fff;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            overflow: hidden;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 16px rgba(0, 0, 0, 0.4);
+            }
+
+        .card-header {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 1.3rem;
+            padding: 1rem 1.25rem;
+            border-radius: 1rem 1rem 0 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .card-header i {
+                margin-right: 0.5rem;
+                font-size: 1.4rem;
+                vertical-align: middle;
+            }
+
+        .card-body {
+            font-size: 1rem;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .status-text {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .heading {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s forwards ease-out;
+        }
+
+        @@keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .text-highlight {
+            color: #ffbb33;
+            font-weight: 600;
+        }
+
+        .temp-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .units {
+            font-size: 0.9rem;
+            margin-left: 0.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            vertical-align: top;
+            position: relative;
+            top: 0.4rem;
+        }
+
+        hr.border-light {
+            border-top: 1px dashed rgba(255, 255, 255, 0.2);
+            margin: 1rem auto;
+            width: 70%;
+        }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .airport-title {
+                font-size: 2rem;
+            }
+
+            .airport-subtitle {
+                font-size: 1rem;
+            }
+
+            .card-header {
+                font-size: 1.1rem;
+            }
+
+            .status-text {
+                font-size: 1.1rem;
+            }
+
+            .temp-text {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container fade-in">
+        <header class="dashboard-header">
+            <h1 class="airport-title">Istanbul Airport Status Dashboard</h1>
+            <p class="airport-subtitle">Real-time Delays and Weather Conditions</p>
+            <button id="refreshButton" class="refresh-button">
+                <i class="bi bi-arrow-clockwise"></i> Refresh Data
+            </button>
+        </header>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <i class="bi bi-airplane-fill"></i> Delay Information
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="status-text mb-2" id="delayStatusText">Loading Delay...</p>
+                        <hr class="border-light" />
+                        <p class="mb-1"><i class="bi bi-graph-up-arrow"></i> Delay Score: <span class="text-highlight" id="delayScore">--</span></p>
+                        <p class="mb-1"><i class="bi bi-activity"></i> Trend: <span class="text-highlight" id="delayTrend">--</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <i class="bi bi-cloud-sun-fill"></i> Current Weather
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="status-text" id="sky">Loading Weather...</p>
+                        <hr class="border-light" />
+                        <p class="temp-text d-inline" id="tempF">--°F</p>
+                        <span class="units" id="tempC">(--°C)</span>
+                        <hr class="border-light" />
+                        <p><i class="bi bi-eye-fill"></i> Visibility: <span class="text-highlight" id="visibilityMiles">--</span> miles</p>
+                        <p>
+                            <i class="bi bi-wind"></i> Wind:
+                            <span class="text-highlight" id="windKnots">--</span>
+                            <span class="units">kts</span>
+                            (
+                            <span class="text-highlight" id="windDir">N/A</span>
+                            )
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dinamik veri çekme fonksiyonu
+        async function fetchAirportStatus() {
+            try {
+                const response = await fetch('http://localhost:5000/api/airport-status');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                console.log("FlightStats data:", data);
+
+                // Delay Index
+                if (data.delayIndex) {
+                    const status = data.delayIndex.status || "Unknown";
+                    const trend = data.delayIndex.trend || "No Trend";
+                    const score = data.delayIndex.score ?? "--";
+
+                    document.getElementById('delayStatusText').textContent = `${status.toUpperCase()} AIRPORT DELAY`;
+                    document.getElementById('delayScore').textContent = score;
+                    document.getElementById('delayTrend').textContent = trend;
+                } else {
+                    document.getElementById('delayStatusText').textContent = "No Delay Data";
+                }
+
+                // Current Weather
+                if (data.currentWeather) {
+                    const tempF = data.currentWeather.tempF ?? "--";
+                    const tempC = data.currentWeather.tempC ?? "--";
+                    const sky = data.currentWeather.sky || "No Data";
+                    const direction = data.currentWeather.direction ?? "N/A";
+                    const visibility = data.currentWeather.visibility ? data.currentWeather.visibility.miles : "--";
+
+                    document.getElementById('tempF').textContent = `${tempF}°F`;
+                    document.getElementById('tempC').textContent = `(${tempC}°C)`;
+                    document.getElementById('sky').textContent = sky;
+                    document.getElementById('visibilityMiles').textContent = visibility;
+
+                    if (data.currentWeather.wind) {
+                        document.getElementById('windKnots').textContent = data.currentWeather.wind.knots ?? "--";
+                    }
+                    document.getElementById('windDir').textContent = direction;
+                } else {
+                    document.getElementById('sky').textContent = "No Weather Data";
+                }
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('delayStatusText').textContent = "Error loading data.";
+                document.getElementById('sky').textContent = "Error loading data.";
+            }
+        }
+
+        // Sayfa yüklenince veriyi çek ve refresh butonuna event listener ekle
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchAirportStatus(); // Initial data load
+
+            const refreshButton = document.getElementById('refreshButton');
+            refreshButton.addEventListener('click', fetchAirportStatus); // Refresh on button click
+        });
+    </script>
+</body>
+</html>

@@ -23,7 +23,7 @@ namespace AirportDemo.Controllers
         {
             double lamin = 39.4732, lamax = 43.0768;
             double lomin = 26.3981, lomax = 31.1039;
-
+       /*https://www.flightera.net/en/live/map/4140153/4078054/2808380/2914260/10/small?347826579 */
             string url = $"https://opensky-network.org/api/states/all?lamin={lamin}&lomin={lomin}&lamax={lamax}&lomax={lomax}";
 
             using var client = _httpClientFactory.CreateClient();
