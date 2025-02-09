@@ -200,8 +200,6 @@ C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\compressed\dgwfnzr8go-2z0ns9nrw6.g
 C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\compressed\zp9y5ltyyk-muycvpuwrr.gz
 C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\compressed\aogayakg5u-87fc7y1x7t.gz
 C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\compressed\092zyrb3xd-mlv21k5csn.gz
-C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\compressed\6qqkbuj4tg-2d1a6t5jgb.gz
-C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\compressed\kso87m3tr3-2d1a6t5jgb.gz
 C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\staticwebassets.development.json
 C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\staticwebassets.build.endpoints.json
@@ -217,3 +215,5 @@ C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\refint\AirportDemo.dll
 C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\AirportDemo.pdb
 C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\AirportDemo.genruntimeconfig.cache
 C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\ref\AirportDemo.dll
+C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\compressed\6qqkbuj4tg-27rkqenyfi.gz
+C:\Users\Quicito\AirportDemo\obj\Debug\net9.0\compressed\kso87m3tr3-27rkqenyfi.gz

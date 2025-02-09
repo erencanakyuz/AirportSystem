@@ -179,48 +179,49 @@
         const fetchInterval = 15000; // 15 seconds
 
         function getFlightData() {
-            const now = Date.now();
-            if (now - lastFetchTime < fetchInterval || isFetchingData) {
-                console.log("Fetch interval not met or a request is in progress.");
-                return;
-            }
-            lastFetchTime = now;
-            isFetchingData = true;
-            loadingIndicator.style.display = 'block';
+    const now = Date.now();
+    if (now - lastFetchTime < fetchInterval || isFetchingData) {
+        console.log("Fetch interval not met or a request is in progress.");
+        return;
+    }
+    lastFetchTime = now;
+    isFetchingData = true;
+    loadingIndicator.style.display = 'block';
 
-            // Ajax to your server endpoint: /RadarApi/GetFlights
-            $.ajax({
-                url: '@Url.Action("GetFlights", "RadarApi")',
-                method: 'GET',
-                dataType: 'json'
-            })
-            .done(function(data) {
-                isFetchingData = false;
-                loadingIndicator.style.display = 'none';
+    // Fetch data from the correct API endpoint
+    $.ajax({
+        url: '/api/radar/flights', // ✅ Use hardcoded URL instead of @Url.Action
+        method: 'GET',
+        dataType: 'json'
+    })
+    .done(function(data) {
+        isFetchingData = false;
+        loadingIndicator.style.display = 'none';
 
-                // Check if there's an error
-                if (data.error) {
-                    console.error("Server error:", data.error, data.details);
-                    showErrorMsg("Sunucu hatası: " + data.error);
-                    return;
-                }
-
-                // We expect { time: ..., states: [...] }
-                if (!data.states) {
-                    console.warn("Invalid data format from server:", data);
-                    showErrorMsg("Geçersiz veri formatı. 'states' yok.");
-                    return;
-                }
-                flightData = data.states;
-                updateFlights();
-            })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                isFetchingData = false;
-                loadingIndicator.style.display = 'none';
-                console.error("Failed to fetch flights:", textStatus, errorThrown);
-                showErrorMsg("Veri alınamadı. HTTP Hata: " + jqXHR.status + " - " + errorThrown);
-            });
+        // Check if there's an error in the response
+        if (data.error) {
+            console.error("Server error:", data.error, data.details);
+            showErrorMsg("Sunucu hatası: " + data.error);
+            return;
         }
+
+        // Validate response format
+        if (!data.states || !Array.isArray(data.states)) {
+            console.warn("Invalid data format from server:", data);
+            showErrorMsg("Geçersiz veri formatı. 'states' yok.");
+            return;
+        }
+
+        flightData = data.states;
+        updateFlights();
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        isFetchingData = false;
+        loadingIndicator.style.display = 'none';
+        console.error("Failed to fetch flights:", textStatus, errorThrown);
+        showErrorMsg("Veri alınamadı. HTTP Hata: " + jqXHR.status + " - " + errorThrown);
+    });
+}
 
         function showErrorMsg(msg) {
             loadingIndicator.textContent = "Hata: " + msg;

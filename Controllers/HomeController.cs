@@ -1,9 +1,9 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using AirportDemo.Models;
-
+using Microsoft.AspNetCore.Authorization;
 namespace AirportDemo.Controllers;
-// captcha code : 6LcQzsoqAAAAAAsEOms0BJpn3W75dHg1ZS2sl4Dv
+
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -12,10 +12,13 @@ public class HomeController : Controller
     {
         _logger = logger;
     }
+
+    [Authorize]
     public IActionResult Flights()
     {
         return View();
     }
+
     public IActionResult Index()
     {
         return View();

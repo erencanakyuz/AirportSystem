@@ -63,7 +63,11 @@ namespace AirportDemo.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl); // Kullanýcýyý önceki sayfasýna geri yönlendir
+                    }
+                    return RedirectToAction("Index", "Home"); // Varsayýlan yönlendirme
                 }
 
                 ModelState.AddModelError("", "Invalid login attempt.");
