@@ -1,7 +1,7 @@
 @model IEnumerable<AirportDemo.Models.Flight>
 
     @{
-    Layout = null;
+     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "SkyControl Dashboard";
     var currentSortDirection = ViewData["SortDirection"]?.ToString() ?? "asc";
     }

@@ -2,15 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\Views",
-    "\\Views\\Radar",
-    "\\Views\\Shared",
+    "\\Views\\Auth",
+    "\\Views\\Flights",
+    "\\Views\\Home",
     "\\wwwroot",
-    "\\wwwroot\\css",
     "\\wwwroot\\images",
     "\\wwwroot\\lib",
     "\\wwwroot\\lib\\jquery-validation",
     "\\wwwroot\\lib\\jquery-validation\\dist"
   ],
-  "SelectedNode": "\\Views\\Shared\\_Layout.cshtml.css",
+  "SelectedNode": "\\wwwroot\\css\\site.css",
   "PreviewInSolutionExplorer": false
 }
