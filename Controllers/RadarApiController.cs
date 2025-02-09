@@ -1,5 +1,8 @@
+// RadarApiController.cs
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,36 +17,40 @@ namespace AirportDemo.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [HttpGet]
         public async Task<IActionResult> GetFlights()
         {
-            // **START HERE: Modify these bounding box values**
-            double lamin = 38.0;   // Minimum latitude (further South)
-            double lamax = 45.0;   // Maximum latitude (further North)
-            double lomin = 25.0;   // Minimum longitude (further West)
-            double lomax = 35.0;   // Maximum longitude (further East)
+            // Wide bounding box around Istanbul
+            double lamin = 39.4732;
+            double lamax = 43.0768;
+            double lomin = 26.3981;
+            double lomax = 31.1039;
 
-            // **Original comment (still relevant):**
-            // Burada lamin, lamax, lomin, lomax deðerlerini çok geniþ tuttuk.
-            // Böylece IST yakýnýndaki tüm uçaklar (ve daha fazlasý) gelsin.
-            string url = $"https://opensky-network.org/api/states/all?lamin=38.0&lomin=25.0&lamax=45.0&lomax=35.0";
+            string url = $"https://opensky-network.org/api/states/all?lamin={lamin}&lomin={lomin}&lamax={lamax}&lomax={lomax}";
 
             using var client = _httpClientFactory.CreateClient();
+
+            // Your OpenSky credentials
+            string openSkyUser = "UserTest1";
+            string openSkyPassword = "2@LhapEtPxSL4pn";
+
+            var encoded = Convert.ToBase64String(
+                Encoding.GetEncoding("ISO-8859-1").GetBytes($"{openSkyUser}:{openSkyPassword}")
+            );
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Basic", encoded);
+
             try
             {
                 var response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
+
                 var content = await response.Content.ReadAsStringAsync();
                 return Content(content, "application/json");
             }
             catch (Exception ex)
             {
-                return Json(new { error = "Flight data unavailable. Please try again later.", details = ex.Message });
+                return Json(new { error = "Flight data unavailable.", details = ex.Message });
             }
         }
     }

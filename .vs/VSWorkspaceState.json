@@ -11,6 +11,6 @@
     "\\wwwroot\\css",
     "\\wwwroot\\images"
   ],
-  "SelectedNode": "\\Controllers\\RadarApiController.cs",
+  "SelectedNode": "\\Views\\Flights\\Index.cshtml",
   "PreviewInSolutionExplorer": false
 }

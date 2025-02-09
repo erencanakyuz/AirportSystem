@@ -156,8 +156,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>hs9f3d1yiu</Fingerprint>
-      <Integrity>UaafgicSXZh2BDat8xa5siAER7BQZqnBWLltXmb/oAA=</Integrity>
+      <Fingerprint>iw7t4d7073</Fingerprint>
+      <Integrity>QhVSlPdNPNxRDSFf3f7bGar4yigH9MKOiXhp242Z2Tc=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\plane-icon.png'))</OriginalItemSpec>

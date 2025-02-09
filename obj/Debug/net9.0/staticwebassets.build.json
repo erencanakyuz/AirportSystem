@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "YktSOccwSQZeSYNmf4z38hokOctRpU/Jh+qSQ3FTz2s=",
+  "Hash": "p61fiFUzH9p93DdntKHevNi9PryLCSSAcmjUGE2Gjxw=",
   "Source": "AirportDemo",
   "BasePath": "_content/AirportDemo",
   "Mode": "Default",
@@ -1564,8 +1564,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "hs9f3d1yiu",
-      "Integrity": "UaafgicSXZh2BDat8xa5siAER7BQZqnBWLltXmb/oAA=",
+      "Fingerprint": "iw7t4d7073",
+      "Integrity": "QhVSlPdNPNxRDSFf3f7bGar4yigH9MKOiXhp242Z2Tc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\plane-icon.png"
@@ -2878,7 +2878,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
+          "Value": "Sun, 09 Feb 2025 10:45:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2939,7 +2939,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
+          "Value": "Sun, 09 Feb 2025 10:45:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2984,7 +2984,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
+          "Value": "Sun, 09 Feb 2025 10:45:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3039,7 +3039,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
+          "Value": "Sun, 09 Feb 2025 10:45:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3100,7 +3100,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
+          "Value": "Sun, 09 Feb 2025 10:45:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3145,7 +3145,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
+          "Value": "Sun, 09 Feb 2025 10:45:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3200,7 +3200,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
+          "Value": "Sun, 09 Feb 2025 10:45:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3253,7 +3253,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
+          "Value": "Sun, 09 Feb 2025 10:45:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3290,7 +3290,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
+          "Value": "Sun, 09 Feb 2025 10:45:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3337,7 +3337,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
+          "Value": "Sun, 09 Feb 2025 10:45:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3390,7 +3390,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
+          "Value": "Sun, 09 Feb 2025 10:45:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3427,7 +3427,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 09:43:40 GMT"
+          "Value": "Sun, 09 Feb 2025 10:45:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4456,7 +4456,7 @@
       ]
     },
     {
-      "Route": "images/plane-icon.hs9f3d1yiu.png",
+      "Route": "images/plane-icon.iw7t4d7073.png",
       "AssetFile": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\plane-icon.png",
       "Selectors": [],
       "ResponseHeaders": [
@@ -4466,7 +4466,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "61403"
+          "Value": "44821"
         },
         {
           "Name": "Content-Type",
@@ -4474,11 +4474,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"UaafgicSXZh2BDat8xa5siAER7BQZqnBWLltXmb/oAA=\""
+          "Value": "\"QhVSlPdNPNxRDSFf3f7bGar4yigH9MKOiXhp242Z2Tc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 16:16:26 GMT"
+          "Value": "Sat, 08 Feb 2025 17:36:50 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4488,7 +4488,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "hs9f3d1yiu"
+          "Value": "iw7t4d7073"
         },
         {
           "Name": "label",
@@ -4496,7 +4496,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-UaafgicSXZh2BDat8xa5siAER7BQZqnBWLltXmb/oAA="
+          "Value": "sha256-QhVSlPdNPNxRDSFf3f7bGar4yigH9MKOiXhp242Z2Tc="
         }
       ]
     },
@@ -4511,7 +4511,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "61403"
+          "Value": "44821"
         },
         {
           "Name": "Content-Type",
@@ -4519,11 +4519,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"UaafgicSXZh2BDat8xa5siAER7BQZqnBWLltXmb/oAA=\""
+          "Value": "\"QhVSlPdNPNxRDSFf3f7bGar4yigH9MKOiXhp242Z2Tc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 16:16:26 GMT"
+          "Value": "Sat, 08 Feb 2025 17:36:50 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4533,7 +4533,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-UaafgicSXZh2BDat8xa5siAER7BQZqnBWLltXmb/oAA="
+          "Value": "sha256-QhVSlPdNPNxRDSFf3f7bGar4yigH9MKOiXhp242Z2Tc="
         }
       ]
     },
