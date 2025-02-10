@@ -4,13 +4,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\AirportDemo.vzc74nupyc.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-dWJ1GcG2s1OzwynzsszmAl65AdMhdVIoDv8s2hXs1tI="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1920"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022dWJ1GcG2s1OzwynzsszmAl65AdMhdVIoDv8s2hXs1tI=\u0022"},{"Name":"Last-Modified","Value":"Mon, 10 Feb 2025 10:56:09 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1920"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022dWJ1GcG2s1OzwynzsszmAl65AdMhdVIoDv8s2hXs1tI=\u0022"},{"Name":"Last-Modified","Value":"Mon, 10 Feb 2025 11:36:59 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/AirportDemo/AirportDemo.vzc74nupyc.bundle.scp.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\AirportDemo.vzc74nupyc.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"vzc74nupyc"},{"Name":"integrity","Value":"sha256-dWJ1GcG2s1OzwynzsszmAl65AdMhdVIoDv8s2hXs1tI="},{"Name":"label","Value":"_content/AirportDemo/AirportDemo.bundle.scp.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1920"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022dWJ1GcG2s1OzwynzsszmAl65AdMhdVIoDv8s2hXs1tI=\u0022"},{"Name":"Last-Modified","Value":"Mon, 10 Feb 2025 10:56:09 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1920"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022dWJ1GcG2s1OzwynzsszmAl65AdMhdVIoDv8s2hXs1tI=\u0022"},{"Name":"Last-Modified","Value":"Mon, 10 Feb 2025 11:36:59 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/AirportDemo/css/site.2sebxnzmzo.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>

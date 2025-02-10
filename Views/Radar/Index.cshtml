@@ -176,7 +176,7 @@
         let flightData = null;
         let lastFetchTime = 0;
         let isFetchingData = false;
-        const fetchInterval = 15000; // 15 seconds
+        const fetchInterval = 1500; // 15 seconds
 
         function getFlightData() {
     const now = Date.now();
@@ -292,7 +292,7 @@
                     let icon = planeMarkers[icao24].options.icon;
                     icon.options.html = `
                         <img src="/images/plane-icon.png"
-                             style="width:72px; height:72px; opacity:0.6;
+                             style="width:36px; height:36px; opacity:1;
                                     transform: rotate(${heading}deg);">
                     `;
                     planeMarkers[icao24].setIcon(icon);
@@ -313,11 +313,11 @@
                         className: 'plane-marker',
                         html: `
                             <img src="/images/plane-icon.png"
-                                 style="width:72px; height:72px; opacity:0.6;
+                                 style="width:36px; height:36px; opacity:1;
                                         transform: rotate(${heading}deg);">
                         `,
-                        iconSize: [72, 72],
-                        iconAnchor: [36, 36]
+                        iconSize: [36, 36],
+                        iconAnchor: [18, 18]
                     });
 
                     let marker = L.marker([latitude, longitude], { icon: planeIcon });
@@ -391,25 +391,26 @@
         function drawRadar() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Outer circle
-            ctx.strokeStyle = 'rgba(0, 255, 0, 0.7)';
-            ctx.lineWidth = 2;
+            // **1. Subtle Outer Circle:**
+            ctx.strokeStyle = 'rgba(200, 200, 200, 0.3)'; // Light gray, very subtle
+            ctx.lineWidth = 1; // Thinner line
             ctx.beginPath();
             ctx.arc(centerX, centerY, radarRadius, 0, 2 * Math.PI);
             ctx.stroke();
 
-            // Inner rings
-            ctx.strokeStyle = 'rgba(0, 255, 255, 0.5)';
-            const numRings = 3;
+            // **2. Single, Faint Inner Ring:** (Optional - you can remove this section entirely for even more minimalism)
+            ctx.strokeStyle = 'rgba(200, 200, 200, 0.15)'; // Very faint gray
+            ctx.lineWidth = 1; // Thinner line
+            const numRings = 1; // Just one ring for a cleaner look
             for (let i = 1; i <= numRings; i++) {
                 ctx.beginPath();
-                ctx.arc(centerX, centerY, radarRadius * (i/numRings), 0, 2 * Math.PI);
+                ctx.arc(centerX, centerY, radarRadius * 0.5, 0, 2 * Math.PI); // Ring at half radius
                 ctx.stroke();
             }
 
-            // Main sweep line
-            ctx.strokeStyle = 'rgba(0, 255, 0, 0.9)';
-            ctx.lineWidth = 3;
+            // **3. Minimalist Sweep Line:**
+            ctx.strokeStyle = 'rgba(0, 191, 255, 0.7)'; // Soft blue for sweep
+            ctx.lineWidth = 2; // Slightly thinner sweep line
             ctx.beginPath();
             ctx.moveTo(centerX, centerY);
             ctx.lineTo(
@@ -418,34 +419,21 @@
             );
             ctx.stroke();
 
-            // Extra lines for "sweep effect"
-            ctx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
-            for (let i = 0; i < 15; i++) {
-                ctx.beginPath();
-                let angleOffset = i * (2 * Math.PI) / 45;
-                ctx.moveTo(centerX, centerY);
-                ctx.lineTo(
-                    centerX + radarRadius * Math.cos(sweepAngle + angleOffset),
-                    centerY + radarRadius * Math.sin(sweepAngle + angleOffset)
-                );
-                ctx.stroke();
-            }
+           
 
-            // Move the sweep angle
-            sweepAngle += 0.02;
+            // Move the sweep angle (same speed or adjust as needed)
+            sweepAngle += 0.005;
             if (sweepAngle > 2 * Math.PI) {
                 sweepAngle = 0;
             }
 
-            // Adjust each marker's opacity based on the sweep angle
-            let beamWidth = 0.2; // radians
+            // **5. Subtle Marker Opacity Change:**
+            let beamWidth = 0.2; // radians - Keep the beam width as is for now
             for (let key in planeMarkers) {
                 let marker = planeMarkers[key];
-                // Depending on your Leaflet version:
                 let markerElement = (marker.getElement && marker.getElement()) || marker._icon;
                 if (!markerElement) continue;
 
-                // Convert lat/lng to screen coords
                 let latLng = marker.getLatLng();
                 let pt = map.latLngToContainerPoint(latLng);
 
@@ -457,7 +445,8 @@
                 let diff = Math.abs(markerAngle - sweepAngle);
                 if (diff > Math.PI) diff = 2 * Math.PI - diff;
 
-                let opacity = (diff < beamWidth) ? 1 : 0.1;
+                // **Subtler opacity range:**
+                let opacity = (diff < beamWidth) ? 1 : 0.5; // Reduced max opacity, increased min opacity for less drastic change
                 markerElement.style.opacity = opacity;
             }
 

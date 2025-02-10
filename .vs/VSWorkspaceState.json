@@ -4,13 +4,13 @@
     "\\Controllers",
     "\\Views",
     "\\Views\\Radar",
-    "\\Views\\Shared",
     "\\wwwroot",
     "\\wwwroot\\css",
+    "\\wwwroot\\images",
     "\\wwwroot\\lib",
     "\\wwwroot\\lib\\jquery-validation",
     "\\wwwroot\\lib\\jquery-validation\\dist"
   ],
-  "SelectedNode": "\\Views\\Maintenance\\Index.cshtml",
+  "SelectedNode": "\\wwwroot\\images\\ai-radar-bg-233.jpg",
   "PreviewInSolutionExplorer": false
 }
