@@ -27,11 +27,20 @@ namespace AirportDemo.Controllers
         public async Task<IActionResult> GetAirportStatus()
         {
             const string apiUrl = "https://www.flightstats.com/v2/api/airport/IST?rqid=4guirc8bmfy";
+
             try
             {
-                // ... code to fetch data from FlightStats ...
+                // 1) HttpRequestMessage oluþturun
+                var request = new HttpRequestMessage(HttpMethod.Get, apiUrl);
+
+                // 2) User-Agent ekleyin
+                request.Headers.UserAgent.ParseAdd("Mozilla/5.0");
+
+                // 3) HTTP isteðini gönderin
                 var response = await _httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
+
+                // 4) JSON verisini çekin
                 var jsonData = await response.Content.ReadAsStringAsync();
                 return Content(jsonData, "application/json");
             }
