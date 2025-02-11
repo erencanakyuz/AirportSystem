@@ -11,6 +11,6 @@
     "\\wwwroot\\lib\\jquery-validation",
     "\\wwwroot\\lib\\jquery-validation\\dist"
   ],
-  "SelectedNode": "\\wwwroot\\images\\ai-radar-bg-233.jpg",
+  "SelectedNode": "\\Controllers\\RadarApiController.cs",
   "PreviewInSolutionExplorer": false
 }

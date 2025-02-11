@@ -33,8 +33,12 @@
       "PackagePath": "staticwebassets\\images\\ai-radar-bg-233.jpg"
     },
     {
-      "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\plane-icon.png",
-      "PackagePath": "staticwebassets\\images\\plane-icon.png"
+      "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\plane-icon-green.png",
+      "PackagePath": "staticwebassets\\images\\plane-icon-green.png"
+    },
+    {
+      "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\images\\plane-icon-red.png",
+      "PackagePath": "staticwebassets\\images\\plane-icon-red.png"
     },
     {
       "Id": "C:\\Users\\Quicito\\AirportDemo\\wwwroot\\js\\site.js",

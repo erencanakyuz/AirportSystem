@@ -1,17 +1,16 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="utf-8">
     <title>İstanbul Havalimanı Uçuş Radarı</title>
-    <!-- Bootstrap (optional) + Leaflet CSS -->
+    <!-- Bootstrap + Leaflet CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
     <style>
-        /* Basic full-page styling */
         html, body {
             margin: 0;
             padding: 0;
@@ -23,10 +22,9 @@
         }
 
         body {
-            overflow: hidden; /* no scrollbars, map covers entire page */
+            overflow: hidden;
         }
 
-        /* Leaflet map container */
         #mapContainer {
             position: absolute;
             top: 0;
@@ -36,7 +34,6 @@
             z-index: 1;
         }
 
-        /* Canvas radar overlay on top of map */
         #radarCanvas {
             position: absolute;
             top: 0;
@@ -44,27 +41,25 @@
             width: 100%;
             height: 100%;
             z-index: 2;
-            pointer-events: none; /* allow clicks to pass to map */
+            pointer-events: none;
         }
 
-        /* Loading indicator (top-left corner) */
         #loadingIndicator {
             position: absolute;
             top: 10px;
             left: 10px;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0,0,0,0.5);
             color: white;
             padding: 10px 15px;
             border-radius: 5px;
             z-index: 3;
         }
 
-        /* Flight details panel (top-right corner) */
         .flight-details-panel {
             position: absolute;
             top: 10px;
             right: 10px;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0,0,0,0.7);
             color: white;
             padding: 15px;
             border-radius: 5px;
@@ -84,7 +79,6 @@
                 line-height: 1.4;
             }
 
-        /* Smooth opacity transitions on markers */
         .leaflet-marker-icon {
             transition: opacity 0.15s ease-out;
         }
@@ -93,177 +87,175 @@
 <body>
     <!-- MAP container -->
     <div id="mapContainer"></div>
-
     <!-- RADAR Canvas -->
     <canvas id="radarCanvas"></canvas>
-
     <!-- LOADING indicator -->
     <div id="loadingIndicator">Veri Yükleniyor...</div>
-
     <!-- FLIGHT DETAILS panel -->
     <div id="flightDetails" class="flight-details-panel" style="display:none;"></div>
 
     <!-- Leaflet + jQuery -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
     <script>
         /***************************************************/
-        /** 1) RADAR (CANVAS) SETUP                      **/
+        /** 1) RADAR (CANVAS) SETUP **/
         /***************************************************/
         const canvas = document.getElementById('radarCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
         let centerX = canvas.width / 2;
         let centerY = canvas.height / 2;
         let radarRadius = Math.min(centerX, centerY) * 0.8;
         let sweepAngle = 0;
-
-        function onResize() {
+        window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             centerX = canvas.width / 2;
             centerY = canvas.height / 2;
             radarRadius = Math.min(centerX, centerY) * 0.8;
-        }
-        window.addEventListener('resize', onResize);
-
+        });
 
         /***************************************************/
-        /** 2) LEAFLET MAP SETUP                          **/
+        /** 2) LEAFLET MAP SETUP **/
         /***************************************************/
-        const istLat = 41.275; // Istanbul Airport approximate lat
-        const istLon = 28.75;  // Istanbul Airport approximate lon
-
-        // Create the map
+        const istLat = 41.275; // Istanbul Airport latitude
+        const istLon = 28.75;  // Istanbul Airport longitude
         let map = L.map('mapContainer', {
             center: [istLat, istLon],
             zoom: 9,
             zoomControl: true,
-            attributionControl: false,
-            dragging: true,
-            doubleClickZoom: true,
-            scrollWheelZoom: true,
-            touchZoom: true,
-            boxZoom: true,
-            keyboard: true,
+            attributionControl: false
         });
-
-        // Put plane icons in a higher z-index pane
         map.createPane('planeIconsPane');
         map.getPane('planeIconsPane').style.zIndex = 650;
-
-        // Dark tile layer
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors &copy; CartoDB'
         }).addTo(map);
 
-        // Keep references to markers and polylines
-        let planeMarkers = {};       // { icao24: LeafletMarker }
-        let flightPaths = {};        // { icao24: array of [lat, lng] }
-        let flightPathLayers = {};   // { icao24: LeafletPolyline }
+        // Global flight data and UI references
+        let planeMarkers = {};   // { icao24: LeafletMarker }
+        let flightPaths = {};    // { icao24: array of [lat, lng] }
+        let flightPathLayers = {}; // { icao24: LeafletPolyline }
         let selectedFlightIcao = null;
-
-        // UI references
+        let flightData = null;
+        let lastFetchTime = 0;
+        let isFetchingData = false;
+        const fetchInterval = 1500; // in milliseconds
         const loadingIndicator = document.getElementById('loadingIndicator');
         const flightDetailsPanel = document.getElementById('flightDetails');
 
         /***************************************************/
-        /** 3) AJAX DATA FETCH (from RadarApiController)  **/
+        /** 3) HELPER FUNCTIONS **/
         /***************************************************/
-        let flightData = null;
-        let lastFetchTime = 0;
-        let isFetchingData = false;
-        const fetchInterval = 1500; // 15 seconds
+        // Haversine formula: returns distance in km between two points
+        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+        // Calculate bearing (in degrees) from point A to point B.
+        function calculateBearing(lat1, lon1, lat2, lon2) {
+            const toRad = Math.PI / 180;
+            const toDeg = 180 / Math.PI;
+            const dLon = (lon2 - lon1) * toRad;
+            const lat1Rad = lat1 * toRad;
+            const lat2Rad = lat2 * toRad;
+            let y = Math.sin(dLon) * Math.cos(lat2Rad);
+            let x = Math.cos(lat1Rad) * Math.sin(lat2Rad) - Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(dLon);
+            let brng = Math.atan2(y, x) * toDeg;
+            return (brng + 360) % 360;
+        }
+        // Smallest difference between two angles.
+        function angleDifference(a, b) {
+            let diff = Math.abs(a - b) % 360;
+            return diff > 180 ? 360 - diff : diff;
+        }
+        // Infer flight type: "departure" if the heading is closer to the bearing from IST, "arrival" otherwise.
+        function classifyFlight(flightLat, flightLon, flightHeading) {
+            const bearingFromIstanbul = calculateBearing(istLat, istLon, flightLat, flightLon);
+            const diffDeparture = angleDifference(flightHeading, bearingFromIstanbul);
+            const diffArrival = angleDifference(flightHeading, (bearingFromIstanbul + 180) % 360);
+            return (diffDeparture < diffArrival) ? "departure" : "arrival";
+        }
 
+        /***************************************************/
+        /** 4) FETCH FLIGHT DATA FROM API **/
+        /***************************************************/
         function getFlightData() {
-    const now = Date.now();
-    if (now - lastFetchTime < fetchInterval || isFetchingData) {
-        console.log("Fetch interval not met or a request is in progress.");
-        return;
-    }
-    lastFetchTime = now;
-    isFetchingData = true;
-    loadingIndicator.style.display = 'block';
-
-    // Fetch data from the correct API endpoint
-    $.ajax({
-        url: '/api/radar/flights', // ✅ Use hardcoded URL instead of @Url.Action
-        method: 'GET',
-        dataType: 'json'
-    })
-    .done(function(data) {
-        isFetchingData = false;
-        loadingIndicator.style.display = 'none';
-
-        // Check if there's an error in the response
-        if (data.error) {
-            console.error("Server error:", data.error, data.details);
-            showErrorMsg("Sunucu hatası: " + data.error);
-            return;
-        }
-
-        // Validate response format
-        if (!data.states || !Array.isArray(data.states)) {
-            console.warn("Invalid data format from server:", data);
-            showErrorMsg("Geçersiz veri formatı. 'states' yok.");
-            return;
-        }
-
-        flightData = data.states;
-        updateFlights();
-    })
-    .fail(function(jqXHR, textStatus, errorThrown) {
-        isFetchingData = false;
-        loadingIndicator.style.display = 'none';
-        console.error("Failed to fetch flights:", textStatus, errorThrown);
-        showErrorMsg("Veri alınamadı. HTTP Hata: " + jqXHR.status + " - " + errorThrown);
-    });
-}
-
-        function showErrorMsg(msg) {
-            loadingIndicator.textContent = "Hata: " + msg;
+            const now = Date.now();
+            if (now - lastFetchTime < fetchInterval || isFetchingData) return;
+            lastFetchTime = now;
+            isFetchingData = true;
             loadingIndicator.style.display = 'block';
-            setTimeout(() => {
-                loadingIndicator.style.display = 'none';
-                loadingIndicator.textContent = "Veri Yükleniyor...";
-            }, 5000);
-        }
 
+            $.ajax({
+                url: '/api/radar/flights',
+                method: 'GET',
+                dataType: 'json'
+            })
+                .done(function (data) {
+                    isFetchingData = false;
+                    loadingIndicator.style.display = 'none';
+                    if (data.error) {
+                        console.error("Server error:", data.error, data.details);
+                        return;
+                    }
+                    if (!data.states || !Array.isArray(data.states)) {
+                        console.error("Invalid data format from server:", data);
+                        return;
+                    }
+                    flightData = data.states;
+                    updateFlights();
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    isFetchingData = false;
+                    loadingIndicator.style.display = 'none';
+                    console.error("Failed to fetch flights:", textStatus, errorThrown);
+                });
+        }
 
         /***************************************************/
-        /** 4) UPDATE FLIGHTS (Markers + Paths)           **/
+        /** 5) UPDATE FLIGHTS (MARKERS & PATHS) **/
         /***************************************************/
         function updateFlights() {
             if (!flightData) return;
-
             let currentIcaos = {};
 
             flightData.forEach(flight => {
-                // flight array per OpenSky doc
-                // flight[0] = icao24
-                // flight[1] = callsign
-                // flight[2] = origin_country
-                // flight[5] = longitude
-                // flight[6] = latitude
-                // flight[7] = baro_altitude
-                // flight[10] = true_track
+                console.log('Processing flight:', flight);
                 let icao24 = flight[0];
                 let callsign = flight[1] ? flight[1].trim() : "N/A";
                 let originCountry = flight[2] || "Bilinmiyor";
                 let longitude = flight[5];
                 let latitude = flight[6];
-                let altitude = flight[7] || 0;
-                let heading = flight[10] || 0;
+                if (longitude == null || latitude == null) {
+                    console.warn(`Flight ${icao24} missing coordinates. Skipping.`);
+                    return;
+                }
+                let altitude = (flight.length > 7 && flight[7] !== null) ? flight[7] : 0;
+                let heading = (flight.length > 10 && flight[10] !== null) ? flight[10] : 0;
 
                 currentIcaos[icao24] = true;
+                // Only process flights within 50 km of Istanbul.
+                let distance = getDistanceFromLatLonInKm(istLat, istLon, latitude, longitude);
+                if (distance > 50) {
+                    console.log(`Flight ${icao24} is ${distance.toFixed(2)} km from IST. Skipping.`);
+                    return;
+                }
 
-                // If null coords, skip
-                if (longitude == null || latitude == null) return;
+                // Classify the flight as "departure" or "arrival"
+                let flightType = classifyFlight(latitude, longitude, heading);
+                // Use a green icon for departures, red for arrivals.
+                let iconUrl = (flightType === "departure") ? "/images/plane-icon-green.png" : "/images/plane-icon-red.png";
 
-                // Update flight path
+                // Update flight path (for trails)
                 if (!flightPaths[icao24]) {
                     flightPaths[icao24] = [];
                 }
@@ -271,8 +263,6 @@
                 if (flightPaths[icao24].length > 50) {
                     flightPaths[icao24].shift();
                 }
-
-                // Update or create polyline
                 if (flightPathLayers[icao24]) {
                     flightPathLayers[icao24].setLatLngs(flightPaths[icao24]);
                 } else {
@@ -283,67 +273,44 @@
                     }).addTo(map);
                 }
 
-                // Update or create marker
+                // Create or update marker
                 if (planeMarkers[icao24]) {
-                    // Update existing
                     planeMarkers[icao24].setLatLng([latitude, longitude]);
-
-                    // Update icon (rotate)
                     let icon = planeMarkers[icao24].options.icon;
-                    icon.options.html = `
-                        <img src="/images/plane-icon.png"
-                             style="width:36px; height:36px; opacity:1;
-                                    transform: rotate(${heading}deg);">
-                    `;
+                    icon.options.html = `<img src="${iconUrl}" style="width:36px; height:36px; opacity:1; transform: rotate(${heading}deg);">`;
                     planeMarkers[icao24].setIcon(icon);
-
-                    // Rebind tooltip
                     planeMarkers[icao24]
                         .unbindTooltip()
-                        .bindTooltip(
-                            `<b>Uçuş: ${callsign}</b><br>Rakım: ${Math.round(altitude)}m`,
-                            { permanent: false, direction: 'top', offset: [0, -10] }
-                        );
-
-                    // Rebind click
+                        .bindTooltip(`<b>Uçuş: ${callsign}</b><br>Rakım: ${Math.round(altitude)}m`,
+                            { permanent: false, direction: 'top', offset: [0, -10] });
                     planeMarkers[icao24].off('click').on('click', () => showFlightDetails(icao24));
                 } else {
-                    // New marker
                     let planeIcon = L.divIcon({
                         className: 'plane-marker',
-                        html: `
-                            <img src="/images/plane-icon.png"
-                                 style="width:36px; height:36px; opacity:1;
-                                        transform: rotate(${heading}deg);">
-                        `,
+                        html: `<img src="${iconUrl}" style="width:36px; height:36px; opacity:1; transform: rotate(${heading}deg);">`,
                         iconSize: [36, 36],
                         iconAnchor: [18, 18]
                     });
-
                     let marker = L.marker([latitude, longitude], { icon: planeIcon });
-                    marker.bindTooltip(
-                        `<b>Uçuş: ${callsign}</b><br>Rakım: ${Math.round(altitude)}m`,
-                        { permanent: false, direction: 'top', offset: [0, -10] }
-                    );
+                    marker.bindTooltip(`<b>Uçuş: ${callsign}</b><br>Rakım: ${Math.round(altitude)}m`,
+                        { permanent: false, direction: 'top', offset: [0, -10] });
                     marker.addTo(map, 'planeIconsPane');
                     marker.on('click', () => showFlightDetails(icao24));
-
                     planeMarkers[icao24] = marker;
                 }
             });
 
-            // Remove old markers/paths
+            // Remove outdated markers and paths.
             Object.keys(planeMarkers).forEach(icao => {
                 if (!currentIcaos[icao]) {
+                    console.log(`Removing flight ${icao}`);
                     map.removeLayer(planeMarkers[icao]);
                     delete planeMarkers[icao];
-
                     if (flightPathLayers[icao]) {
                         map.removeLayer(flightPathLayers[icao]);
                         delete flightPathLayers[icao];
                     }
                     delete flightPaths[icao];
-
                     if (selectedFlightIcao === icao) {
                         hideFlightDetails();
                     }
@@ -351,9 +318,8 @@
             });
         }
 
-
         /***************************************************/
-        /** 5) SHOW/HIDE FLIGHT DETAILS                   **/
+        /** 6) SHOW/HIDE FLIGHT DETAILS **/
         /***************************************************/
         function showFlightDetails(icao24) {
             selectedFlightIcao = icao24;
@@ -361,107 +327,77 @@
             if (flight) {
                 let callsign = flight[1] ? flight[1].trim() : "N/A";
                 let originCountry = flight[2] || "Bilinmiyor";
-                let altitude = flight[7] || 0;
+                let altitude = (flight.length > 7 && flight[7] !== null) ? flight[7] : 0;
                 let speed = flight[9] ? flight[9].toFixed(0) : "N/A";
                 let vRate = flight[11] ? flight[11] : "N/A";
-
-                const html = `
-                    <h4>Uçuş Detayları</h4>
-                    <p><b>Callsign:</b> ${callsign}</p>
-                    <p><b>Kalkış (Ülke):</b> ${originCountry}</p>
-                    <p><b>Rakım:</b> ${Math.round(altitude)} m</p>
-                    <p><b>Hız:</b> ${speed} m/s</p>
-                    <p><b>Dikey Hız:</b> ${vRate} m/s</p>
-                    <button onclick="hideFlightDetails()" class="btn btn-sm btn-secondary">Kapat</button>
-                `;
+                const html = `<h4>Uçuş Detayları</h4>
+                                  <p><b>Callsign:</b> ${callsign}</p>
+                                  <p><b>Kalkış (Ülke):</b> ${originCountry}</p>
+                                  <p><b>Rakım:</b> ${Math.round(altitude)} m</p>
+                                  <p><b>Hız:</b> ${speed} m/s</p>
+                                  <p><b>Dikey Hız:</b> ${vRate} m/s</p>
+                                  <button onclick="hideFlightDetails()" class="btn btn-sm btn-secondary">Kapat</button>`;
                 flightDetailsPanel.innerHTML = html;
                 flightDetailsPanel.style.display = 'block';
             }
         }
-
         function hideFlightDetails() {
             flightDetailsPanel.style.display = 'none';
             selectedFlightIcao = null;
         }
 
-
         /***************************************************/
-        /** 6) RADAR ANIMATION (Canvas Sweep)             **/
+        /** 7) RADAR SWEEP ANIMATION **/
         /***************************************************/
         function drawRadar() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // **1. Subtle Outer Circle:**
-            ctx.strokeStyle = 'rgba(200, 200, 200, 0.3)'; // Light gray, very subtle
-            ctx.lineWidth = 1; // Thinner line
+            // Outer circle
+            ctx.strokeStyle = 'rgba(200, 200, 200, 0.3)';
+            ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.arc(centerX, centerY, radarRadius, 0, 2 * Math.PI);
             ctx.stroke();
-
-            // **2. Single, Faint Inner Ring:** (Optional - you can remove this section entirely for even more minimalism)
-            ctx.strokeStyle = 'rgba(200, 200, 200, 0.15)'; // Very faint gray
-            ctx.lineWidth = 1; // Thinner line
-            const numRings = 1; // Just one ring for a cleaner look
-            for (let i = 1; i <= numRings; i++) {
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, radarRadius * 0.5, 0, 2 * Math.PI); // Ring at half radius
-                ctx.stroke();
-            }
-
-            // **3. Minimalist Sweep Line:**
-            ctx.strokeStyle = 'rgba(0, 191, 255, 0.7)'; // Soft blue for sweep
-            ctx.lineWidth = 2; // Slightly thinner sweep line
+            // Inner ring
+            ctx.strokeStyle = 'rgba(200, 200, 200, 0.15)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radarRadius * 0.5, 0, 2 * Math.PI);
+            ctx.stroke();
+            // Sweep line
+            ctx.strokeStyle = 'rgba(0, 191, 255, 0.7)';
+            ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(centerX, centerY);
-            ctx.lineTo(
-                centerX + radarRadius * Math.cos(sweepAngle),
-                centerY + radarRadius * Math.sin(sweepAngle)
-            );
+            ctx.lineTo(centerX + radarRadius * Math.cos(sweepAngle), centerY + radarRadius * Math.sin(sweepAngle));
             ctx.stroke();
-
-           
-
-            // Move the sweep angle (same speed or adjust as needed)
             sweepAngle += 0.005;
             if (sweepAngle > 2 * Math.PI) {
                 sweepAngle = 0;
             }
-
-            // **5. Subtle Marker Opacity Change:**
-            let beamWidth = 0.2; // radians - Keep the beam width as is for now
+            // (Optional) Adjust marker opacity based on radar sweep
+            const beamWidth = 0.2; // in radians
             for (let key in planeMarkers) {
                 let marker = planeMarkers[key];
                 let markerElement = (marker.getElement && marker.getElement()) || marker._icon;
                 if (!markerElement) continue;
-
                 let latLng = marker.getLatLng();
                 let pt = map.latLngToContainerPoint(latLng);
-
                 let dx = pt.x - centerX;
                 let dy = pt.y - centerY;
                 let markerAngle = Math.atan2(dy, dx);
                 if (markerAngle < 0) markerAngle += 2 * Math.PI;
-
                 let diff = Math.abs(markerAngle - sweepAngle);
                 if (diff > Math.PI) diff = 2 * Math.PI - diff;
-
-                // **Subtler opacity range:**
-                let opacity = (diff < beamWidth) ? 1 : 0.5; // Reduced max opacity, increased min opacity for less drastic change
-                markerElement.style.opacity = opacity;
+                markerElement.style.opacity = (diff < beamWidth) ? 1 : 0.5;
             }
-
             requestAnimationFrame(drawRadar);
         }
 
-
         /***************************************************/
-        /** 7) START EVERYTHING                           **/
+        /** 8) START EVERYTHING **/
         /***************************************************/
-        // Start data fetch and update loops
         getFlightData();
         setInterval(getFlightData, fetchInterval);
-
-        // Kick off the radar sweep animation
         drawRadar();
     </script>
 </body>
